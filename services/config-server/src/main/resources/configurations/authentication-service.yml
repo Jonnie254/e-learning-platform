@@ -6,5 +6,28 @@ spring:
       host: localhost
       port: 27017
       database: authenticationdb
+  mail:
+    host: localhost
+    port: 1025
+    username: maildev
+    password: maildev
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: "*"
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+
+application:
+  mailing:
+    frontend:
+      activationUrl: http://localhost:4200/activate-account
+
+
 server:
   port: 8010
