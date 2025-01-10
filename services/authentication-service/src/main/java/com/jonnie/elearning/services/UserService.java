@@ -3,6 +3,7 @@ package com.jonnie.elearning.services;
 import com.jonnie.elearning.email.EmailService;
 import com.jonnie.elearning.email.EmailTemplateEngine;
 import com.jonnie.elearning.exceptions.UserNotFoundException;
+import com.jonnie.elearning.jwt.JwtService;
 import com.jonnie.elearning.repositories.TokenRepository;
 import com.jonnie.elearning.repositories.UserRepository;
 import com.jonnie.elearning.user.Token;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final EmailService emailService;
     private final TokenRepository tokenRepository;
+    private final JwtService jwtService;
     @Value("${application.mailing.frontend.activationUrl}")
     private String activationUrl;
 
@@ -79,5 +82,24 @@ public class UserService {
         userRepository.save(user);
         savedToken.setValidateAt(LocalDateTime.now());
         tokenRepository.save(savedToken);
+    }
+
+    public AuthenticationResponse authenticateUser(UserAuthenticationRequest userAuthenticationRequest) {
+        var user = userRepository.findByEmail(userAuthenticationRequest.email())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        if(!user.isActive()) {
+            throw new RuntimeException("User is not active");
+        }
+        if(!user.getPassword().equals(userAuthenticationRequest.password())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+        var claims = new HashMap<String, Object>();
+        claims.put("fullname", user.getFullName());
+        claims.put("userId", user.getId());
+        claims.put("roles", user.getRole());
+        var jwtToken = jwtService.generateToken(claims, user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 }

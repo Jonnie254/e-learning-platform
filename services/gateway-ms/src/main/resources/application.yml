@@ -1,0 +1,12 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: gateway-service
+server:
+  port: 8222
+application:
+  security:
+    jwt:
+      # expiration-time: 86400000
+      secret-key: yugioewih3qdqwonknflapw0hoiufheoiwqfsncnciienckdsnvoiewifjiewnflvdviuhr89448392952

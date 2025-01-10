@@ -6,6 +6,7 @@ spring:
       host: localhost
       port: 27017
       database: authenticationdb
+      authentication-database: admin
   mail:
     host: localhost
     port: 1025

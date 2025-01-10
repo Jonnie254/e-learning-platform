@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/../e-commerce-ms/services/config-server/pom.xml" />
         <option value="$PROJECT_DIR$/services/discovery-service/pom.xml" />
         <option value="$PROJECT_DIR$/services/authentication-service/pom.xml" />
+        <option value="$PROJECT_DIR$/services/gateway-ms/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

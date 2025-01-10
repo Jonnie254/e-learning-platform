@@ -22,7 +22,7 @@ public class UserController {
 
     // method to activate an account
     @GetMapping("/activate-account")
-    public void activateAccount(
+    public void activateAccount(    
             @RequestParam String token
     ) throws MessagingException {
         userService.activateAccount(token);
@@ -30,7 +30,7 @@ public class UserController {
 
     // method to authenticate the user
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticateUser(
+    public ResponseEntity<AuthenticationResponse> authenticateUser(
             @RequestBody @Valid UserAuthenticationRequest userAuthenticationRequest
     ) {
         return ResponseEntity.ok(userService.authenticateUser(userAuthenticationRequest));
