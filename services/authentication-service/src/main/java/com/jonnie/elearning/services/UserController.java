@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
     // method to register a new user
     @PostMapping("/register")
     public ResponseEntity<?> registerNewUser(
@@ -35,5 +36,18 @@ public class UserController {
     ) {
         return ResponseEntity.ok(userService.authenticateUser(userAuthenticationRequest));
     }
+
+    // method to update the user's details
+    @PutMapping("/update-user")
+    public ResponseEntity<Void> updateUser(
+            @RequestHeader("X-User-Id") String userId, // Passed by the gateway
+            @RequestHeader("X-User-Role") String userRole, // Optionally, for role-based authorization
+            @RequestBody @Valid UserUpdateRequest userUpdateRequest
+    ) {
+        userService.updateUser(userId, userRole, userUpdateRequest);
+        return ResponseEntity.accepted().build();
+    }
+
+
 
 }

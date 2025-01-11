@@ -2,6 +2,7 @@ package com.jonnie.elearning.services;
 
 import com.jonnie.elearning.email.EmailService;
 import com.jonnie.elearning.email.EmailTemplateEngine;
+import com.jonnie.elearning.exceptions.TokenNotFoundException;
 import com.jonnie.elearning.exceptions.UserNotFoundException;
 import com.jonnie.elearning.jwt.JwtService;
 import com.jonnie.elearning.repositories.TokenRepository;
@@ -11,7 +12,9 @@ import com.jonnie.elearning.user.User;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -20,21 +23,24 @@ import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final EmailService emailService;
     private final TokenRepository tokenRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
     @Value("${application.mailing.frontend.activationUrl}")
     private String activationUrl;
-
+    // method to register a new user
     public void registerUser(@Valid UserRegistrationRequest userRegistrationRequest) throws MessagingException {
         var user = userMapper.toUser(userRegistrationRequest);
         userRepository.save(user);
         sendValidationEmail(user);
     }
 
+    // method to send the validation email
     private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);
         emailService.sendEmail(
@@ -47,6 +53,7 @@ public class UserService {
         );
     }
 
+    //method to generate and save the activation token
     private String generateAndSaveActivationToken(User user) {
         String generatedToken = generateActivationCode();
         var token = Token.builder()
@@ -59,6 +66,7 @@ public class UserService {
         return generatedToken;
     }
 
+    // method to generate  the activation code
     private String generateActivationCode() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder codeBuilder = new StringBuilder();
@@ -69,9 +77,10 @@ public class UserService {
         return codeBuilder.toString();
     }
 
+    // method to activate a new user account
     public void activateAccount(String token) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Token not found"));
+                .orElseThrow(() -> new TokenNotFoundException("Token not found"));
         if(LocalDateTime.now().isAfter(savedToken.getExpireAt())){
           sendValidationEmail(savedToken.getUser());
           throw new RuntimeException("Token expired. A new token has been sent to your email.");
@@ -84,22 +93,60 @@ public class UserService {
         tokenRepository.save(savedToken);
     }
 
-    public AuthenticationResponse authenticateUser(UserAuthenticationRequest userAuthenticationRequest) {
-        var user = userRepository.findByEmail(userAuthenticationRequest.email())
+    //method to update the user's details
+    public void updateUser(String userId, String userRole, UserUpdateRequest userUpdateRequest) {
+        // Fetch the user from the repository using the extracted userId
+        var existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        if(!user.isActive()) {
+
+        // Ensure role-based restrictions, if necessary
+        if (!userRole.equals("ADMIN") && userUpdateRequest.role() != null) {
+            throw new RuntimeException("Non-admin users cannot update roles.");
+        }
+
+        // Map updated fields to the existing user
+        var updatedUser = userMapper.toUpdate(existingUser, userUpdateRequest);
+
+        // Save the updated user
+        userRepository.save(updatedUser);
+    }
+
+    // method to authenticate the user
+    public AuthenticationResponse authenticateUser(UserAuthenticationRequest userAuthenticationRequest) {
+        log.info("Authentication request received for email: {}", userAuthenticationRequest.email());
+
+        // Check if the user exists in the database
+        var user = userRepository.findByEmail(userAuthenticationRequest.email())
+                .orElseThrow(() -> {
+                    log.error("User not found with email: {}", userAuthenticationRequest.email());
+                    return new UserNotFoundException("User not found");
+                });
+
+        // Check if the user is active
+        if (!user.isActive()) {
+            log.error("User with email {} is not active", userAuthenticationRequest.email());
             throw new RuntimeException("User is not active");
         }
-        if(!user.getPassword().equals(userAuthenticationRequest.password())) {
+
+        // Check if the provided password matches the stored one
+        boolean passwordMatches = passwordEncoder.matches(userAuthenticationRequest.password(), user.getPassword());
+        if (!passwordMatches) {
+            log.error("Invalid credentials for email: {}", userAuthenticationRequest.email());
             throw new RuntimeException("Invalid credentials");
         }
+
+        log.info("Authentication successful for user: {}", user.getFullName());
+
+        // Generate JWT token
         var claims = new HashMap<String, Object>();
         claims.put("fullname", user.getFullName());
         claims.put("userId", user.getId());
-        claims.put("roles", user.getRole());
+        claims.put("role", user.getRole());
         var jwtToken = jwtService.generateToken(claims, user);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
+
 }
