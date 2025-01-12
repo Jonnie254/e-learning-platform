@@ -3,12 +3,15 @@ package com.jonnie.elearning.services;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService userService;
 
@@ -41,12 +44,22 @@ public class UserController {
     @PutMapping("/update-user")
     public ResponseEntity<Void> updateUser(
             @RequestHeader("X-User-Id") String userId, // Passed by the gateway
-            @RequestHeader("X-User-Role") String userRole, // Optionally, for role-based authorization
+            @RequestHeader("X-User-Role") String userRole, // Passed by the gateway
             @RequestBody @Valid UserUpdateRequest userUpdateRequest
     ) {
+        log.info("Received request with X-User-Id: {}, X-User-Role: {}", userId, userRole);
+
+        // Enforce role-based authorization
+        if (!"STUDENT".equalsIgnoreCase(userRole)) {
+            log.warn("Unauthorized role: {}. Only ADMIN role can update user details.", userRole);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
+        }
+
+        // Proceed with the update
         userService.updateUser(userId, userRole, userUpdateRequest);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.ok().build();
     }
+
 
 
 

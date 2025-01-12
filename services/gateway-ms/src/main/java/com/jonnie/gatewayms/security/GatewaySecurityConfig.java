@@ -22,7 +22,6 @@
             return http
                     .csrf(ServerHttpSecurity.CsrfSpec::disable)
                     .authorizeExchange(exchange -> exchange
-                            // Allow access to registration and login without authentication (no JWT required)
                             .pathMatchers(
                                     "/api/v1/users/register",
                                     "/api/v1/users/activate-account",
@@ -31,8 +30,7 @@
                             .anyExchange()
                             .authenticated()
                     )
-                    // Add JWT authentication filter before the default authentication filter
-                    .addFilterBefore(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+                    .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                     .build();
         }
     }
