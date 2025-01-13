@@ -2,13 +2,12 @@ package com.jonnie.elearning.services;
 
 import com.jonnie.elearning.email.EmailService;
 import com.jonnie.elearning.email.EmailTemplateEngine;
-import com.jonnie.elearning.exceptions.TokenNotFoundException;
-import com.jonnie.elearning.exceptions.UserNotFoundException;
+import com.jonnie.elearning.exceptions.*;
 import com.jonnie.elearning.jwt.JwtService;
+import com.jonnie.elearning.repositories.RoleRequestRepository;
 import com.jonnie.elearning.repositories.TokenRepository;
 import com.jonnie.elearning.repositories.UserRepository;
-import com.jonnie.elearning.user.Token;
-import com.jonnie.elearning.user.User;
+import com.jonnie.elearning.user.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +30,7 @@ public class UserService {
     private final TokenRepository tokenRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRequestRepository roleRequestRepository;
     @Value("${application.mailing.frontend.activationUrl}")
     private String activationUrl;
     // method to register a new user
@@ -124,18 +124,15 @@ public class UserService {
 
         // Check if the user is active
         if (!user.isActive()) {
-            log.error("User with email {} is not active", userAuthenticationRequest.email());
-            throw new RuntimeException("User is not active");
+            throw new InactiveUserException("User is not active");
         }
 
         // Check if the provided password matches the stored one
         boolean passwordMatches = passwordEncoder.matches(userAuthenticationRequest.password(), user.getPassword());
         if (!passwordMatches) {
             log.error("Invalid credentials for email: {}", userAuthenticationRequest.email());
-            throw new RuntimeException("Invalid credentials");
+            throw new InvalidCredentialsExceptions("Invalid credentials");
         }
-
-        log.info("Authentication successful for user: {}", user.getFullName());
 
         // Generate JWT token
         var claims = new HashMap<String, Object>();
@@ -148,5 +145,45 @@ public class UserService {
                 .token(jwtToken)
                 .build();
     }
+    // method to deactivate a user
+    public void deactivateUser(String userId) {
+        // Fetch the user from the repository using the extracted userId
+        var existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        // Deactivate the user
+        existingUser.setActive(false);
+        // Save the updated user
+        userRepository.save(existingUser);
+    }
+
+    //method to request to become an instructor
+    // Method to request to become an instructor
+    public void requestInstructor(String userId, @Valid UserRoleRequest userRoleRequest) {
+        // Fetch the user from the repository using the provided userId
+        var existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+
+        // Check if the requested role is 'INSTRUCTOR'
+        if (userRoleRequest.roleRequest().getRequestedRole() != ROLE.INSTRUCTOR) {
+            throw new InvalidRoleRequestException("Only INSTRUCTOR role can be requested.");
+        }
+
+        // Check if a role request for this user already exists
+        boolean existingRequest = roleRequestRepository.existsByUserIdAndStatus(userId, RoleRequestStatus.PENDING);
+        if (existingRequest) {
+            throw new InvalidRoleRequestException("You already have a pending request to become an instructor.");
+        }
+
+        // Create a new RoleRequest object with 'PENDING' status
+        RoleRequest roleRequest = RoleRequest.builder()
+                .user(existingUser)                       // Associate the request with the user
+                .requestedRole(ROLE.INSTRUCTOR)           // Set the requested role to INSTRUCTOR
+                .status(RoleRequestStatus.PENDING)        // Set the status to PENDING
+                .build();
+
+        // Save the RoleRequest to the repository
+        roleRequestRepository.save(roleRequest);
+    }
+
 
 }
