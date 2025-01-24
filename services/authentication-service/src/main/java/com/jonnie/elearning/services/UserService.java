@@ -1,5 +1,6 @@
 package com.jonnie.elearning.services;
 
+import com.cloudinary.Cloudinary;
 import com.jonnie.elearning.email.EmailService;
 import com.jonnie.elearning.email.EmailTemplateEngine;
 import com.jonnie.elearning.exceptions.*;
@@ -7,6 +8,10 @@ import com.jonnie.elearning.jwt.JwtService;
 import com.jonnie.elearning.repositories.RoleRequestRepository;
 import com.jonnie.elearning.repositories.TokenRepository;
 import com.jonnie.elearning.repositories.UserRepository;
+import com.jonnie.elearning.role.ROLE;
+import com.jonnie.elearning.role.RoleRequest;
+import com.jonnie.elearning.role.RoleRequestStatus;
+import com.jonnie.elearning.role.UserRoleRequest;
 import com.jonnie.elearning.user.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
@@ -15,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -31,8 +37,13 @@ public class UserService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final RoleRequestRepository roleRequestRepository;
+    private final Cloudinary cloudinary;
     @Value("${application.mailing.frontend.activationUrl}")
     private String activationUrl;
+    @Value("${application.cloudinary.folder}")
+    private String folder;
+
+
     // method to register a new user
     public void registerUser(@Valid UserRegistrationRequest userRegistrationRequest) throws MessagingException {
         var user = userMapper.toUser(userRegistrationRequest);
@@ -106,9 +117,37 @@ public class UserService {
 
         // Map updated fields to the existing user
         var updatedUser = userMapper.toUpdate(existingUser, userUpdateRequest);
-
         // Save the updated user
         userRepository.save(updatedUser);
+    }
+
+    //method to update the user's profile picture
+    public String storeFile(MultipartFile file, String id) {
+        try {
+            var uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                    new HashMap<>(
+                            java.util.Map.of(
+                                    "public_id", folder + "/public" + id,
+                                    "overwrite", true,
+                                    "resource_type", "auto"
+                            )
+                    ));
+            return (String) uploadResult.get("url");
+        } catch (Exception e) {
+            throw new RuntimeException("Error uploading file");
+        }
+    }
+
+    //method to update the user upload profile picture
+    public void uploadProfilePicture(String userId, MultipartFile file) {
+        var existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        // Store the file and get the URL
+        String profilePicUrl = storeFile(file, userId);
+        // Update the user's profile picture URL
+        existingUser.setProfilePicUrl(profilePicUrl);
+        // Save the updated user
+        userRepository.save(existingUser);
     }
 
     // method to authenticate the user
@@ -145,6 +184,7 @@ public class UserService {
                 .token(jwtToken)
                 .build();
     }
+
     // method to deactivate a user
     public void deactivateUser(String userId) {
         // Fetch the user from the repository using the extracted userId
@@ -156,7 +196,6 @@ public class UserService {
         userRepository.save(existingUser);
     }
 
-    //method to request to become an instructor
     // Method to request to become an instructor
     public void requestInstructor(String userId, @Valid UserRoleRequest userRoleRequest) {
         // Fetch the user from the repository using the provided userId
@@ -176,14 +215,14 @@ public class UserService {
 
         // Create a new RoleRequest object with 'PENDING' status
         RoleRequest roleRequest = RoleRequest.builder()
-                .user(existingUser)                       // Associate the request with the user
-                .requestedRole(ROLE.INSTRUCTOR)           // Set the requested role to INSTRUCTOR
-                .status(RoleRequestStatus.PENDING)        // Set the status to PENDING
+                .user(existingUser)
+                .requestedRole(ROLE.INSTRUCTOR)
+                .status(RoleRequestStatus.PENDING)
                 .build();
 
         // Save the RoleRequest to the repository
         roleRequestRepository.save(roleRequest);
     }
 
-
 }
+

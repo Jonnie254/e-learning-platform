@@ -23,6 +23,10 @@ spring:
         connectiontimeout: 5000
         timeout: 3000
         writetimeout: 5000
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 application:
   mailing:

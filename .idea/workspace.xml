@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/configs/CloudinaryConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/AuthenticationServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/AuthenticationServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/repositories/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/config-server/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/authentication-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/authentication-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/discovery-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/gateway-ms/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/GatewaySecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/GatewaySecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/JwtAuthenticationFilter.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Record" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2rl0NiHe4WuTUSR6q5gP9K8WSrP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ConfigServerApplication.executor": "Run",
+    "Application.DiscoveryServiceApplication.executor": "Run",
+    "Application.GatewayMsApplication.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.AuthenticationServiceApplication.executor": "Run",
+    "Spring Boot.ConfigServerApplication.executor": "Run",
+    "Spring Boot.DiscoveryServiceApplication.executor": "Run",
+    "Spring Boot.GatewayMsApplication.executor": "Run",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/jonnie/Desktop/e-learning-platform",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.0",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "show.migrate.to.gradle.popup": "false",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.jonnie.elearning.user" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jonnie\Desktop\e-learning-platform\services\authentication-service\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.GatewayMsApplication">
+    <configuration name="ConfigServerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.jonnie.configserver.ConfigServerApplication" />
+      <module name="config-server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.jonnie.configserver.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DiscoveryServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.jonnie.discoveryservice.DiscoveryServiceApplication" />
+      <module name="discovery-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.jonnie.discoveryservice.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayMsApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.jonnie.gatewayms.GatewayMsApplication" />
+      <module name="gateway-ms" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.jonnie.gatewayms.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthenticationServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="authentication-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.jonnie.elearning.AuthenticationServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConfigServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="config-server" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.jonnie.configserver.ConfigServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DiscoveryServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="discovery-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.jonnie.discoveryservice.DiscoveryServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayMsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="gateway-ms" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.jonnie.gatewayms.GatewayMsApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.GatewayMsApplication" />
+        <item itemvalue="Application.DiscoveryServiceApplication" />
+        <item itemvalue="Application.ConfigServerApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.24807.4" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.24807.4" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="" />
+      <created>1737118316392</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1737118316392</updated>
+      <workItem from="1737118317493" duration="847000" />
+      <workItem from="1737370871283" duration="575000" />
+      <workItem from="1737473932399" duration="1494000" />
+      <workItem from="1737479656781" duration="588000" />
+      <workItem from="1737653678517" duration="5321000" />
+      <workItem from="1737662388934" duration="458000" />
+      <workItem from="1737663058228" duration="4784000" />
+      <workItem from="1737722276332" duration="13581000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="io.jsonwebtoken.ExpiredJwtException" package="io.jsonwebtoken" />
+          <option name="timeStamp" value="6" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

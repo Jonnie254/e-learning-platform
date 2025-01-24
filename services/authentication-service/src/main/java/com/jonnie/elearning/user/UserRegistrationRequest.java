@@ -1,6 +1,6 @@
-package com.jonnie.elearning.services;
+package com.jonnie.elearning.user;
 
-import com.jonnie.elearning.user.ROLE;
+import com.jonnie.elearning.role.ROLE;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

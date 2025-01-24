@@ -1,5 +1,6 @@
-package com.jonnie.elearning.user;
+package com.jonnie.elearning.role;
 
+import com.jonnie.elearning.user.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;

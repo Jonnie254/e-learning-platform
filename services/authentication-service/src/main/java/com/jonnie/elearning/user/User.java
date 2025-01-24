@@ -1,5 +1,6 @@
 package com.jonnie.elearning.user;
 
+import com.jonnie.elearning.role.ROLE;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @Setter
 @Getter
+@ToString
 @Document
 public class User {
     @Id
@@ -23,14 +25,13 @@ public class User {
     private String password;
     @Indexed(unique = true)
     private String email;
-    private String profilePicture;
+    private String profilePicUrl;
     private boolean isActive;
     private ROLE role;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
-
     public String getFullName() {
         return this.firstName + " " + this.lastName;
     }

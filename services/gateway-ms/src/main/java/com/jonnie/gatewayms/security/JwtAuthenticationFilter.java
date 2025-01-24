@@ -2,6 +2,7 @@
 package com.jonnie.gatewayms.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -66,7 +67,7 @@ public class JwtAuthenticationFilter implements WebFilter {
                 })
                 .onErrorResume(e -> {
                     log.error("JWT authentication failed", e);
-                    return chain.filter(exchange); // Continue unauthenticated
+                    return chain.filter(exchange);
                 });
     }
 
@@ -91,8 +92,11 @@ public class JwtAuthenticationFilter implements WebFilter {
                     null,
                     List.of(new SimpleGrantedAuthority(role))
             ));
+        } catch (ExpiredJwtException e) {
+            log.debug("Token has expired: {}", e.getMessage());
+            return Mono.error(e);
         } catch (Exception e) {
-            log.error("Token validation failed", e);
+            log.warn("Token validation failed: {}", e.getMessage());
             return Mono.error(e);
         }
     }

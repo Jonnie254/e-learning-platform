@@ -6,8 +6,13 @@ spring:
 application:
   security:
     jwt:
-      expiration-time: 86400000
-      secret-key: yugioewih3qdqwonknflapw0hoiufheoiwqfsncnciienckdsnvoiewifjiewnflvdviuhr89448392952
+      expiration-time: ${APPLICATION_SECURITY_JWT_EXPIRATION_TIME}
+      secret-key: ${APPLICATION_SECURITY_JWT_SECRET_KEY}
+  cloudinary:
+    cloud-name: ${APPLICATION_SECURITY_CLOUDINARY_CLOUD_NAME}
+    api-key: ${APPLICATION_SECURITY_CLOUDINARY_API_KEY}
+    api-secret: ${APPLICATION_SECURITY_CLOUDINARY_API_SECRET}
+    folder: ${APPLICATION_SECURITY_CLOUDINARY_FOLDER}
 
 
 

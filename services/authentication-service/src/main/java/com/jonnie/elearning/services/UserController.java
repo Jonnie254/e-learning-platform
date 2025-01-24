@@ -1,5 +1,11 @@
 package com.jonnie.elearning.services;
 
+import com.jonnie.elearning.common.PageResponse;
+import com.jonnie.elearning.role.UserRoleRequest;
+import com.jonnie.elearning.user.UserAuthenticationRequest;
+import com.jonnie.elearning.user.UserRegistrationRequest;
+import com.jonnie.elearning.user.UserResponse;
+import com.jonnie.elearning.user.UserUpdateRequest;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -26,7 +33,7 @@ public class UserController {
 
     // method to activate an account
     @GetMapping("/activate-account")
-    public void activateAccount(    
+    public void activateAccount(
             @RequestParam String token
     ) throws MessagingException {
         userService.activateAccount(token);
@@ -40,22 +47,17 @@ public class UserController {
         return ResponseEntity.ok(userService.authenticateUser(userAuthenticationRequest));
     }
 
-    // method to update the user's details
-    @PutMapping("/update-user")
-    public ResponseEntity<Void> updateUser(
+
+    // method to upload a profile picture
+    @PostMapping(value = "/update-profile-picture", consumes = "multipart/form-data")
+    public ResponseEntity<String> uploadProfilePicture(
             @RequestHeader("X-User-Id") String userId,
-            @RequestHeader("X-User-Role") String userRole,
-            @RequestBody @Valid UserUpdateRequest userUpdateRequest
+            @RequestParam("file") MultipartFile file
     ) {
-        // Enforce role-based authorization
-        if (!"STUDENT".equalsIgnoreCase(userRole)) {
-            log.warn("Unauthorized role: {}. Only ADMIN role can update user details.", userRole);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
-        }
-        // Proceed with the update
-        userService.updateUser(userId, userRole, userUpdateRequest);
-        return ResponseEntity.ok().build();
+        userService.uploadProfilePicture(userId, file);
+        return ResponseEntity.accepted().body("Profile picture uploaded successfully");
     }
+
     // method to request to become an instructor
     @PostMapping("/request-instructor")
     public ResponseEntity<Void> requestInstructor(
@@ -66,6 +68,20 @@ public class UserController {
         return ResponseEntity.accepted().build();
     }
 
+    //get all users
+    @GetMapping("/all-active-users")
+    public ResponseEntity<PageResponse<UserResponse>> getAllUsers(
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestHeader("X-User-Id") String userId,
+            @RequestParam(name="page", defaultValue = "0", required = false) int page,
+            @RequestParam(name="size", defaultValue = "10", required = false) int size
+    ) {
+        if(!"ADMIN".equalsIgnoreCase(userRole)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok(userService.getAllActiveUsers(page, size, userId));
+
+    }
     // method to make a user in active
     @PutMapping("/deactivate-user")
     public ResponseEntity<Void> deactivateUser(
@@ -83,7 +99,22 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    // method to update the user's details
+    @PutMapping("/update-user")
+    public ResponseEntity<Void> updateUser(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestBody @Valid UserUpdateRequest userUpdateRequest
+    ) {
+        try {
+            if (userId.equals(userUpdateRequest.id()) && userUpdateRequest.role() != null) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
 
-
-
+            userService.updateUser(userId, userRole, userUpdateRequest);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

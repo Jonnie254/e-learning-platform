@@ -1,4 +1,4 @@
-package com.jonnie.elearning.services;
+package com.jonnie.elearning.user;
 
 
 import jakarta.validation.constraints.*;
