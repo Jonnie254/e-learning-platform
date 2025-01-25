@@ -4,6 +4,7 @@ import com.jonnie.elearning.user.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class RoleRequest {
     private User user;
     @CreatedDate
     private LocalDateTime requestedAt;
-    @CreatedDate
+    @LastModifiedDate
     private LocalDateTime approvedAt;
 
 }

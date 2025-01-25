@@ -1,0 +1,16 @@
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+   name: course-service
+
+application:
+  config:
+    authentication-url: http://localhost:8222/api/v1/customers
+    enrollment-url: http://localhost:8222/api/v1/products
+    payment-url: http://localhost:8222/api/v1/payments
+  aws:
+    access-key: ${APPLICATION_AWS_ACCESS_KEY}
+    secret-key: ${APPLICATION_AWS_SECRET_KEY}
+    region: ${APPLICATION_AWS_REGION}
+    bucket-name: ${APPLICATION_AWS_BUCKET_NAME}

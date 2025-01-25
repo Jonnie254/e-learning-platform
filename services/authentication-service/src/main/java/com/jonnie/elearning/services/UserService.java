@@ -1,6 +1,7 @@
 package com.jonnie.elearning.services;
 
 import com.cloudinary.Cloudinary;
+import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.email.EmailService;
 import com.jonnie.elearning.email.EmailTemplateEngine;
 import com.jonnie.elearning.exceptions.*;
@@ -8,16 +9,17 @@ import com.jonnie.elearning.jwt.JwtService;
 import com.jonnie.elearning.repositories.RoleRequestRepository;
 import com.jonnie.elearning.repositories.TokenRepository;
 import com.jonnie.elearning.repositories.UserRepository;
-import com.jonnie.elearning.role.ROLE;
-import com.jonnie.elearning.role.RoleRequest;
-import com.jonnie.elearning.role.RoleRequestStatus;
-import com.jonnie.elearning.role.UserRoleRequest;
+import com.jonnie.elearning.role.*;
 import com.jonnie.elearning.user.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +46,6 @@ public class UserService {
     @Value("${application.cloudinary.folder}")
     private String folder;
 
-
     // method to register a new user
     public void registerUser(@Valid UserRegistrationRequest userRegistrationRequest) throws MessagingException {
         var user = userMapper.toUser(userRegistrationRequest);
@@ -60,7 +62,7 @@ public class UserService {
                 EmailTemplateEngine.ACTIVATE_ACCOUNT,
                 activationUrl,
                 newToken, "Activate your account"
-                
+
         );
     }
 
@@ -114,13 +116,29 @@ public class UserService {
         if (!userRole.equals("ADMIN") && userUpdateRequest.role() != null) {
             throw new RuntimeException("Non-admin users cannot update roles.");
         }
-
         // Map updated fields to the existing user
         var updatedUser = userMapper.toUpdate(existingUser, userUpdateRequest);
         // Save the updated user
         userRepository.save(updatedUser);
     }
 
+    // method to get all the active users
+    public PageResponse<UserResponse> getAllActiveUsers(int page, int size, String userId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<User> users = userRepository.findAllUsersActiveExcludingUser(userId, pageable);
+        List<UserResponse> userResponse = users.stream()
+                .map(userMapper::toUserResponse)
+                .toList();
+        return new PageResponse<>(
+                userResponse,
+                users.getNumber(),
+                users.getSize(),
+                users.getTotalElements(),
+                users.getTotalPages(),
+                users.isLast(),
+                users.isFirst()
+        );
+    }
     //method to update the user's profile picture
     public String storeFile(MultipartFile file, String id) {
         try {
@@ -136,6 +154,13 @@ public class UserService {
         } catch (Exception e) {
             throw new RuntimeException("Error uploading file");
         }
+    }
+
+    // method to get the user details
+    public UserResponse getUserDetails(String userId) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        return userMapper.toUserResponse(user);
     }
 
     //method to update the user upload profile picture
@@ -224,5 +249,54 @@ public class UserService {
         roleRequestRepository.save(roleRequest);
     }
 
+    //method to get all the role requests
+    public PageResponse<RoleResponse> getAllRoleRequests(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("requestedAt").descending());
+        Page<RoleRequest> roleRequests = roleRequestRepository.findAll(pageable);
+        List<RoleResponse> roleResponses = roleRequests.stream()
+                .map(userMapper::toRoleResponse)
+                .toList();
+        return new PageResponse<>(
+                roleResponses,
+                roleRequests.getNumber(),
+                roleRequests.getSize(),
+                roleRequests.getTotalElements(),
+                roleRequests.getTotalPages(),
+                roleRequests.isLast(),
+                roleRequests.isFirst()
+        );
+    }
+
+    //method to approve a role request
+    public void approveRoleRequest(String requestId, String userId) {
+        var roleRequest = roleRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RoleRequestNotFoundException("Role request not found"));
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (roleRequest.getStatus() != RoleRequestStatus.PENDING) {
+            throw new InvalidRoleRequestException("Role request already approved or rejected");
+        }
+        roleRequest.setStatus(RoleRequestStatus.APPROVED);
+        roleRequest.setApprovedAt(LocalDateTime.now());
+        roleRequestRepository.save(roleRequest);
+        user.setRole(ROLE.INSTRUCTOR);
+        userRepository.save(user);
+    }
+
+    //method to reject a role request
+    public void disapproveRoleRequest(String requestId, String userId) {
+        var roleRequest = roleRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RoleRequestNotFoundException("Role request not found"));
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (roleRequest.getStatus() != RoleRequestStatus.PENDING) {
+            throw new InvalidRoleRequestException("Role request already processed");
+        }
+        roleRequest.setStatus(RoleRequestStatus.REJECTED);
+        roleRequest.setApprovedAt(LocalDateTime.now());
+        roleRequestRepository.save(roleRequest);
+        user.setRole(ROLE.STUDENT);
+        userRepository.save(user);
+    }
 }
 

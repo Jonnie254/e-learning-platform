@@ -1,6 +1,8 @@
 package com.jonnie.elearning.services;
 
 import com.jonnie.elearning.role.ROLE;
+import com.jonnie.elearning.role.RoleRequest;
+import com.jonnie.elearning.role.RoleResponse;
 import com.jonnie.elearning.user.User;
 import com.jonnie.elearning.user.UserRegistrationRequest;
 import com.jonnie.elearning.user.UserResponse;
@@ -49,7 +51,7 @@ public class UserMapper {
     }
 
     public UserResponse toUserResponse(User user) {
-        UserResponse response = UserResponse.builder()
+        return UserResponse.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -57,7 +59,17 @@ public class UserMapper {
                 .role(user.getRole())
                 .profilePicUrl(user.getProfilePicUrl())
                 .build();
-        return response;
     }
 
+    public RoleResponse toRoleResponse(RoleRequest roleRequest) {
+        return RoleResponse.builder()
+                .id(roleRequest.getId())
+                .role(roleRequest.getRequestedRole())
+                .status(roleRequest.getStatus())
+                .userId(roleRequest.getUser().getId())
+                .requestedAt(roleRequest.getRequestedAt())
+                .approvedAt(roleRequest.getApprovedAt())
+                .userEmail(roleRequest.getUser().getEmail())
+                .build();
+    }
 }

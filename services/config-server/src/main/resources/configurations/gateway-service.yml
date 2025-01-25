@@ -9,4 +9,8 @@ spring:
           uri: lb://AUTHENTICATION-SERVICE
           predicates:
             - Path=/api/v1/users/**
+        - id: course-service
+          uri: lb://COURSE-SERVICE
+          predicates:
+            - Path=/api/v1/courses/**
   port: 8222

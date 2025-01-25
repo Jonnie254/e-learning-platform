@@ -1,6 +1,7 @@
 package com.jonnie.elearning.services;
 
 import com.jonnie.elearning.common.PageResponse;
+import com.jonnie.elearning.role.RoleResponse;
 import com.jonnie.elearning.role.UserRoleRequest;
 import com.jonnie.elearning.user.UserAuthenticationRequest;
 import com.jonnie.elearning.user.UserRegistrationRequest;
@@ -67,6 +68,13 @@ public class UserController {
         userService.requestInstructor(userId, userRoleRequest);
         return ResponseEntity.accepted().build();
     }
+    //get the user details
+    @GetMapping("/user-details")
+    public ResponseEntity<UserResponse> getUserDetails(
+            @RequestHeader("X-User-Id") String userId
+    ) {
+        return ResponseEntity.ok(userService.getUserDetails(userId));
+    }
 
     //get all users
     @GetMapping("/all-active-users")
@@ -80,9 +88,47 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.ok(userService.getAllActiveUsers(page, size, userId));
-
     }
-    // method to make a user in active
+    //get all the role requests
+    @GetMapping("/all-role-requests")
+    public  ResponseEntity<PageResponse<RoleResponse>> getAllRoleRequests(
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestHeader("X-User-Id") String userId,
+            @RequestParam(name="page", defaultValue = "0", required = false) int page,
+            @RequestParam(name="size", defaultValue = "10", required = false) int size
+    ) {
+        if(!"ADMIN".equalsIgnoreCase(userRole)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok(userService.getAllRoleRequests(page, size));
+    }
+
+    @PutMapping("/process-role-request")
+    public ResponseEntity<String> processRoleRequest(
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestParam(name = "user-id") String userId,
+            @RequestParam(name = "request-id") String requestId,
+            @RequestParam(name = "action") String action
+    ) {
+        if (!"ADMIN".equalsIgnoreCase(userRole)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        return switch (action.toLowerCase()) {
+            case "approve" -> {
+                userService.approveRoleRequest(requestId, userId);
+                yield ResponseEntity.ok("Role request approved successfully");
+            }
+            case "disapprove" -> {
+                userService.disapproveRoleRequest(requestId, userId);
+                yield ResponseEntity.ok("Role request disapproved successfully");
+            }
+            default -> ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid action. Valid actions are 'approve' or 'disapprove'");
+        };
+    }
+
+    //method to deactivate a user
     @PutMapping("/deactivate-user")
     public ResponseEntity<Void> deactivateUser(
             @RequestHeader("X-User-Id") String userId,
