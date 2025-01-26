@@ -1,11 +1,13 @@
 package com.jonnie.elearning.course;
 
+import com.jonnie.elearning.category.Category;
+import com.jonnie.elearning.tag.Tag;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,10 +24,15 @@ public class Course {
     private String courseUrlImage;
     private String instructorId;
     private String instructorName;
+    private BigDecimal price;
+    private  String isPublished;
     @Column(columnDefinition = "text[]")
     @ElementCollection
     private List<String> whatYouWillLearn;
-
+    private String description;
+    @ManyToOne
+    @JoinColumn(name = "content_id")
+    private Content content;
     @ManyToMany
     @JoinTable(
             name = "course_tags",
@@ -36,6 +43,7 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
     @CreatedDate
     private String CreatedAt;
     @LastModifiedDate

@@ -5,17 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/Repositories/CategoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/Repositories/CourseRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/role/RoleRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/role/RoleRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/gateway-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/gateway-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/Repositories/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/Repositories/TagRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/Repositories/Course.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/Repositories/Tag.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/category/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/tag/Tag.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,9 +28,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Record" />
         <option value="Class" />
-        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -92,6 +95,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.jonnie.elearning.tag" />
+      <recent name="com.jonnie.elearning.course" />
       <recent name="com.jonnie.elearning.exceptions" />
       <recent name="com.jonnie.elearning.role" />
       <recent name="com.jonnie.elearning.user" />
@@ -221,7 +226,8 @@
       <workItem from="1737663058228" duration="4784000" />
       <workItem from="1737722276332" duration="22910000" />
       <workItem from="1737820046091" duration="3154000" />
-      <workItem from="1737835577854" duration="3372000" />
+      <workItem from="1737835577854" duration="9172000" />
+      <workItem from="1737917847980" duration="4008000" />
     </task>
     <servers />
   </component>

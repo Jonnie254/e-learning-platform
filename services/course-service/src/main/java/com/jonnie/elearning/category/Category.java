@@ -1,12 +1,12 @@
-package com.jonnie.elearning.course;
+package com.jonnie.elearning.category;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.jonnie.elearning.course.Course;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +19,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.UUID)
     public String categoryId;
     public String categoryName;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
+    private List<Course> courses;
     @CreatedDate
     private String CreatedAt;
     @LastModifiedDate

@@ -1,4 +1,4 @@
-package com.jonnie.elearning.course;
+package com.jonnie.elearning.tag;
 
 import jakarta.persistence.*;
 import lombok.*;

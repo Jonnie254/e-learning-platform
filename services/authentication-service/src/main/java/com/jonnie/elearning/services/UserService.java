@@ -194,7 +194,6 @@ public class UserService {
         // Check if the provided password matches the stored one
         boolean passwordMatches = passwordEncoder.matches(userAuthenticationRequest.password(), user.getPassword());
         if (!passwordMatches) {
-            log.error("Invalid credentials for email: {}", userAuthenticationRequest.email());
             throw new InvalidCredentialsExceptions("Invalid credentials");
         }
 

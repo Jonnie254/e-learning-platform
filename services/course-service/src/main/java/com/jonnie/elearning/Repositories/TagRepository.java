@@ -1,6 +1,7 @@
 package com.jonnie.elearning.Repositories;
 
+import com.jonnie.elearning.tag.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface Course  extends JpaRepository<Course, String> {
+public interface TagRepository extends JpaRepository<Tag, String> {
 }
