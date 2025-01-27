@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Setter
 @Getter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -18,7 +22,9 @@ public class Tag {
     @Column(unique = true, nullable = false)
     private String tagName;
     @CreatedDate
-    private String CreatedAt;
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP(6) WITHOUT TIME ZONE")
+    private LocalDateTime createdAt;
     @LastModifiedDate
-    private String updatedAt;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP(6) WITHOUT TIME ZONE")
+    private LocalDateTime updatedAt;
 }

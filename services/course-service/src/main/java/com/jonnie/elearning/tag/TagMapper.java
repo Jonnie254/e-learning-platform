@@ -9,4 +9,11 @@ public class TagMapper {
                 .tagName(tagRequest.tagName())
                 .build();
     }
+
+    public TagResponse tagToTagResponse(Tag tag) {
+        return new TagResponse(
+                tag.getTagId(),
+                tag.getTagName()
+        );
+    }
 }

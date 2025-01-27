@@ -1,5 +1,4 @@
-package com.jonnie.elearning.tag;
-
+package com.jonnie.elearning.category;
 
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.utils.ROLE;
@@ -12,21 +11,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/courses")
 @RequiredArgsConstructor
-public class TagController {
-    private final TagService tagService;
+public class CategoryController {
+    private final CategoryService categoryService;
 
-    @PostMapping("/create-tag")
-    public ResponseEntity<String> create(
+    @PostMapping("/create-category")
+    public ResponseEntity<String> createCategory(
             @RequestHeader("X-User-Role") String userRole,
-            @RequestBody @Valid TagRequest tagRequest
-    ){
-        if(!userRole.equalsIgnoreCase(ROLE.ADMIN.name())){
-            return ResponseEntity.badRequest().body("You are not authorized to create a tag");
+            @RequestBody @Valid CategoryRequest categoryRequest
+            ){
+        if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return ResponseEntity.ok(tagService.createTag(tagRequest));
+        return ResponseEntity.ok(categoryService.createCategory(categoryRequest));
     }
-    @GetMapping("/tags")
-    public ResponseEntity<PageResponse<TagResponse>> findAll(
+
+    @GetMapping("/all-categories")
+    public ResponseEntity<PageResponse<CategoryResponse>> findAll(
             @RequestHeader("X-User-Role") String userRole,
             @RequestParam(name="page", defaultValue = "0", required = false) int page,
             @RequestParam(name="size", defaultValue = "10", required = false) int size
@@ -34,17 +34,17 @@ public class TagController {
         if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole) && !ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return ResponseEntity.ok(tagService.findAll(page, size));
+        return ResponseEntity.ok(categoryService.findAll(page, size));
     }
 
-    @GetMapping("/tag/{tag-id}")
-    public ResponseEntity<TagResponse> findById(
+    @GetMapping("/category/{category-id}")
+    public ResponseEntity<CategoryResponse> findById(
             @RequestHeader("X-User-Role") String userRole,
-            @PathVariable("tag-id") String tagId
+            @PathVariable("category-id") String categoryId
     ){
-        if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole) && !ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
+        if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return ResponseEntity.ok(tagService.findById(tagId));
+        return ResponseEntity.ok(categoryService.findById(categoryId));
     }
 }

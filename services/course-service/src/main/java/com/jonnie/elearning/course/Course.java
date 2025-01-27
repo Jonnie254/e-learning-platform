@@ -6,8 +6,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -25,8 +28,7 @@ public class Course {
     private String instructorId;
     private String instructorName;
     private BigDecimal price;
-    private  String isPublished;
-    @Column(columnDefinition = "text[]")
+    private  boolean isPublished;
     @ElementCollection
     private List<String> whatYouWillLearn;
     private String description;
@@ -43,9 +45,10 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
     @CreatedDate
-    private String CreatedAt;
+    @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP(6) WITHOUT TIME ZONE")
+    private LocalDateTime createdAt;
     @LastModifiedDate
-    private String updatedAt;
+    @Column(insertable = false, columnDefinition = "TIMESTAMP(6) WITHOUT TIME ZONE")
+    private LocalDateTime updatedAt;
 }

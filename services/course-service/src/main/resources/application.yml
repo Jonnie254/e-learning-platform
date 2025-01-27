@@ -3,10 +3,15 @@ spring:
     import: optional:configserver:http://localhost:8888
   application:
    name: course-service
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      enabled: true
 
 application:
   config:
-    authentication-url: http://localhost:8222/api/v1/customers
+    authentication-url: http://localhost:8222/api/v1/users
     enrollment-url: http://localhost:8222/api/v1/products
     payment-url: http://localhost:8222/api/v1/payments
   aws:
@@ -14,3 +19,8 @@ application:
     secret-key: ${APPLICATION_AWS_SECRET_KEY}
     region: ${APPLICATION_AWS_REGION}
     bucket-name: ${APPLICATION_AWS_BUCKET_NAME}
+  cloudinary:
+    cloud-name: ${APPLICATION_SECURITY_CLOUDINARY_CLOUD_NAME}
+    api-key: ${APPLICATION_SECURITY_CLOUDINARY_API_KEY}
+    api-secret: ${APPLICATION_SECURITY_CLOUDINARY_API_SECRET}
+    folder: ${APPLICATION_SECURITY_CLOUDINARY_FOLDER}

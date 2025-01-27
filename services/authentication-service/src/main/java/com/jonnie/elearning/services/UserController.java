@@ -68,6 +68,13 @@ public class UserController {
         userService.requestInstructor(userId, userRoleRequest);
         return ResponseEntity.accepted().build();
     }
+    //get user details via the id
+    @GetMapping("/user/{user-id}")
+    public ResponseEntity<UserResponse> getUserDetailsById(
+            @PathVariable("user-id") String userId
+    ) {
+        return ResponseEntity.ok(userService.getUserDetails(userId));
+    }
     //get the user details
     @GetMapping("/user-details")
     public ResponseEntity<UserResponse> getUserDetails(

@@ -1,4 +1,3 @@
-// JwtAuthenticationFilter.java
 package com.jonnie.gatewayms.security;
 
 import io.jsonwebtoken.Claims;
@@ -56,11 +55,16 @@ public class JwtAuthenticationFilter implements WebFilter {
                     // Add headers to the request
                     ServerWebExchange modifiedExchange = exchange.mutate()
                             .request(exchange.getRequest().mutate()
-                                    .header("X-User-Id", userId)
-                                    .header("X-User-Role", role)
+                                    .header("Authorization", "Bearer " + token)  // Pass token to Feign Client
+                                    .header("X-User-Id", userId)  // Add userId to headers
+                                    .header("X-User-Role", role)  // Add role to headers
                                     .build())
                             .build();
-                    log.info("Added headers to the request: X-User-Id: {}, X-User-Role: {}", userId, role);
+
+                    log.info("Added Authorization header to the request: Bearer {}", token.substring(0, Math.min(token.length(), 20)) + "...");
+                    log.info("Added X-User-Id header to the request: {}", userId);
+                    log.info("Added X-User-Role header to the request: {}", role);
+
                     // Set the authentication in the reactive security context
                     return chain.filter(modifiedExchange)
                             .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication));
@@ -71,14 +75,16 @@ public class JwtAuthenticationFilter implements WebFilter {
                 });
     }
 
-
     private String extractToken(ServerWebExchange exchange) {
         String authorizationHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
+        log.info("Raw token received: {}", authorizationHeader);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return null;
         }
-        return authorizationHeader.substring(7);
+        String token = authorizationHeader.substring(7).trim(); // Trim spaces
+        return token;
     }
+
 
     private Mono<Authentication> validateToken(String token) {
         try {
