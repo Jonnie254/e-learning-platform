@@ -1,6 +1,5 @@
-package com.jonnie.elearning.course;
+package com.jonnie.elearning.course.responses;
 
-import com.jonnie.elearning.category.Category;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -17,9 +16,5 @@ public class CourseResponse {
     private String courseUrlImage;
     private String InstructorName;
     private BigDecimal price;
-    private String description;
-    private String category;
     private List<String> whatYouWillLearn;
-    private Content content;
-
 }

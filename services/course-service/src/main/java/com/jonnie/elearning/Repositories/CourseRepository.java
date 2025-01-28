@@ -10,4 +10,7 @@ public interface CourseRepository  extends JpaRepository<Course, String> {
 
     @Query("SELECT c FROM Course c WHERE c.isPublished = true")
     Page<Course> findAllPublishedCourses(Pageable pageable);
+
+    @Query("SELECT c FROM Course c WHERE c.instructorId = :instructorId")
+    Page<Course> findAllByInstructorId(String instructorId, Pageable pageable);
 }

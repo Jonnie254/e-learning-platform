@@ -1,4 +1,4 @@
-package com.jonnie.elearning.course;
+package com.jonnie.elearning.course.services;
 
 import com.cloudinary.Cloudinary;
 import com.jonnie.elearning.Repositories.CategoryRepository;
@@ -6,11 +6,16 @@ import com.jonnie.elearning.Repositories.CourseRepository;
 import com.jonnie.elearning.Repositories.TagRepository;
 import com.jonnie.elearning.category.Category;
 import com.jonnie.elearning.common.PageResponse;
-import com.jonnie.elearning.config.CloudinaryConfig;
+import com.jonnie.elearning.course.Course;
+import com.jonnie.elearning.course.requests.CourseRequest;
+import com.jonnie.elearning.course.responses.CourseResponse;
+import com.jonnie.elearning.course.responses.InstructorCourseResponse;
+import com.jonnie.elearning.course.responses.SingleCourseResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.tag.Tag;
 import com.jonnie.elearning.user.AuthenticationClient;
 import com.jonnie.elearning.user.UserResponse;
+import com.jonnie.elearning.utils.ROLE;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -101,5 +106,74 @@ public class CourseService {
                 courses.isLast(),
                 courses.isFirst()
         );
+    }
+
+    // Deactivate course
+    public String deactivateCourse(String courseId, String instructorId, String userRole) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
+
+        // Instructor check
+        if (ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
+            if (!course.getInstructorId().equals(instructorId)) {
+                throw new BusinessException("You are not authorized to deactivate this course");
+            }
+        }
+
+        // Admin check (no further checks needed)
+        else if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole)) {
+            throw new BusinessException("You are not authorized to deactivate this course");
+        }
+
+        // Deactivate the course
+        course.setPublished(false);
+        courseRepository.save(course);
+
+        return "Course deactivated successfully";
+    }
+    // Activate course
+    public String activateCourse(String courseId, String instructorId, String userRole) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
+
+        // Instructor check
+        if (ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
+            if (!course.getInstructorId().equals(instructorId)) {
+                throw new BusinessException("You are not authorized to activate this course");
+            }
+        }
+        // Admin check (no further checks needed)
+        else if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole)) {
+            throw new BusinessException("You are not authorized to activate this course");
+        }
+        // Activate the course
+        course.setPublished(true);
+        courseRepository.save(course);
+
+        return "Course activated successfully";
+    }
+
+    // Find all courses by instructor
+    public PageResponse<InstructorCourseResponse> findCoursesByInstructor(String instructorId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Course> courses = courseRepository.findAllByInstructorId(instructorId, pageable);
+        List<InstructorCourseResponse> instructorCourseResponses = courses.stream()
+                .map(courseMapper::toInstructorCourseResponse)
+                .toList();
+        return new PageResponse<>(
+                instructorCourseResponses,
+                courses.getNumber(),
+                courses.getSize(),
+                courses.getTotalElements(),
+                courses.getTotalPages(),
+                courses.isLast(),
+                courses.isFirst()
+        );
+    }
+
+    public SingleCourseResponse findCourseById(String courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
+        return courseMapper.toSingleCourseResponse(course);
     }
 }

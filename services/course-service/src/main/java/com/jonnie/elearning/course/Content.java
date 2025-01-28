@@ -18,8 +18,8 @@ public class Content {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String contentId;
     private String name;
+    private boolean isDeleted;
 
-    // One Content can have many Sections, so it's a OneToMany relationship
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
     private List<Section> sections;
     @ManyToOne

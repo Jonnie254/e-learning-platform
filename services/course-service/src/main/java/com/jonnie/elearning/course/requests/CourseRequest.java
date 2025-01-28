@@ -1,4 +1,4 @@
-package com.jonnie.elearning.course;
+package com.jonnie.elearning.course.requests;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -28,5 +28,6 @@ public record CourseRequest(
         @NotNull(message = "What you will learn is required")
         @NotEmpty(message = "What you will learn is required")
         List<String> whatYouWillLearn
+
 ) {
 }

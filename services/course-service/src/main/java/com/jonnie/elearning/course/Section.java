@@ -12,7 +12,7 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String sectionId;
     private String sectionName;
-    private String secctionTitle;
+    private String sectionDescription;
     private String pdfUrl;
     private String videoUrl;
 

@@ -22,32 +22,40 @@ import java.util.List;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private  String courseId;
+    private String courseId;
     private String courseName;
     private String courseUrlImage;
     private String instructorId;
     private String instructorName;
     private BigDecimal price;
-    private  boolean isPublished;
+    private boolean isPublished;
+    private boolean isPaid;
+
     @ElementCollection
     private List<String> whatYouWillLearn;
+
     private String description;
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "content_id")
     private Content content;
-    @ManyToMany
+
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "course_tags",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<Tag> tags;
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
+
     @CreatedDate
     @Column(updatable = false, nullable = false, columnDefinition = "TIMESTAMP(6) WITHOUT TIME ZONE")
     private LocalDateTime createdAt;
+
     @LastModifiedDate
     @Column(insertable = false, columnDefinition = "TIMESTAMP(6) WITHOUT TIME ZONE")
     private LocalDateTime updatedAt;
