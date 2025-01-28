@@ -6,16 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/Repositories/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/Repositories/CourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Content.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Content.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Course.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/CourseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/CourseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/CourseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/CourseRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/requests/CourseRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/CourseResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/responses/CourseResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Section.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Section.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/user/FeignRequestInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/user/FeignRequestInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,6 +92,7 @@
       <recent name="com.jonnie.elearning.role" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jonnie\Desktop\e-learning-platform\resources" />
       <recent name="C:\Users\jonnie\Desktop\e-learning-platform\services\authentication-service\src\main\resources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -231,7 +223,7 @@
       <workItem from="1737983068530" duration="16834000" />
       <workItem from="1738003158439" duration="12391000" />
       <workItem from="1738051702059" duration="7105000" />
-      <workItem from="1738072155831" duration="3355000" />
+      <workItem from="1738072155831" duration="4088000" />
     </task>
     <servers />
   </component>
