@@ -1,8 +1,9 @@
 package com.jonnie.elearning.course.requests;
 
-import com.jonnie.elearning.course.Section;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+
 
 public record SectionRequest(
         String sectionId,
@@ -11,12 +12,7 @@ public record SectionRequest(
         String sectionName,
         @NotEmpty(message = "Section description is required")
         @NotNull(message = "Section description is required")
-        Section sectionDescription,
-        @NotNull(message = "Course pdf is required")
-        String pdfUrl,
-        @NotNull(message = "Course video is required")
-        String videoUrl
-
+        String sectionDescription
 ) {
 
 }

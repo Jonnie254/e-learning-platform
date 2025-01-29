@@ -96,7 +96,7 @@ public class UserService {
                 .orElseThrow(() -> new TokenNotFoundException("Token not found"));
         if(LocalDateTime.now().isAfter(savedToken.getExpireAt())){
           sendValidationEmail(savedToken.getUser());
-          throw new RuntimeException("Token expired. A new token has been sent to your email.");
+          throw new BusinessException("Token expired. A new token has been sent to your email.");
         }
         var user = userRepository.findById(savedToken.getUser().getId())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -114,7 +114,7 @@ public class UserService {
 
         // Ensure role-based restrictions, if necessary
         if (!userRole.equals("ADMIN") && userUpdateRequest.role() != null) {
-            throw new RuntimeException("Non-admin users cannot update roles.");
+            throw new BusinessException("Non-admin users cannot update roles.");
         }
         // Map updated fields to the existing user
         var updatedUser = userMapper.toUpdate(existingUser, userUpdateRequest);

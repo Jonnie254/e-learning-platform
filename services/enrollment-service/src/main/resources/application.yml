@@ -2,11 +2,5 @@ spring:
   config:
     import: optional:configserver:http://localhost:8888
   application:
-    name: authentication-service
-
-
-
-
-
-
+   name: enrollment-service
 

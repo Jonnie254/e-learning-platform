@@ -8,17 +8,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="gateway-ms" />
+        <module name="course-service" />
         <module name="config-server" />
+        <module name="authentication-service" />
         <module name="discovery-service" />
       </profile>
-      <profile name="Annotation profile for course-service" enabled="true">
+      <profile name="Annotation profile for enrollment-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useProcessorModulePath="true">
+        <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="course-service" />
+        <module name="enrollment-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -28,6 +30,7 @@
       <module name="config-server" options="-parameters" />
       <module name="course-service" options="-parameters" />
       <module name="discovery-service" options="-parameters" />
+      <module name="enrollment-service" options="-parameters" />
       <module name="gateway-ms" options="-parameters" />
     </option>
   </component>

@@ -33,6 +33,15 @@ application:
     frontend:
       activationUrl: http://localhost:4200/activate-account
 
+  security:
+    jwt:
+      expiration-time: ${APPLICATION_SECURITY_JWT_EXPIRATION_TIME}
+      secret-key: ${APPLICATION_SECURITY_JWT_SECRET_KEY}
+  cloudinary:
+    cloud-name: ${APPLICATION_SECURITY_CLOUDINARY_CLOUD_NAME}
+    api-key: ${APPLICATION_SECURITY_CLOUDINARY_API_KEY}
+    api-secret: ${APPLICATION_SECURITY_CLOUDINARY_API_SECRET}
+    folder: ${APPLICATION_SECURITY_CLOUDINARY_FOLDER}
 
 server:
   port: 8010

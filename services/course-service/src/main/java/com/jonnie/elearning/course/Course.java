@@ -36,9 +36,8 @@ public class Course {
 
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "content_id")
-    private Content content;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Section> sections;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
@@ -48,7 +47,7 @@ public class Course {
     )
     private List<Tag> tags;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 

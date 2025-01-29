@@ -12,3 +12,18 @@ spring:
 
 server:
   port: 8020
+
+application:
+  config:
+    authentication-url: http://localhost:8222/api/v1/users
+
+  aws:
+    access-key: ${APPLICATION_AWS_ACCESS_KEY}
+    secret-key: ${APPLICATION_AWS_SECRET_KEY}
+    region: ${APPLICATION_AWS_REGION}
+    bucket-name: ${APPLICATION_AWS_BUCKET_NAME}
+  cloudinary:
+    cloud-name: ${APPLICATION_SECURITY_CLOUDINARY_CLOUD_NAME}
+    api-key: ${APPLICATION_SECURITY_CLOUDINARY_API_KEY}
+    api-secret: ${APPLICATION_SECURITY_CLOUDINARY_API_SECRET}
+    folder: ${APPLICATION_SECURITY_CLOUDINARY_FOLDER}

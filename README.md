@@ -1,5 +1,5 @@
 # e-learning-platform
-his project follows a **microservices architecture** using **Spring Boot**, **Kafka**, **MongoDB**, and other essential tools. The diagram below illustrates the system components and their interactions.
+This project follows a **microservices architecture** using **Spring Boot**, **Kafka**, **MongoDB**, and other essential tools. The diagram below illustrates the system components and their interactions.
 ![Screenshot 2025-01-28 174942.png](resources%2FScreenshot%202025-01-28%20174942.png)
 ## **Components and Flow Explanation**
 

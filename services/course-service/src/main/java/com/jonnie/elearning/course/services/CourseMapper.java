@@ -2,12 +2,17 @@ package com.jonnie.elearning.course.services;
 
 import com.jonnie.elearning.category.Category;
 import com.jonnie.elearning.course.Course;
+import com.jonnie.elearning.course.Section;
 import com.jonnie.elearning.course.requests.CourseRequest;
+import com.jonnie.elearning.course.requests.SectionRequest;
+import com.jonnie.elearning.course.requests.UpdateSectionRequest;
 import com.jonnie.elearning.course.responses.CourseResponse;
 import com.jonnie.elearning.course.responses.InstructorCourseResponse;
+import com.jonnie.elearning.course.responses.SectionResponse;
 import com.jonnie.elearning.course.responses.SingleCourseResponse;
 import com.jonnie.elearning.tag.Tag;
 import com.jonnie.elearning.user.UserResponse;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +34,7 @@ public class CourseMapper {
                 .whatYouWillLearn(courseRequest.whatYouWillLearn())
                 .build();
     }
+
     public CourseResponse toCourseResponse(Course course) {
         return CourseResponse.builder()
                 .courseId(course.getCourseId())
@@ -61,4 +67,50 @@ public class CourseMapper {
                 .whatYouWillLearn(course.getWhatYouWillLearn())
                 .build();
     }
+
+    // Map Section
+    public Section toSection(@Valid SectionRequest sectionRequest, String sectionPdfUrl, String sectionVideoUrl, Course course) {
+        return Section.builder()
+                .sectionId(sectionRequest.sectionId())
+                .sectionName(sectionRequest.sectionName())
+                .course(course)
+                .sectionDescription(sectionRequest.sectionDescription())
+                .pdfUrl(sectionPdfUrl)
+                .videoUrl(sectionVideoUrl)
+                .build();
+    }
+
+    public SectionResponse fromSection(Section section) {
+        return SectionResponse.builder()
+                .sectionId(section.getSectionId())
+                .sectionName(section.getSectionName())
+                .sectionDescription(section.getSectionDescription())
+                .pdfUrl(section.getPdfUrl())
+                .videoUrl(section.getVideoUrl())
+                .courseId(section.getCourse().getCourseId())
+                .build();
+    }
+
+    public Section toUpdateSection(@Valid
+                                UpdateSectionRequest updateSectionRequest,
+                                String updatedsectionPdfUrl,
+                                String updatedsectionVideoUrl,
+                                   Section existingSection) {
+        if (updateSectionRequest.sectionName() != null) {
+            existingSection.setSectionName(updateSectionRequest.sectionName());
+        }
+        if (updateSectionRequest.sectionDescription() != null) {
+            existingSection.setSectionDescription(updateSectionRequest.sectionDescription());
+        }
+        if (updatedsectionPdfUrl != null) {
+            existingSection.setPdfUrl(updatedsectionPdfUrl);
+        }
+        if (updatedsectionVideoUrl != null) {
+            existingSection.setVideoUrl(updatedsectionVideoUrl);
+        }
+        return existingSection;
+    }
+
 }
+
+

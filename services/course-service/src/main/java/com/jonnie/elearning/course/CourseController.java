@@ -3,10 +3,15 @@ package com.jonnie.elearning.course;
 
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.course.requests.CourseRequest;
+import com.jonnie.elearning.course.requests.SectionRequest;
+import com.jonnie.elearning.course.requests.UpdateSectionRequest;
 import com.jonnie.elearning.course.responses.CourseResponse;
 import com.jonnie.elearning.course.responses.InstructorCourseResponse;
+import com.jonnie.elearning.course.responses.SectionResponse;
 import com.jonnie.elearning.course.responses.SingleCourseResponse;
+import com.jonnie.elearning.course.services.SectionService;
 import com.jonnie.elearning.course.services.CourseService;
+import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.utils.ROLE;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class CourseController {
     private final CourseService courseService;
+    private final SectionService sectionService;
     @PostMapping(value = "/create-course", consumes = "multipart/form-data")
-    public ResponseEntity<?> create(
+    public ResponseEntity<String> create(
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
             @RequestHeader(value = "X-User-Id", required = false) String instructorId,
             @ModelAttribute @Valid CourseRequest courseRequest,
@@ -113,13 +119,14 @@ public class CourseController {
     }
 
     // create content for the course
-    @PostMapping("/{course-id}/create-content")
+    @PostMapping(value="/{course-id}/create-content", consumes = "multipart/form-data")
     public ResponseEntity<String> createContent(
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
             @RequestHeader(value = "X-User-Id", required = false) String instructorId,
             @PathVariable("course-id") String courseId,
-            @ModelAttribute @Valid CourseRequest courseRequest
-
+            @ModelAttribute @Valid SectionRequest sectionRequest,
+            @RequestParam MultipartFile sectionPdf,
+            @RequestParam MultipartFile sectionVideo
     ){
         if(userRole == null || instructorId == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing required headers: X-User-Role or X-User-Id");
@@ -127,7 +134,57 @@ public class CourseController {
         if(!ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to create a course");
         }
+        if (sectionPdf.isEmpty() || sectionVideo.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Section PDF and Video are required");
+        }
+        try {
 
-
+            String sectionId = sectionService.createSection(sectionRequest, courseId, instructorId, sectionPdf, sectionVideo);
+            return ResponseEntity.status(HttpStatus.CREATED).body(sectionId);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the course content");
+        }
     }
+    //get section by id
+    @GetMapping("/section/{section-id}")
+    public ResponseEntity<SectionResponse> findSectionById(
+            @PathVariable("section-id") String sectionId
+    ) {
+        return ResponseEntity.ok(sectionService.findSectionById(sectionId));
+    }
+
+    //get all sections for a course
+    @GetMapping("/{course-id}/sections")
+    public ResponseEntity<PageResponse<SectionResponse>> findSectionsByCourse(
+            @PathVariable("course-id") String courseId,
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size
+    ) {
+        return ResponseEntity.ok(sectionService.findSectionsByCourse(courseId, page, size));
+    }
+
+    //update the section content
+    @PutMapping("/section/{section-id}/update-content")
+    public ResponseEntity<String> updateSectionContent(
+            @RequestHeader(value = "X-User-Role", required = false) String userRole,
+            @RequestHeader(value = "X-User-Id", required = false) String instructorId,
+            @PathVariable("section-id") String sectionId,
+            @ModelAttribute  UpdateSectionRequest updateSectionRequest,
+            @RequestParam(required = false) MultipartFile newSectionPdf,
+            @RequestParam(required = false) MultipartFile newSectionVideo
+    ) {
+        if (userRole == null || instructorId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing required headers: X-User-Role or X-User-Id");
+        }
+        if (!ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update a section");
+        }
+        try {
+            sectionService.updateSectionContent(updateSectionRequest, sectionId, instructorId, newSectionPdf, newSectionVideo);
+            return ResponseEntity.status(HttpStatus.OK).body("Section content updated successfully");
+        } catch (BusinessException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the section content");
+        }
+    }
+
 }

@@ -5,13 +5,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.Async;
 
 @SpringBootApplication
 @EnableFeignClients
 @EnableJpaAuditing
+@Async
 public class CourseServiceApplication {
-
-
 	public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.configure()
 				.filename(".env")
@@ -19,5 +19,4 @@ public class CourseServiceApplication {
 		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 		SpringApplication.run(CourseServiceApplication.class, args);
 	}
-
 }

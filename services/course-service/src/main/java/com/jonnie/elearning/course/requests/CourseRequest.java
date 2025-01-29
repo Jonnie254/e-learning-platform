@@ -28,6 +28,5 @@ public record CourseRequest(
         @NotNull(message = "What you will learn is required")
         @NotEmpty(message = "What you will learn is required")
         List<String> whatYouWillLearn
-
 ) {
 }
