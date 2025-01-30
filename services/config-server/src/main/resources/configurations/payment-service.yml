@@ -1,0 +1,21 @@
+spring:
+  data:
+    mongodb:
+      username: jonnie254
+      password: jonnie254
+      host: localhost
+      port: 27017
+      database: paymentdb
+      authentication-database: admin
+
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: paymentConfirmation:com.jonnie.elearning.kafka.PaymentNotificationRequest
+
+
+server:
+  port: 8040

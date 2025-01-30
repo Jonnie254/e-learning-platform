@@ -29,6 +29,8 @@
                             .pathMatchers(
                                     "/api/v1/users/register",
                                     "/api/v1/users/activate-account",
+                                    "/api/v1/payments/success",
+                                    "/api/v1/payments/cancel",
                                     "/api/v1/users/authenticate")
                             .permitAll()
                             .anyExchange()

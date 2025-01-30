@@ -17,5 +17,9 @@ spring:
           uri: lb://ENROLLMENT-SERVICE
           predicates:
             - Path=/api/v1/enrollments/**
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+           - Path=/api/v1/payments/**
 server:
   port: 8222

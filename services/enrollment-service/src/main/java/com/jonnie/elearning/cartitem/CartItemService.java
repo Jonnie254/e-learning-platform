@@ -28,11 +28,11 @@ public class CartItemService {
     private final CartRepository cartRepository;
     private final CartItemMapper cartItemMapper;
 
+    // method to add a course to the cart
     public void addCartItem(String userId, String courseId) {
         // Get the course details
         CourseResponse courseResponse = courseClient.getCourseById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found"));
-
         // Fetch the user's cart, or create one if it doesn't exist
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> {
@@ -41,7 +41,6 @@ public class CartItemService {
                     newCart.setTotalAmount(BigDecimal.ZERO);
                     return cartRepository.save(newCart);
                 });
-
         // Check if the course is already in the cart
         Optional<CartItem> existingCartItem = cartItemRepository.findByCartAndCourseId(cart, courseId);
         if (existingCartItem.isPresent()) {
@@ -55,6 +54,7 @@ public class CartItemService {
         cartItemRepository.save(cartItem);
     }
 
+    //method to get all the cart items
     public PageResponse<CartItemResponse> getAllCartItems(String userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<CartItem> cartItems = cartItemRepository.findAllByUserId(userId, pageable);
@@ -72,6 +72,7 @@ public class CartItemService {
         );
     }
 
+    //method to remove a course from the cart
     public void removeCartItem(String userId, String courseId) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new BusinessException("Cart not found"));

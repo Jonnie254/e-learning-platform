@@ -1,13 +1,13 @@
 package com.jonnie.elearning.enrollment;
 
 
+import com.jonnie.elearning.utils.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -23,10 +23,10 @@ public class Enrollment {
     private String enrollmentId;
     private String userId;
     private String courseId;
-    private BigDecimal price;
     private String instructorId;
     private boolean isPaid;
-    private String paymentMethod;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)

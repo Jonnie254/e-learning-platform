@@ -34,12 +34,13 @@ public class JwtAuthenticationFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+
         String token = extractToken(exchange);
-        log.info("Token: {}", token);
         if (token == null) {
-            return chain.filter(exchange);
+            return chain.filter(exchange); // Proceed to the next filter if no token
         }
 
+        // Proceed with token validation
         return validateToken(token)
                 .flatMap(authentication -> {
                     String userId = (String) authentication.getPrincipal();
@@ -48,6 +49,8 @@ public class JwtAuthenticationFilter implements WebFilter {
                             .map(GrantedAuthority::getAuthority)
                             .orElse("");
 
+
+                    // Add authentication info to the request
                     ServerWebExchange modifiedExchange = exchange.mutate()
                             .request(exchange.getRequest().mutate()
                                     .header("Authorization", "Bearer " + token)
@@ -55,10 +58,6 @@ public class JwtAuthenticationFilter implements WebFilter {
                                     .header("X-User-Role", role)
                                     .build())
                             .build();
-                    log.info("User ID: {}", userId);
-                    log.info("User Role: {}", role);
-
-                    // Set the authentication in the reactive security context
                     return chain.filter(modifiedExchange)
                             .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication));
                 })

@@ -11,3 +11,9 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 server:
   port: 8030
+
+application:
+  config:
+    authentication-url: http://localhost:8222/api/v1/users
+    course-url: http://localhost:8222/api/v1/courses
+    payment-url: http://localhost:8222/api/v1/payments
