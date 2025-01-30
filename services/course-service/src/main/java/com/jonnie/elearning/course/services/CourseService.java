@@ -8,6 +8,7 @@ import com.jonnie.elearning.category.Category;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.course.Course;
 import com.jonnie.elearning.course.requests.CourseRequest;
+import com.jonnie.elearning.course.responses.CourseCartResponse;
 import com.jonnie.elearning.course.responses.CourseResponse;
 import com.jonnie.elearning.course.responses.InstructorCourseResponse;
 import com.jonnie.elearning.course.responses.SingleCourseResponse;
@@ -175,5 +176,11 @@ public class CourseService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
         return courseMapper.toSingleCourseResponse(course);
+    }
+
+    public CourseCartResponse findCourseByIdForCartItem(String courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
+        return courseMapper.toCourseCartResponse(course);
     }
 }

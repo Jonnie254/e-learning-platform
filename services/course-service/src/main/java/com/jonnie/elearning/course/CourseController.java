@@ -5,10 +5,7 @@ import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.course.requests.CourseRequest;
 import com.jonnie.elearning.course.requests.SectionRequest;
 import com.jonnie.elearning.course.requests.UpdateSectionRequest;
-import com.jonnie.elearning.course.responses.CourseResponse;
-import com.jonnie.elearning.course.responses.InstructorCourseResponse;
-import com.jonnie.elearning.course.responses.SectionResponse;
-import com.jonnie.elearning.course.responses.SingleCourseResponse;
+import com.jonnie.elearning.course.responses.*;
 import com.jonnie.elearning.course.services.SectionService;
 import com.jonnie.elearning.course.services.CourseService;
 import com.jonnie.elearning.exceptions.BusinessException;
@@ -118,6 +115,13 @@ public class CourseController {
         return ResponseEntity.ok(courseService.findCourseById(courseId));
     }
 
+    // get courses by id for the cart
+    @GetMapping("/cart-item/{course-id}")
+    public ResponseEntity<CourseCartResponse> findCourseByIdForCartItem(
+            @PathVariable("course-id") String courseId
+    ) {
+        return ResponseEntity.ok(courseService.findCourseByIdForCartItem(courseId));
+    }
     // create content for the course
     @PostMapping(value="/{course-id}/create-content", consumes = "multipart/form-data")
     public ResponseEntity<String> createContent(

@@ -6,10 +6,7 @@ import com.jonnie.elearning.course.Section;
 import com.jonnie.elearning.course.requests.CourseRequest;
 import com.jonnie.elearning.course.requests.SectionRequest;
 import com.jonnie.elearning.course.requests.UpdateSectionRequest;
-import com.jonnie.elearning.course.responses.CourseResponse;
-import com.jonnie.elearning.course.responses.InstructorCourseResponse;
-import com.jonnie.elearning.course.responses.SectionResponse;
-import com.jonnie.elearning.course.responses.SingleCourseResponse;
+import com.jonnie.elearning.course.responses.*;
 import com.jonnie.elearning.tag.Tag;
 import com.jonnie.elearning.user.UserResponse;
 import jakarta.validation.Valid;
@@ -111,6 +108,16 @@ public class CourseMapper {
         return existingSection;
     }
 
+    public CourseCartResponse toCourseCartResponse(Course course) {
+        return CourseCartResponse.builder()
+                .courseId(course.getCourseId())
+                .courseName(course.getCourseName())
+                .price(course.getPrice())
+                .instructorId(course.getInstructorId())
+                .instructorName(course.getInstructorName())
+                .courseImageUrl(course.getCourseUrlImage())
+                .build();
+    }
 }
 
 

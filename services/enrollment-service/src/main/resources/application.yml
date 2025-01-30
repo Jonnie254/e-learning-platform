@@ -3,4 +3,16 @@ spring:
     import: optional:configserver:http://localhost:8888
   application:
    name: enrollment-service
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+         spring.json.type.mapping: enrollment:com.jonnie.ecommerce.kafka.EnrollmentConfirmation
 
+application:
+  config:
+    authentication-url: http://localhost:8222/api/v1/users
+    course-url: http://localhost:8222/api/v1/courses
+    payment-url: http://localhost:8222/api/v1/payments
