@@ -16,5 +16,5 @@ public class CartItemResponse{
     private String courseName;
     private String instructorName;
     private String courseImageUrl;
-   private BigDecimal price;
+    private BigDecimal price;
 }

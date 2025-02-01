@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,10 +22,18 @@ public class PaymentRecord {
     private String paymentId;
     private String userId;
     private String cartId;
+    private String cartReference;
     private List<String> instructorIds;
     private List<String> courseIds;
     private PaymentMethod paymentMethod;
     private boolean isPaid;
+    private BigDecimal amount;
+
+
+    // Add customer details to the PaymentRecord
+    private String customerFirstName;
+    private String customerLastName;
+    private String customerEmail;
 
     @CreatedDate
     private LocalDateTime createdAt;

@@ -1,4 +1,4 @@
-package com.jonnie.elearning.config;
+package com.jonnie.elearning.config.paypal;
 
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.PaymentExecution;

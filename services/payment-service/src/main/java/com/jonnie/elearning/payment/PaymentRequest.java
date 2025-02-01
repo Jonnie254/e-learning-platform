@@ -9,9 +9,13 @@ import java.util.List;
 public record PaymentRequest(
         BigDecimal amount,
         PaymentMethod paymentMethod,
+        String cartReference,
         String userId,
         String cartId,
+        String customerFirstName,
+        String customerLastName,
+        String customerEmail,
         List<String> courseIds,
-        List<String> instructorIds
+        List<String> instructorId
 ) {
 }

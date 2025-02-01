@@ -15,8 +15,9 @@
         <module name="gateway-ms" />
         <module name="discovery-service" />
         <module name="enrollment-service" />
+        <module name="notification-service" />
       </profile>
-      <profile name="Annotation profile for payment-service" enabled="true">
+      <profile name="Annotation profile for notification-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -34,6 +35,7 @@
       <module name="discovery-service" options="-parameters" />
       <module name="enrollment-service" options="-parameters" />
       <module name="gateway-ms" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="payment-service" options="-parameters" />
     </option>
   </component>

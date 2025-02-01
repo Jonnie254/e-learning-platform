@@ -1,17 +1,16 @@
 package com.jonnie.elearning.enrollment;
 
-import com.jonnie.elearning.utils.PaymentMethod;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EnrollmentMapper {
-    public Enrollment toEnrollment(EnrollmentRequest enrollmentRequest) {
+    public Enrollment toEnrollment(EnrollmentConfirmation enrollmentRequest) {
         return Enrollment.builder()
-                .courseId(enrollmentRequest.courseId())
+                .courseIds(enrollmentRequest.courseIds())
                 .userId(enrollmentRequest.userId())
-                .isPaid(true)
+                .isPaid(enrollmentRequest.isPaid())
                 .paymentMethod(enrollmentRequest.paymentMethod())
-                .instructorId(enrollmentRequest.instructorId())
+                .instructorIds(enrollmentRequest.instructorIds())
                 .build();
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,8 +23,10 @@ public class Enrollment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String enrollmentId;
     private String userId;
-    private String courseId;
-    private String instructorId;
+    @ElementCollection
+    private List<String> courseIds;
+    @ElementCollection
+    private List<String> instructorIds;
     private boolean isPaid;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;

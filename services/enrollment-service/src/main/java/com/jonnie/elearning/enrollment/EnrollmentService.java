@@ -17,16 +17,16 @@ public class EnrollmentService {
     private final EnrollmentMapper enrollmentMapper;
 
 
-    public void finalizeEnrollment(EnrollmentRequest enrollmentRequest) {
-        //check whether the user has already enrolled for the course
-        boolean alreadyEnrolled = enrollmentRepository.existsByUserIdAndCourseId(
-                enrollmentRequest.userId(), enrollmentRequest.courseId());
-        if (alreadyEnrolled) {
-            throw new BusinessException("User has already enrolled for the course");
-        }
-        // check a new enrollment
-        Enrollment enrollment = enrollmentMapper.toEnrollment(enrollmentRequest);
-        enrollmentRepository.save(enrollment);
-        log.info("Enrollment successful for user: {} in course: {}", enrollmentRequest.userId(), enrollmentRequest.courseId());
-    }
+//    public void finalizeEnrollment(EnrollmentConfirmation enrollmentRequest) {
+//        //check whether the user has already enrolled for the course
+//        boolean alreadyEnrolled = enrollmentRepository.existsByUserIdAndCourseIds(
+//                enrollmentRequest.userId(), String.valueOf(enrollmentRequest.courseIds()));
+//        if (alreadyEnrolled) {
+//            throw new BusinessException("User has already enrolled for the course");
+//        }
+//        // check a new enrollment
+//        Enrollment enrollment = enrollmentMapper.toEnrollment(enrollmentRequest);
+//        enrollmentRepository.save(enrollment);
+//        log.info("Enrollment successful for user: {} in course: {}", enrollmentRequest.userId(), enrollmentRequest.courseIds());
+//    }
 }

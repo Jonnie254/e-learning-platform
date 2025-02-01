@@ -36,10 +36,8 @@ public class PaymentController {
             @RequestParam("token") String token,
             @RequestParam("PayerID") String payerId
     ) {
-
         try {
             boolean isPaymentSuccess = paymentService.completePayPalPayment(paymentId, token, payerId);
-
             if (isPaymentSuccess) {
                 return ResponseEntity.ok("Payment was successful");
             } else {
@@ -49,6 +47,7 @@ public class PaymentController {
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body("An error occurred while processing the payment");
+
         }
     }
 

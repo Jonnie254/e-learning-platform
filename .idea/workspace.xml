@@ -5,20 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/cart/CartConfirmation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/cart/CartConfirmationProducer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75/storage_v2/_src_/database/enrollmentdb.gr6e-Q/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75/storage_v2/_src_/database/enrollmentdb.gr6e-Q/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/enrollment-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/enrollment-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/gateway-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/gateway-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/payment-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/payment-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/Course.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/EnrollmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/EnrollmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cart/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cart/Cart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cart/CartResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cart/CartResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cart/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cart/CartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cartitem/CartItemResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cartitem/CartItemResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cartitem/CartItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/cartitem/CartItemService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/Enrollment.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/Enrollment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/openfeign/payment/PaymentClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/openfeign/payment/PaymentClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/openfeign/user/UserClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/openfeign/user/UserClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentConfirmation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/order/OrderConfirmation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/order/OrderProducer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/openfeign/payment/PaymentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/openfeign/payment/PaymentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/repositories/EnrollmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/repositories/EnrollmentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/GatewaySecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/GatewaySecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/PaymentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/PaymentServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/PaymentServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/config/PayPalClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/config/paypal/PayPalClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/config/PaypalConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/config/paypal/PaypalConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/kafka/NotificationProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/kafka/notification/NotificationProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/kafka/PaymentNotificationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/kafka/notification/PaymentNotificationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/payment/PaymentRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/payment/PaymentRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/payment/PaymentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/payment/PaymentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/payment/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/payment/PaymentService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,9 +50,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Interface" />
+        <option value="HTML File" />
         <option value="Record" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -46,7 +69,7 @@
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5
+  &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="2rl0NiHe4WuTUSR6q5gP9K8WSrP" />
   <component name="ProjectLevelVcsManager">
@@ -54,13 +77,16 @@
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
+    <option name="showScratchesAndConsoles" value="false" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.ConfigServerApplication.executor&quot;: &quot;Run&quot;,
     &quot;Application.DiscoveryServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Application.GatewayMsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
     &quot;Maven.config-server [clean].executor&quot;: &quot;Run&quot;,
     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
     &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
@@ -73,6 +99,7 @@
     &quot;Spring Boot.DiscoveryServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.EnrollmentServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.GatewayMsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.NotificationServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.PaymentServiceApplication.executor&quot;: &quot;Run&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
     &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
@@ -80,7 +107,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jonnie/Desktop/e-learning-platform/services/payment-service/src/main/java/com/jonnie/elearning&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jonnie/Desktop/e-learning-platform/services/notification-service/src/main/java/com/jonnie/elearning&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -109,6 +136,7 @@
       <recent name="com.jonnie.elearning.course.responses" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\jonnie\Desktop\e-learning-platform\services\notification-service\src\main\java\com\jonnie\elearning" />
       <recent name="C:\Users\jonnie\Desktop\e-learning-platform\services\payment-service\src\main\java\com\jonnie\elearning" />
       <recent name="C:\Users\jonnie\Desktop\e-learning-platform\services\enrollment-service\src\main\java\com\jonnie\elearning" />
     </key>
@@ -120,11 +148,11 @@
       <recent name="com.jonnie.elearning" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.jonnie.elearning.kafka" />
       <recent name="com.jonnie.elearning.payment" />
       <recent name="com.jonnie.elearning.openfeign" />
       <recent name="com.jonnie.elearning.utils" />
       <recent name="com.jonnie.elearning.exception" />
-      <recent name="com.jonnie.elearning.config" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -219,6 +247,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="NotificationServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="notification-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.jonnie.elearning.NotificationServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="PaymentServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="payment-service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.jonnie.elearning.PaymentServiceApplication" />
@@ -236,6 +271,7 @@
       <item itemvalue="Spring Boot.CourseServiceApplication" />
       <item itemvalue="Spring Boot.EnrollmentServiceApplication" />
       <item itemvalue="Spring Boot.PaymentServiceApplication" />
+      <item itemvalue="Spring Boot.NotificationServiceApplication" />
       <item itemvalue="Spring Boot.GatewayMsApplication" />
     </list>
     <recent_temporary>
@@ -297,7 +333,11 @@
       <workItem from="1738141136601" duration="10018000" />
       <workItem from="1738159382289" duration="27748000" />
       <workItem from="1738224304775" duration="21449000" />
-      <workItem from="1738253627387" duration="12352000" />
+      <workItem from="1738253627387" duration="18839000" />
+      <workItem from="1738310297239" duration="32170000" />
+      <workItem from="1738363948541" duration="3334000" />
+      <workItem from="1738368400832" duration="4095000" />
+      <workItem from="1738394205415" duration="16274000" />
     </task>
     <servers />
   </component>

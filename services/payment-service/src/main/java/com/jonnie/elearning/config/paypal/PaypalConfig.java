@@ -1,4 +1,4 @@
-package com.jonnie.elearning.config;
+package com.jonnie.elearning.config.paypal;
 
 import com.paypal.base.rest.APIContext;
 import org.springframework.beans.factory.annotation.Value;

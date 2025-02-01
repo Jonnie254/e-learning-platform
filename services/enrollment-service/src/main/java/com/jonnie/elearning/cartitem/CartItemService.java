@@ -7,6 +7,8 @@ import com.jonnie.elearning.openfeign.course.CourseClient;
 import com.jonnie.elearning.openfeign.course.CourseResponse;
 import com.jonnie.elearning.repositories.CartItemRepository;
 import com.jonnie.elearning.repositories.CartRepository;
+import com.jonnie.elearning.repositories.EnrollmentRepository;
+import com.jonnie.elearning.utils.PaymentMethod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,18 +31,26 @@ public class CartItemService {
     private final CourseClient courseClient;
     private final CartRepository cartRepository;
     private final CartItemMapper cartItemMapper;
+    private final EnrollmentRepository enrollmentRepository;
 
     // method to add a course to the cart
     public void addCartItem(String userId, String courseId) {
+        // check whether the user has any existing course
+        if (enrollmentRepository.existsByUserIdAndCourseId(userId, courseId)) {
+            throw new BusinessException("User is already enrolled in the course");
+        }
         // Get the course details
         CourseResponse courseResponse = courseClient.getCourseById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found"));
+
         // Fetch the user's cart, or create one if it doesn't exist
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
                     newCart.setUserId(userId);
                     newCart.setTotalAmount(BigDecimal.ZERO);
+                    newCart.setPaymentMethod(PaymentMethod.PAYPAL);
+                    newCart.setReference(generateCartReference());
                     return cartRepository.save(newCart);
                 });
         // Check if the course is already in the cart
@@ -46,7 +58,6 @@ public class CartItemService {
         if (existingCartItem.isPresent()) {
             throw new BusinessException("Course is already in the cart");
         }
-        // Update the total amount of the cart
         cart.setTotalAmount(cart.getTotalAmount().add(courseResponse.getPrice()));
         cartRepository.save(cart);
         // Create and save the new cart item
@@ -81,6 +92,18 @@ public class CartItemService {
         cartItemRepository.delete(cartItem);
         cart.setTotalAmount(cart.getTotalAmount().subtract(cartItem.getPrice()));
         cartRepository.save(cart);
+    }
+
+    //method to generate the cart reference
+    public String generateCartReference() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder reference = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+        for(int i = 0; i < 6; i++) {
+            int randomIndex  = random.nextInt(chars.length());
+            reference.append(chars.charAt(randomIndex));
+        }
+        return reference.toString();
     }
 }
 

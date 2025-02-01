@@ -2,13 +2,15 @@ package com.jonnie.elearning.enrollment;
 
 import com.jonnie.elearning.utils.PaymentMethod;
 
-public record EnrollmentRequest(
+import java.util.List;
+
+public record EnrollmentConfirmation(
         String enrollmentId,
-        String courseId,
+        List<String> courseIds,
         String userId,
         boolean isPaid,
         PaymentMethod paymentMethod,
-        String instructorId
+        List<String> instructorIds
 ) {
 
 }

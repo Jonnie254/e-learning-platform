@@ -21,5 +21,9 @@ spring:
           uri: lb://PAYMENT-SERVICE
           predicates:
            - Path=/api/v1/payments/**
+        - id: notification-service
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/api/v1/notifications/**
 server:
   port: 8222
