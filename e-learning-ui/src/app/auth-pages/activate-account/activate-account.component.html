@@ -1,0 +1,44 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100 p-6">
+  <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-6" *ngIf="submitted else codeForm">
+
+    <!-- Success Message -->
+    <div class="text-center" *ngIf="isOkay else activationError">
+      <h2 class="text-2xl font-bold text-green-600">Activation Successful!</h2>
+      <p class="text-gray-600 mt-2">Your account has been activated successfully.</p>
+      <button class="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition"
+              (click)="redirectToLogin()"
+              type="button">
+        Login
+      </button>
+    </div>
+
+    <!-- Error Message -->
+    <ng-template #activationError>
+      <div class="text-center">
+        <h2 class="text-2xl font-bold text-red-600">Activation Failed</h2>
+        <p class="text-gray-600 mt-2">{{ message }}</p>
+        <button class="mt-4 w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition"
+                (click)="submitted = false"
+                type="button">
+          Try Again
+        </button>
+      </div>
+    </ng-template>
+
+  </div>
+</div>
+
+<!-- Code Input Form -->
+<ng-template #codeForm>
+  <div class="flex items-center justify-center min-h-screen bg-gray-100 p-6">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-6 text-center">
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">Enter Your Activation Code</h2>
+      <code-input [isCodeHidden]="false"
+                  [codeLength]="6"
+                  [isCharsCode]="true"
+                  class="flex justify-center"
+                  (codeCompleted)="onCodeCompleted($event)">
+      </code-input>
+    </div>
+  </div>
+</ng-template>

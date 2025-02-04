@@ -34,11 +34,12 @@ public class JwtAuthenticationFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-
+      log.info("Filtering request: {}", exchange.getRequest().getPath());
         String token = extractToken(exchange);
         if (token == null) {
             return chain.filter(exchange); // Proceed to the next filter if no token
         }
+        log.info("Token found: {}", token);
 
         // Proceed with token validation
         return validateToken(token)

@@ -180,11 +180,14 @@ public class UserService {
         log.info("Authentication request received for email: {}", userAuthenticationRequest.email());
 
         // Check if the user exists in the database
-        var user = userRepository.findByEmail(userAuthenticationRequest.email())
-                .orElseThrow(() -> {
-                    log.error("User not found with email: {}", userAuthenticationRequest.email());
-                    return new UserNotFoundException("User not found");
-                });
+        var userOptional = userRepository.findByEmail(userAuthenticationRequest.email());
+
+        if (userOptional.isEmpty()) {
+            log.warn("Authentication failed for email: {}", userAuthenticationRequest.email());
+            throw new InvalidCredentialsExceptions("Invalid email or password");
+        }
+
+        var user = userOptional.get();
 
         // Check if the user is active
         if (!user.isActive()) {
@@ -194,7 +197,7 @@ public class UserService {
         // Check if the provided password matches the stored one
         boolean passwordMatches = passwordEncoder.matches(userAuthenticationRequest.password(), user.getPassword());
         if (!passwordMatches) {
-            throw new InvalidCredentialsExceptions("Invalid credentials");
+            throw new InvalidCredentialsExceptions("Invalid email or password");
         }
 
         // Generate JWT token

@@ -1,0 +1,9 @@
+<div *ngIf="show" class="absolute top-0 z-50 flex items-center w-max max-w-sm p-4 rounded-md shadow-md m-4"
+     [class.bg-green-500]="type === 'success'" [class.text-white]="type === 'success'"
+     [class.shadow-green-200]="type === 'success'" [class.bg-red-500]="type === 'error'"
+     [class.shadow-red-200]="type === 'error'" role="alert">
+  <i *ngIf="type === 'success'" class="pi pi-check-circle mr-2 text-white"></i>
+  <i *ngIf="type === 'error'" class="pi pi-exclamation-triangle mr-2 text-white"></i>
+  <span class="block sm:inline text-sm mr-3">{{message}}</span>
+  <i class="pi pi-times-circle cursor-pointer" (click)="onClose()"></i>
+</div>

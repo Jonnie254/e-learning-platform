@@ -26,7 +26,7 @@ public class UserMapper {
                 .lastName(userRegistrationRequest.lastName())
                 .password(passwordEncoder.encode(userRegistrationRequest.password()))
                 .email(userRegistrationRequest.email())
-                .role(userRegistrationRequest.role())
+                .role(ROLE.STUDENT)
                 .build();
     }
 

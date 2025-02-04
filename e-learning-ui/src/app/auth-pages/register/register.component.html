@@ -1,0 +1,87 @@
+<app-notifications [show]="showNotification" [message]="notificationMessage" [type]="notificationType" (close)="hideNotification()"></app-notifications>
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+    <!-- Logo -->
+    <div class="flex justify-center mb-4">
+      <img src="skillverse.png" alt="Logo" class="h-16">
+    </div>
+    <h2 class="text-center text-2xl font-semibold mb-6">Register</h2>
+    <form class="space-y-6" #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
+
+      <!-- First Name -->
+      <div class="relative flex items-center">
+        <i class="pi pi-user absolute right-3 text-gray-400"></i>
+        <input type="text" placeholder="First Name" name="firstname"
+               [(ngModel)]="registerData.firstName" required
+               class="px-3 py-3 bg-white text-black w-full text-sm border rounded focus:border-[#6f42c1] outline-none" />
+      </div>
+      <div *ngIf="registerForm.submitted && registerForm.controls['firstname']?.errors?.['required']" class="text-red-500 text-sm">
+        First Name is required
+      </div>
+
+      <!-- Last Name -->
+      <div class="relative flex items-center">
+        <i class="pi pi-user absolute right-3 text-gray-400"></i>
+        <input type="text" placeholder="Last Name" name="lastname"
+               [(ngModel)]="registerData.lastName" required
+               class="px-3 py-3 bg-white text-black w-full text-sm border rounded focus:border-[#6f42c1] outline-none" />
+      </div>
+      <div *ngIf="registerForm.submitted && registerForm.controls['lastname']?.errors?.['required']" class="text-red-500 text-sm">
+        Last Name is required
+      </div>
+
+      <!-- Email -->
+      <div class="relative flex items-center">
+        <i class="pi pi-envelope absolute right-3 text-gray-400"></i>
+        <input type="email" placeholder="Email" name="email"
+               [(ngModel)]="registerData.email" required
+               class="px-3 py-3 bg-white text-black w-full text-sm border rounded focus:border-[#6f42c1] outline-none" />
+      </div>
+      <div *ngIf="registerForm.submitted && registerForm.controls['email']?.errors?.['required']" class="text-red-500 text-sm">
+        Email is required
+      </div>
+
+      <!-- Password -->
+      <div class="relative flex items-center">
+        <i class="pi pi-lock absolute right-3 text-gray-400 cursor-pointer"></i>
+        <input type="password" placeholder="Password" name="password"
+               [(ngModel)]="registerData.password" required
+               class="px-3 py-3 bg-white text-black w-full text-sm border rounded focus:border-[#6f42c1] outline-none" />
+      </div>
+      <div *ngIf="registerForm.submitted && registerForm.controls['password']?.errors?.['required']" class="text-red-500 text-sm">
+        Password is required
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="relative flex items-center">
+        <i class="pi pi-lock absolute right-3 text-gray-400 cursor-pointer"></i>
+        <input type="password" placeholder="Confirm Password" name="confirmPassword"
+               [(ngModel)]="confirmPassword" required
+               class="px-3 py-3 bg-white text-black w-full text-sm border rounded focus:border-[#6f42c1] outline-none" />
+      </div>
+      <div *ngIf="registerForm.submitted && confirmPassword !== registerData.password" class="text-red-500 text-sm">
+        Passwords do not match
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit"
+              class="mt-6 px-6 py-2.5 w-full text-sm bg-[#6f42c1] text-white hover:bg-[#5a3794] rounded-md">
+        Register
+      </button>
+    </form>
+
+    <div class="mt-4 text-center">
+      <p class="text-sm">
+        Already have an account?
+        <a routerLink="/login" class="text-[#6f42c1] hover:underline">Login</a>
+      </p>
+    </div>
+    <div class="mt-4 text-center">
+      <p class="text-sm">
+        Want to explore courses?
+        <a routerLink="/courses" class="text-[#6f42c1] hover:underline">Go to All Courses</a>
+      </p>
+    </div>
+  </div>
+</div>

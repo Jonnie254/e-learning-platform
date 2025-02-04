@@ -118,6 +118,15 @@ public class CourseMapper {
                 .courseImageUrl(course.getCourseUrlImage())
                 .build();
     }
+
+    public AllSectionId fromSections(List<Section> sections) {
+        return AllSectionId.builder()
+                .sectionIds(sections
+                        .stream().
+                        map(Section::getSectionId)
+                        .toList())
+                .build();
+    }
 }
 
 

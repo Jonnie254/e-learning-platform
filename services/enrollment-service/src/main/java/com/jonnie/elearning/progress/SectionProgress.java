@@ -21,7 +21,6 @@ public class SectionProgress {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String sectionProgressId;
     private String sectionId;
-    private String userProgressId;
     private boolean isCompleted;
 
     @ManyToOne

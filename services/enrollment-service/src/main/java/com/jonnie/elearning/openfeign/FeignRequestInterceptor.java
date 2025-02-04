@@ -17,7 +17,10 @@ public class FeignRequestInterceptor implements RequestInterceptor {
         String token = getCurrentRequestToken();
         if (token != null) {
             token = token.replace("Bearer ", "").trim();
+            log.info("Intercepted Request - Headers: {}", template.headers());
             template.header("Authorization", "Bearer " + token);
+            log.info("Feign Request Headers: {}", template.headers());
+
         }
     }
     private String getCurrentRequestToken() {

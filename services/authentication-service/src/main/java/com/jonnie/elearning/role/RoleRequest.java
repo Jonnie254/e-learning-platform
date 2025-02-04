@@ -20,6 +20,7 @@ public class RoleRequest {
     private String id;
     private ROLE requestedRole = ROLE.INSTRUCTOR;
     private RoleRequestStatus status = RoleRequestStatus.PENDING;
+    private String userEmail;
     private User user;
     @CreatedDate
     private LocalDateTime requestedAt;

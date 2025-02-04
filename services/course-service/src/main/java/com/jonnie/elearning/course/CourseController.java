@@ -122,7 +122,8 @@ public class CourseController {
     ) {
         return ResponseEntity.ok(courseService.findCourseByIdForCartItem(courseId));
     }
-    // create content for the course
+
+    // create section for the course
     @PostMapping(value="/{course-id}/create-content", consumes = "multipart/form-data")
     public ResponseEntity<String> createContent(
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
@@ -142,11 +143,11 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Section PDF and Video are required");
         }
         try {
-
             String sectionId = sectionService.createSection(sectionRequest, courseId, instructorId, sectionPdf, sectionVideo);
             return ResponseEntity.status(HttpStatus.CREATED).body(sectionId);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the course content");
+
         }
     }
     //get section by id
@@ -165,6 +166,13 @@ public class CourseController {
             @RequestParam(name = "size", defaultValue = "10", required = false) int size
     ) {
         return ResponseEntity.ok(sectionService.findSectionsByCourse(courseId, page, size));
+    }
+    //get the section ids for a course
+    @GetMapping("/sections/{course-id}")
+    public ResponseEntity<AllSectionId> findSectionIdsByCourse(
+            @PathVariable("course-id") String courseId
+    ) {
+        return ResponseEntity.ok(sectionService.findSectionIdsByCourse(courseId));
     }
 
     //update the section content

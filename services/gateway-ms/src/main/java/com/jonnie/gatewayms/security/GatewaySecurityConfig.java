@@ -7,6 +7,10 @@
     import org.springframework.security.config.web.server.ServerHttpSecurity;
     import org.springframework.security.web.server.SecurityWebFilterChain;
     import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
+    import org.springframework.web.cors.CorsConfiguration;
+
+    import java.util.Arrays;
+    import java.util.Collections;
 
     import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -23,7 +27,14 @@
         @Bean
         public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
             return http
-                    .cors(withDefaults())
+                    .cors(corsSpec -> corsSpec.configurationSource(request -> {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
+                        config.setAllowCredentials(true);
+                        return config;
+                    }))
                     .csrf(ServerHttpSecurity.CsrfSpec::disable)
                     .authorizeExchange(exchange -> exchange
                             .pathMatchers(
@@ -39,4 +50,5 @@
                     .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                     .build();
         }
+
     }

@@ -6,6 +6,7 @@ import com.jonnie.elearning.cartitem.CartItemResponse;
 import com.jonnie.elearning.cartitem.CartItemService;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
+import com.jonnie.elearning.progress.ProgressService;
 import com.jonnie.elearning.utils.ROLE;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,9 @@ import static org.springframework.http.HttpStatus.*;
 public class EnrollmentController {
     private final CartItemService cartItemService;
     private final CartService cartService;
+    private final ProgressService progressService;
 
-    // ✅ Fix: validateUser should not return anything, it just throws an exception if needed.
+
     private void validateUser(String userId, String userRole, ROLE requiredRole) {
         if (userId == null || userId.isEmpty() || userRole == null || userRole.isEmpty()) {
             throw new ResponseStatusException(BAD_REQUEST, "User ID and role are required");
@@ -87,7 +89,7 @@ public class EnrollmentController {
         }
     }
 
-    //  Removed invalid validationResponse assignment
+    //method to get the cart
     @GetMapping("/get-cart")
     public ResponseEntity<CartResponse> getCart(
             @RequestHeader("X-User-Id") String userId,
@@ -97,7 +99,7 @@ public class EnrollmentController {
         return ResponseEntity.ok(cartService.getCart(userId));
     }
 
-    // Corrected validation and added error handling
+    //method to check out from the cart
     @PostMapping("/checkout-cart")
     public ResponseEntity<String> checkoutCart(
             @RequestHeader("X-User-Id") String userId,
@@ -107,6 +109,25 @@ public class EnrollmentController {
         try {
             String approvalUrl = cartService.checkoutCart(userId);
             return ResponseEntity.ok(approvalUrl);
+        } catch (BusinessException e) {
+            return ResponseEntity.status(BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            log.error("An unexpected error occurred", e);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred. Please try again later.");
+        }
+    }
+
+    @PostMapping("/initialize-progress/{course-id}")
+    public ResponseEntity<String> initializeProgress(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @PathVariable("course-id") String courseId
+    ) {
+        validateUser(userId, userRole, ROLE.STUDENT);
+        try {
+            progressService.initializeUserProgress(userId, courseId);
+            return ResponseEntity.ok("Progress initialized successfully");
         } catch (BusinessException e) {
             return ResponseEntity.status(BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {

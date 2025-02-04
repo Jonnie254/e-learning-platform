@@ -1,8 +1,10 @@
-package com.jonnie.elearning.services;
+package com.jonnie.elearning;
 
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.role.RoleResponse;
 import com.jonnie.elearning.role.UserRoleRequest;
+import com.jonnie.elearning.services.AuthenticationResponse;
+import com.jonnie.elearning.services.UserService;
 import com.jonnie.elearning.user.UserAuthenticationRequest;
 import com.jonnie.elearning.user.UserRegistrationRequest;
 import com.jonnie.elearning.user.UserResponse;
@@ -163,7 +165,6 @@ public class UserController {
             if (userId.equals(userUpdateRequest.id()) && userUpdateRequest.role() != null) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
-
             userService.updateUser(userId, userRole, userUpdateRequest);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {

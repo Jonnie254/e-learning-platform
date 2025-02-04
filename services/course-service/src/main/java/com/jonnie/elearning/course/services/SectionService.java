@@ -7,10 +7,12 @@ import com.jonnie.elearning.course.Section;
 import com.jonnie.elearning.course.Course;
 import com.jonnie.elearning.course.requests.SectionRequest;
 import com.jonnie.elearning.course.requests.UpdateSectionRequest;
+import com.jonnie.elearning.course.responses.AllSectionId;
 import com.jonnie.elearning.course.responses.SectionResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,10 +28,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SectionService {
     private final CourseRepository courseRepository;
     private final SectionRepository sectionRepository;
-    private final S3Client amazonS3; ;
+    private final S3Client amazonS3;
+    ;
     private final CourseMapper courseMapper;
     @Value("${application.aws.bucket-name}")
     private String awsBucketName;
@@ -50,7 +54,7 @@ public class SectionService {
         }
         String sectionPdfUrl = uploadFileToS3(sectionPdf, "pdf");
         String sectionVideoUrl = uploadFileToS3(sectionVideo, "video");
-        Section section =  courseMapper.toSection(sectionRequest, sectionPdfUrl, sectionVideoUrl, course);
+        Section section = courseMapper.toSection(sectionRequest, sectionPdfUrl, sectionVideoUrl, course);
         sectionRepository.save(section);
         return section.getSectionId();
     }
@@ -73,7 +77,7 @@ public class SectionService {
             throw new BusinessException("Error uploading file to S3: " + e.getMessage());
         }
     }
-    
+
 
     //find all sections for a course
     public PageResponse<SectionResponse> findSectionsByCourse(String courseId, int page, int size) {
@@ -144,4 +148,21 @@ public class SectionService {
         }
     }
 
+    //get all section ids for a course
+    public AllSectionId findSectionIdsByCourse(String courseId) {
+        log.info("Fetching section IDs for course: {}", courseId);
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessException("Course not found"));
+
+        List<String> sectionIds = sectionRepository.findSectionIdsByCourse(course);
+
+        if (sectionIds.isEmpty()) {
+            log.warn("No sections found for course: {}", courseId);
+        } else {
+            log.info("Found {} sections for course: {}", sectionIds.size(), courseId);
+        }
+
+        return new AllSectionId(sectionIds);
+    }
 }
