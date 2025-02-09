@@ -18,6 +18,11 @@ export class AuthService {
     this.checkAuthStatus();
   }
 
+  // Method to get the token from localStorage
+  getToken(): string {
+    return localStorage.getItem('token') || '';
+  }
+
   // Register the user
   registerUser(user: registerUser) {
     return this.http.post(`${this.baseUrl}/register`, user);

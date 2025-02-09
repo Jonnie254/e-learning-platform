@@ -1,0 +1,77 @@
+<app-navbar></app-navbar>
+
+<main class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl font-semibold mb-6">Course Details</h1>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Left Column - Course Image and Basic Info -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-lg shadow-sm mb-4">
+        <div class="p-4">
+          <img
+            [src]="course.courseImageUrl"
+            class="rounded-lg w-full h-96 object-cover object-center mb-4"
+            alt="Course Image"
+          />
+          <h2 class="text-2xl font-semibold mt-4">{{course.courseName}}</h2>
+          <div class="flex items-center">
+            <p class="text-gray-600">Instructor: <span class="font-semibold">{{course.instructorName}}</span></p>
+          </div>
+          <p class="text-gray-600 mt-2">{{course.description}}</p>
+        </div>
+      </div>
+
+      <!-- What You Will Learn Section -->
+      <div class="bg-white rounded-lg shadow-sm mb-8">
+        <div class="p-6">
+          <h3 class="text-xl font-semibold mb-4">What You Will Learn</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div *ngFor="let item of course.whatYouWillLearn" class="flex items-center space-x-2">
+              <i class="pi pi-check text-green-500"></i>
+              <p>{{item}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column - Price and Enrollment -->
+    <div class="lg:col-span-1">
+      <div class="bg-white rounded-xl shadow-lg p-6 top-20 border border-gray-200">
+        <!-- Course Price -->
+        <div class="text-4xl font-bold text-green-600 mb-6 text-center">
+          {{ course.price | currency:'USD' }}
+        </div>
+
+        <!-- Enroll Now Button -->
+        <button (click)="addToCart(course.courseId)"
+          class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg
+      hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-md"
+        >
+          Add to Cart
+        </button>
+
+        <!-- Course Details Box -->
+        <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <p class="text-gray-600 text-sm"><span class="font-semibold">Lifetime Access:</span> Yes</p>
+          <p class="text-gray-600 text-sm"><span class="font-semibold">Certificate:</span> Included</p>
+          <p class="text-gray-600 text-sm"><span class="font-semibold">Skill Level:</span> Beginner - Advanced</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Other Courses Section -->
+  <div class="bg-white rounded-lg shadow-sm mt-4">
+    <div>
+      <p class="text-2xl font-semibold p-4">Other Courses You May Like</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
+        <app-courses-card
+          *ngFor="let course of coursesResponse.content"
+          [course]="course"
+          (courseClick)="onCourseClick(course.courseId)"
+        ></app-courses-card>
+      </div>
+    </div>
+  </div>
+</main>

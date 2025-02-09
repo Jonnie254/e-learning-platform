@@ -1,1 +1,49 @@
-<p>courses works!</p>
+<app-navbar></app-navbar>
+  <!---Banner -->
+<div class="bg-gray-100">
+  <div class="container">
+    <div class="container mx-auto px-4 py-4 space-y-8 flex items-center gap-4 justify-center">
+      <div class="flex flex-col items-start justify-center space-y-4">
+        <h1 class="text-4xl text-start font-semibold">Where you get to learn <br> hands on skill </h1>
+        <p class="text-gray-500 text-start">Explore our wide range of courses</p>
+      </div>
+      <div class="object-cover object-center w-1/2 h-96">
+        <img src="Happy-country-1200X300--2.avif" alt="Banner" class="w-full h-full object-cover object-center rounded-lg">
+      </div>
+    </div>
+  </div>
+  <div class="container flex items-center justify-between gap-4">
+    <div class="text-start text-2xl font-semibold p-4 font-serif">
+      Some courses that you can explore
+    </div>
+    <div class="relative">
+      <!-- Button -->
+      <div (click)="toggleDropdown()"
+           class="border border-gray-600 px-2 py-2 rounded-lg ml-auto cursor-pointer font-bold flex items-center justify-between w-[200px]">
+        Categories
+        <i class="pi pi-chevron-down"></i>
+      </div>
+      <!-- Dropdown Menu -->
+      <div *ngIf="isDropdownOpen" class="absolute top-[50px] w-[200px] bg-white border border-gray-500 rounded shadow-md p-2">
+        <div class="cursor-pointer hover:bg-gray-300 px-4 py-2">Data Science</div>
+        <div class="cursor-pointer hover:bg-gray-300 px-4 py-2">Web Development</div>
+        <div class="cursor-pointer hover:bg-gray-300 px-4 py-2">UI/UX Design</div>
+        <div class="cursor-pointer hover:bg-gray-300 px-4 py-2">Cyber Security</div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col items-center justify-center gap-4">
+    <div class="grid grid-cols-1 gap-6 px-4 py-8 max-w-screen-xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <app-courses-card
+        [course]="course"
+        *ngFor="let course of coursesResponse.content"
+        (courseClick)="onCourseClick($event)"
+      ></app-courses-card>
+    </div>
+    <app-pagination
+      [currentPage]="page"
+      [totalPages]="totalPages()"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+  </div>
+</div>

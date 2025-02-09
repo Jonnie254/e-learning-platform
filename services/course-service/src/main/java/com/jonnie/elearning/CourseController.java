@@ -1,4 +1,4 @@
-package com.jonnie.elearning.course;
+package com.jonnie.elearning;
 
 
 import com.jonnie.elearning.common.PageResponse;

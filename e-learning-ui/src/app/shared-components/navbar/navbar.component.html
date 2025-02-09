@@ -19,12 +19,18 @@ md:border-0 md:bg-transparent">
              aria-current="page">Home</a>
         </li>
         <li>
-          <a routerLink="/all-courses"
+          <a routerLink="/courses"
              class="block py-2 px-3 text-blue-400 hover:text-blue-500 md:bg-transparent md:p-0 md:hover:text-blue-400">Courses</a>
         </li>
         <li>
           <a routerLink="/about-us"
              class="block py-2 px-3 text-blue-400 hover:text-blue-500 md:bg-transparent md:p-0 md:hover:text-blue-400">About Us</a>
+        </li>
+        <li *ngIf="isLoggedIn">
+          <a routerLink="/cart" class="flex items-center justify-between w-full py-2 px-3 text-white rounded hover:bg-blue-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-200 md:p-0 md:w-auto cursor-pointer">
+            <i class="pi pi-shopping-cart m-1"></i>
+            <span>Cart</span>
+          </a>
         </li>
         <li *ngIf="!isLoggedIn" class="relative">
           <div (click)="toggleLoginDropdown()"
@@ -37,11 +43,11 @@ md:border-0 md:bg-transparent">
             <ul class="py-1" aria-label="submenu">
               <li>
                 <a routerLink="/login"
-                   class="block px-4 py-2 text-blue-400 hover:text-blue-500">Login</a>
+                   class="block px-4 py-2 text-blue-400 hover:text-blue-500 hover:bg-emerald-200">Login</a>
               </li>
               <li>
                 <a routerLink="/register"
-                   class="block px-4 py-2 text-blue-400 hover:text-blue-500">Register</a>
+                   class="block px-4 py-2 text-blue-400 hover:text-blue-500 hover:bg-emerald-200">Register</a>
               </li>
             </ul>
           </div>
