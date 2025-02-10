@@ -4,6 +4,8 @@ import com.jonnie.elearning.payment.PaymentRequest;
 import com.jonnie.elearning.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,15 +41,16 @@ public class PaymentController {
         try {
             boolean isPaymentSuccess = paymentService.completePayPalPayment(paymentId, token, payerId);
             if (isPaymentSuccess) {
-                return ResponseEntity.ok("Payment was successful");
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .header(HttpHeaders.LOCATION, "http://localhost:4200/payment-success")
+                        .build();
             } else {
-                return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("Payment verification failed");
             }
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body("An error occurred while processing the payment");
-
         }
     }
 

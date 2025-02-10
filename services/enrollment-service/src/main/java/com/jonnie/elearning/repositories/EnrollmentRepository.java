@@ -13,5 +13,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, String> 
             "JOIN e.courseIds c WHERE e.userId = :userId AND c = :courseId")
     boolean existsByUserIdAndCourseId(String userId, String courseId);
 
-    boolean existsByUserIdAndCourseIds(String userId, List<String> strings);
+    @Query("SELECT e FROM Enrollment e WHERE e.userId = :userId")
+    List<Enrollment> findByUserId(String userId);
 }

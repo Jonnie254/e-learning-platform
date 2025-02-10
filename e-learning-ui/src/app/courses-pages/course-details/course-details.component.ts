@@ -7,6 +7,8 @@ import { CurrencyPipe, NgForOf } from '@angular/common';
 import { CoursesCardComponent } from '../courses-card/courses-card.component';
 import {AuthService} from '../../services/auth-service.service';
 import {EnrollmentService} from '../../services/enrollment.service';
+import {NotificationsComponent} from '../../shared-components/notifications/notifications.component';
+import {take} from 'rxjs';
 
 @Component({
   selector: 'app-course-details',
@@ -15,7 +17,8 @@ import {EnrollmentService} from '../../services/enrollment.service';
     NavbarComponent,
     CurrencyPipe,
     NgForOf,
-    CoursesCardComponent
+    CoursesCardComponent,
+    NotificationsComponent
   ],
   templateUrl: './course-details.component.html',
   styleUrl: './course-details.component.scss'
@@ -35,6 +38,10 @@ export class CourseDetailsComponent {
   coursesResponse: PageResponse<CourseResponse> = { content: [], totalPages: 0 };
   page: number = 0;
   size: number = 8;
+  addToSuccess: boolean = false;
+  addMessage: string = '';
+  addCourseError: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private router: Router,
@@ -43,7 +50,6 @@ export class CourseDetailsComponent {
     private courseService: CoursesService,
     private enrollmentService: EnrollmentService
   ) {
-    // Listen for route changes and update the course details
     this.route.params.subscribe(params => {
       this.courseId = params['courseId'];
       this.loadCourseDetails();
@@ -55,38 +61,58 @@ export class CourseDetailsComponent {
   loadCourseDetails() {
     this.courseService.getCourseById(this.courseId).subscribe(
       (course: CourseDetailsResponse) => {
-        console.log(course);
         this.course = course;
       }
     );
   }
 
   getCourses() {
-    this.courseService.getAllCourses(
-      { size: this.size, page: this.page },
-      this.size
-    ).subscribe(response => {
-      this.coursesResponse.content = response.content?.filter(
-        (course: CourseResponse) => course.courseId !== this.courseId
-      );
-      this.coursesResponse.totalPages = response.totalPages;
-    });
+    this.courseService.getFilteredCourses({ size: this.size, page: this.page }, this.size)
+      .subscribe(response => {
+        this.coursesResponse.content = response.content?.filter(course => course.courseId !== this.courseId);
+        this.coursesResponse.totalPages = response.totalPages;
+      });
   }
 
   onCourseClick(courseId: string) {
     this.router.navigate(['/courses', courseId]);
   }
 
+
   addToCart(courseId: string) {
-    if(!this.authService.isAuthenticated()){
+    if (!this.authService.isAuthenticated()) {
       this.authService.redirectUrl = this.router.url;
       this.router.navigate(['/login']);
-    }else{
-      this.enrollmentService.addCartItem(courseId).subscribe(
-        () => {
-          console.log('Course added to the cart');
-        }
-      );
+      return;
     }
+    this.resetAddToCartStatus();
+    this.enrollmentService.addCartItem(courseId).pipe(take(1)).subscribe({
+      next: () => {
+        this.addToSuccess = true;
+        this.addCourseError = false;
+        this.addMessage = 'Course added to cart successfully';
+        setTimeout(() => {
+          this.resetAddToCartStatus();
+        }, 3000);
+      },
+      error: (err: any) => {
+        this.errorMessage = err.error?.errors?.error || 'An unexpected error occurred';
+        this.addToSuccess = false;
+        this.addCourseError = true;
+        setTimeout(() => {
+          this.resetAddToCartStatus();
+        }, 3000);
+      }
+    });
   }
+
+  // method to reset the status of the add to cart operation
+  resetAddToCartStatus() {
+    this.addToSuccess = false;
+    this.addCourseError = false;
+    this.addMessage = '';
+    this.errorMessage = '';
+  }
+
+
 }

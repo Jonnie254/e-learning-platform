@@ -6,6 +6,7 @@ import {ActivateAccountComponent} from './auth-pages/activate-account/activate-a
 import {CoursesComponent} from './student-pages/courses/courses.component';
 import {CourseDetailsComponent} from './courses-pages/course-details/course-details.component';
 import {CartDetailsComponent} from './courses-pages/cart-details/cart-details.component';
+import {PaymentSuccessComponent} from './student-pages/payment-success/payment-success.component';
 
 
 export const routes: Routes = [
@@ -32,5 +33,11 @@ export const routes: Routes = [
   },
   {
     path:'cart', component:CartDetailsComponent
+  },
+  {
+    path:'payment-success', component:PaymentSuccessComponent
+  },
+  {
+    path:'my-courses', loadComponent: () => import('./student-pages/my-courses/my-courses.component').then(m => m.MyCoursesComponent)
   }
 ];

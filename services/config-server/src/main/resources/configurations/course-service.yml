@@ -16,6 +16,7 @@ server:
 application:
   config:
     authentication-url: http://localhost:8222/api/v1/users
+    enrollment-url: http://localhost:8222/api/v1/enrollments
 
   aws:
     access-key: ${APPLICATION_AWS_ACCESS_KEY}

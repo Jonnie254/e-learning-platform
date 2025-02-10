@@ -16,6 +16,7 @@ export interface CourseResponse {
   price: number;
   description?: string,
   whatYouWillLearn?: string[],
+  isInCart?: boolean;
 }
 
 
@@ -29,17 +30,19 @@ export interface CourseDetailsResponse {
   whatYouWillLearn: string[],
 }
 export interface Cart{
-
+  cartId: string;
+  totalAmount: number;
+  reference: string;
+  cartItems: cartItem[];
 }
 
 export interface cartItem {
+  cartItemId: string;
   courseId: string;
-   courseName: string;
-   price: number;
-  courseImageUrl: string;
+  courseName: string;
   instructorName: string;
-  instructorId: string;
-  cart: Cart;
+  courseImageUrl: string;
+  price: number;
 
 }
 

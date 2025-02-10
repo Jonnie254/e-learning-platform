@@ -1,5 +1,8 @@
 <app-navbar></app-navbar>
-
+<app-notifications [show]="addToSuccess" [message]="addMessage" [type]="'success'"
+                   (close)="addToSuccess = false"></app-notifications>
+<app-notifications [show]="addCourseError" [message]="errorMessage" [type]="'error'"
+                   (close)="addCourseError = false"></app-notifications>
 <main class="container mx-auto px-4 py-8">
   <h1 class="text-4xl font-semibold mb-6">Course Details</h1>
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">

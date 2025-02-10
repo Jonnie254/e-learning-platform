@@ -13,9 +13,10 @@ import com.jonnie.elearning.course.responses.CourseResponse;
 import com.jonnie.elearning.course.responses.InstructorCourseResponse;
 import com.jonnie.elearning.course.responses.SingleCourseResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
+import com.jonnie.elearning.feign.enrollment.EnrollmentClient;
 import com.jonnie.elearning.tag.Tag;
-import com.jonnie.elearning.user.AuthenticationClient;
-import com.jonnie.elearning.user.UserResponse;
+import com.jonnie.elearning.feign.user.AuthenticationClient;
+import com.jonnie.elearning.feign.user.UserResponse;
 import com.jonnie.elearning.utils.ROLE;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,8 @@ public class CourseService {
     private final CourseMapper courseMapper;
     private final AuthenticationClient authenticationClient;
     private final Cloudinary cloudinary;
+    private final EnrollmentClient enrollmentClient;
+
 
     @Value("${application.cloudinary.folder}")
     private String folder;
@@ -182,5 +185,24 @@ public class CourseService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
         return courseMapper.toCourseCartResponse(course);
+    }
+
+    public PageResponse<CourseResponse> findCoursesAvailableForUser(String userId, int page, int size) {
+        log.info("Getting enrolled courses for user: {}", userId);
+        List<String> courseIds = enrollmentClient.getEnrolledCourses(userId);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Course> courses = courseRepository.findAllAvailableCourses(courseIds, pageable);
+        List<CourseResponse> courseResponses = courses.stream()
+                .map(courseMapper::toCourseResponse)
+                .toList();
+        return new PageResponse<>(
+                courseResponses,
+                courses.getNumber(),
+                courses.getSize(),
+                courses.getTotalElements(),
+                courses.getTotalPages(),
+                courses.isLast(),
+                courses.isFirst()
+        );
     }
 }

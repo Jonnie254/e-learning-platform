@@ -1,4 +1,4 @@
-package com.jonnie.elearning.user;
+package com.jonnie.elearning.feign.user;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
-@FeignClient(name = "authentication-service", url = "${application.config.authentication-url}")
+@FeignClient(
+        name = "authentication-service",
+        url = "${application.config.authentication-url}"
+)
 public interface AuthenticationClient {
 
     @GetMapping("/user/{user-id}")

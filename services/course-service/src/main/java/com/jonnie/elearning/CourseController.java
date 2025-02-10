@@ -25,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class CourseController {
     private final CourseService courseService;
     private final SectionService sectionService;
+
+    //method to create a course
     @PostMapping(value = "/create-course", consumes = "multipart/form-data")
     public ResponseEntity<String> create(
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
@@ -57,6 +59,7 @@ public class CourseController {
         return ResponseEntity.ok(courseService.findAllCoursesPublished(page, size));
     }
 
+    // method to toggle the course status
     @PutMapping("/{course-id}/toggle-status")
     public ResponseEntity<String> toggleCourseStatus(
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
@@ -150,6 +153,7 @@ public class CourseController {
 
         }
     }
+
     //get section by id
     @GetMapping("/section/{section-id}")
     public ResponseEntity<SectionResponse> findSectionById(
@@ -198,5 +202,16 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the section content");
         }
     }
+
+    //get the courses but exclude the ones that the user is enrolled in
+    @GetMapping("/available-for-user")
+    public ResponseEntity<PageResponse<CourseResponse>> findCoursesAvailableForUser(
+            @RequestHeader(value = "X-User-Id", required = false) String userId,
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size
+    ) {
+        return ResponseEntity.ok(courseService.findCoursesAvailableForUser(userId, page, size));
+    }
+
 
 }

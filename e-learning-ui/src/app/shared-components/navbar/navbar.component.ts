@@ -3,6 +3,7 @@ import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {User} from '../../interfaces/users';
 import {AuthService} from '../../services/auth-service.service';
+import {EnrollmentService} from '../../services/enrollment.service';
 
 @Component({
   selector: 'app-navbar',
@@ -22,20 +23,35 @@ export class NavbarComponent {
   isUserDropdownOpen: boolean = false;
   isLoginDropdownOpen: boolean = false;
   user:User = {} as User;
+  cartItemsCount: number = 0;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private enrollmentService: EnrollmentService
   ) {
     this.authService.AuthChanged$.subscribe((isLoggedIn) => {
-      console.log('Auth changed:', isLoggedIn);
       this.isLoggedIn = isLoggedIn;
       if (isLoggedIn) {
-        console.log('Loading user details...');
         this.loadUserDetails();
+        //this.getCart();
       }
+    });
+    this.enrollmentService.cart$.subscribe((cart) => {
+      this.cartItemsCount = cart.cartItems.length;
     });
   }
 
+  getCart() {
+    this.enrollmentService.getCart()?.subscribe({
+      next: (cart) => {
+        if (cart && cart.cartItems) {
+          this.cartItemsCount = cart.cartItems.length;
+        }
+      },
+      error: (err) => {
+      }
+    });
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -50,10 +66,9 @@ export class NavbarComponent {
     this.isUserDropdownOpen = !this.isUserDropdownOpen;
   }
 
-  private loadUserDetails() {
+   loadUserDetails() {
     this.authService.getUserDetails().subscribe({
       next: (res: User) => {
-        console.log('User details:', res);
         this.user = res;
       },
       error: (err) => {
@@ -61,6 +76,7 @@ export class NavbarComponent {
       }
     });
   }
+
 
   logOut() {
     this.authService.logout();

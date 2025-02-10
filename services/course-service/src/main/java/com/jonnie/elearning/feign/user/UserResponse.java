@@ -1,4 +1,4 @@
-package com.jonnie.elearning.user;
+package com.jonnie.elearning.feign.user;
 
 
 import lombok.*;

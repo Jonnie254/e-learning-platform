@@ -1,1 +1,77 @@
 <app-navbar></app-navbar>
+<app-confirmation-dialog  [isVisible] = "isConfirmationDialogVisible"
+  [title]="modalTitle"
+  [message]="modalMessage"
+  [iconClass]="modalIconClass"
+  [confirmButtonText]="modalConfirmButtonText"
+  [cancelButtonText]="modalCancelButtonText"
+  (onConfirm)="confirmAction()"
+  (onClose)="closeModal()"
+  (onCancel)="closeModal()">
+</app-confirmation-dialog>
+<app-notifications
+  [show]="notification.show"
+  [message]="notification.message"
+  [type]="notification.type"
+  (close)="closeNotification()">
+</app-notifications>
+
+<div class="container font-sans w-full px-8 py-4 min-h-screen">
+  <div *ngIf="cart && cart.cartItems.length > 0; else emptyCart " class="grid md:grid-cols-3 gap-4">
+    <div class="md:col-span-2 bg-gray-100 p-4 rounded-md">
+      <h2 class="text-2xl font-semibold">Cart Details</h2>
+      <hr class="border-gray-300 mt-4 mb-8"/>
+      <div class="space-y-4">
+        <div
+          *ngFor="let item of cart.cartItems" class="grid lg:grid-cols-3 items-center gap-2">
+          <div class="col-span-2 flex items-center gap-2">
+            <div class="w-24 h-24 shrink-0 bg-white rounded-md">
+              <img src="{{item.courseImageUrl}}" alt="Course Image"
+                   class="w-full h-full object-cover object-center rounded-md"/>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold">{{item.courseName}}</h3>
+              <p class="text-gray-600">Instructor: <span class="font-semibold">{{item.instructorName}}</span></p>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <p class="pi pi-trash text-red-500 cursor-pointer" title="Remove" (click)="showConfirmationDialog(item.courseId)"></p>
+            <p class="text-lg font-semibold">{{item.price.toFixed(2) | currency: 'USD'}}</p>
+            <p class="text-gray-600">Lifetime Access: Yes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-gray-100 rounded-md p-4 md:sticky top-0">
+      <h1 class="text-2xl font-semibold">Order Summary</h1>
+      <ul class="text-gray-800 space-y-4">
+        <li class="flex flex-wrap gap-4 text-base">Reference <span class="ml-auto font-bold">{{cart.reference}}</span></li>
+        <li class="flex flex-wrap gap-4 text-base">Discount <span class="ml-auto font-bold">$0.00</span></li>
+        <li class="flex flex-wrap gap-4 text-base">Tax <span class="ml-auto font-bold">$0.00</span></li>
+        <li class="flex flex-wrap gap-4 text-base">Subtotal <span class="ml-auto font-bold">{{cart.totalAmount.toFixed(2) | currency: 'USD'}}</span></li>
+        <li class="flex flex-wrap gap-4 text-base">Total <span class="ml-auto font-bold">{{cart.totalAmount.toFixed(2) | currency: 'USD'}}</span></li>
+      </ul>
+      <div class="mt-8 space-y-2">
+        <button (click)="showCheckoutDialog()" class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg
+        hover:bg-blue-700  duration-300 ease-in-out shadow-md">
+          Proceed to Checkout
+        </button>
+        <button routerLink="/courses" class="w-full bg-gray-600 text-white py-4 px-6 rounded-lg font-semibold text-lg
+        hover:bg-gray-700 duration-300 ease-in-out shadow-md">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyCart>
+    <div class="flex flex-col items-center justify-center min-h-screen">
+      <h2 class="text-2xl font-semibold text-gray-700">Your cart is empty</h2>
+      <p class="text-gray-600 mt-2">Browse courses and add them to your cart.</p>
+      <button routerLink="/courses" class="mt-4 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold
+      hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-md">
+        Browse Courses
+      </button>
+    </div>
+  </ng-template>
+</div>

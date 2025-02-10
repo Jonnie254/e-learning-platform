@@ -8,7 +8,7 @@ import com.jonnie.elearning.course.requests.SectionRequest;
 import com.jonnie.elearning.course.requests.UpdateSectionRequest;
 import com.jonnie.elearning.course.responses.*;
 import com.jonnie.elearning.tag.Tag;
-import com.jonnie.elearning.user.UserResponse;
+import com.jonnie.elearning.feign.user.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
