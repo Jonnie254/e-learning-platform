@@ -134,12 +134,6 @@ export class CartDetailsComponent {
     });
   }
 
-  closeNotificationModal() {
-     setTimeout(() => {
-       this.closeNotification();
-     }, 3000);
-   }
-
 
   closeNotification() {
     this.notification = {
@@ -162,6 +156,4 @@ export class CartDetailsComponent {
     this.itemToRemoveId = '';
     this.isConfirmationDialogVisible = false;
   }
-
-
 }

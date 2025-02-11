@@ -3,6 +3,7 @@ package com.jonnie.elearning.openfeign.course;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Map;
@@ -19,4 +20,7 @@ public interface CourseClient {
     );
     @GetMapping("/sections/{course-id}")
     CourseSectionsResponse getCourseSectionIds(@PathVariable("course-id") String parameter);
+
+    @PostMapping("/courses-by-ids")
+    List<CourseEnrollResponse> getCoursesByIds(List<String> courseIds);
 }

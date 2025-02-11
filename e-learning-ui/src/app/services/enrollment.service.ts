@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from './auth-service.service';
-import {Cart} from '../interfaces/responses';
+import {Cart, enrollmentResponse, SectionStatus} from '../interfaces/responses';
 import {BehaviorSubject, of} from 'rxjs';
 import {catchError, switchMap, tap} from 'rxjs/operators';
 
@@ -77,11 +77,35 @@ export class EnrollmentService {
     });
   }
 
-
   //method to get the cart items
   getCartItems() {
     const cart = this.cartSubject.getValue();
     return cart.cartItems || [];
+  }
+
+  //method to get users enrollment
+  getEnrollments() {
+    const token = this.authService.getToken();
+    return this.http.get<enrollmentResponse>(`${this.baseUrl}/enrolled-courses-details`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  //method to get the section status
+  getSectionStatus(sectionId: string) {
+    const token = this.authService.getToken();
+    return this.http.get<SectionStatus>(`${this.baseUrl}/get-section-status/${sectionId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+
+  //method to complete a section
+  completeSection(sectionId: string) {
+    const token = this.authService.getToken();
+    return this.http.put(`${this.baseUrl}/toggle-section-status/${sectionId}`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
   }
 }
 

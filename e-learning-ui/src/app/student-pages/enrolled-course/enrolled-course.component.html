@@ -1,0 +1,94 @@
+<app-navbar></app-navbar>
+<app-confirmation-dialog  [isVisible] = "isConfirmationDialogVisible"
+                          [title]="modalTitle"
+                          [message]="modalMessage"
+                          [iconClass]="modalIconClass"
+                          [confirmButtonText]="modalConfirmButtonText"
+                          [cancelButtonText]="modalCancelButtonText"
+                          (onConfirm)="confirmAction()"
+                          (onClose)="closeModal()"
+                          (onCancel)="closeModal()">
+</app-confirmation-dialog>
+<app-notifications
+  [show]="notification.show"
+  [message]="notification.message"
+  [type]="notification.type"
+  (close)="closeNotification()">
+</app-notifications>
+
+<main class="font-sans  px-8 min-h-screen bg-white">
+  <div class="items-center w-full max-w-screen-xl gap-8 px-4 py-8 mx-auto xl:gap-16 md:grid md:grid-cols-2 sm:py-8 lg:px-6">
+    <div class="md:col-span-2">
+      <div class="border-2 p-4 w-full">
+        <h1 class="text-3xl font-semibold text-gray-800 md:text-2xl">Intoduction to programming</h1>
+        <p class="mt-2 text-gray-600 ">This course is designed to help you learn the basics of programming. You will learn how to write code, how to think algorithmically and solve problems.</p>
+      </div>
+      <div class="border-2 mt-2 p-6 bg-gray-100 rounded-lg shadow-md">
+        <h2 class="text-xl font-bold text-gray-800">What You Will Learn</h2>
+        <p class="text-gray-600 text-sm mt-1">Key skills you'll gain from this course:</p>
+
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <li class="flex items-center gap-3 bg-white p-3 rounded-lg shadow">
+            <i class="pi pi-check text-green-500 text-lg"></i>
+            <p class="text-gray-700">How to program</p>
+          </li>
+          <li class="flex items-center gap-3 bg-white p-3 rounded-lg shadow">
+            <i class="pi pi-check text-green-500 text-lg"></i>
+            <p class="text-gray-700">How to think algorithmically</p>
+          </li>
+          <li class="flex items-center gap-3 bg-white p-3 rounded-lg shadow">
+            <i class="pi pi-check text-green-500 text-lg"></i>
+            <p class="text-gray-700">Problem-solving techniques</p>
+          </li>
+          <li class="flex items-center gap-3 bg-white p-3 rounded-lg shadow">
+            <i class="pi pi-check text-green-500 text-lg"></i>
+            <p class="text-gray-700">Basic debugging and testing</p>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold text-gray-800 mt-4">Course Content</h2>
+        <div class="grid grid-cols-1 gap-4 mt-4">
+          <div *ngFor="let section of courseSection.content ; let i = index" class="relative bg-gray-100 p-4 rounded-lg shadow-md">
+            <!-- Section Title -->
+            <h3 class="text-lg font-semibold text-gray-800">{{section.sectionName}}</h3>
+            <p class="text-gray-600 mt-2">{{ section.sectionDescription }}</p>
+
+            <!-- Expand/Collapse Icon -->
+            <i (click)="toggleSectionExpansion(section)"
+               class="pi pi-angle-double-down text-gray-700 text-xl cursor-pointer absolute top-4 right-4 transition-transform duration-300"
+               [ngClass]="{ 'rotate-180': section.expanded }">
+            </i>
+
+            <!-- Expanded Content (Video & PDF Links) -->
+            <div *ngIf="section.expanded" class="mt-3 p-3 bg-white rounded-lg shadow">
+              <p class="text-gray-700">
+                <a [href]="section.pdfUrl" target="_blank" class="text-blue-500 underline">Download PDF</a>
+              </p>
+              <p class="text-gray-700 mt-2">
+                <a [href]="section.videoUrl" target="_blank" class="text-blue-500 underline">Watch Video</a>
+              </p>
+              <!-- Video Player -->
+              <video *ngIf="section.videoUrl" controls class="w-full rounded-lg mt-3" preload="none">
+                <source [src]="section.videoUrl"   type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <button *ngIf="section.expanded"
+                    (click)="showConfirmationDialog(section.sectionId)"
+                    class="absolute bottom-4 right-4 flex items-center gap-2 px-3 py-1 rounded-lg text-white font-semibold transition"
+                    [ngClass]="section.isCompleted ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-500 hover:bg-gray-600'">
+              <i class="pi" [ngClass]="section.isCompleted ? 'pi-check-circle' : 'pi-circle'"></i>
+              {{ section.isCompleted ? 'Completed' : 'Complete' }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <app-pagination
+        [currentPage]="page"
+        [totalPages]="totalPages()"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
+    </div>
+  </div>
+</main>

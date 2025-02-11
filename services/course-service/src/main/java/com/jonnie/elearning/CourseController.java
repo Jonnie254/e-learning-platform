@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/courses")
 @RequiredArgsConstructor
@@ -127,11 +129,11 @@ public class CourseController {
     }
 
     // create section for the course
-    @PostMapping(value="/{course-id}/create-content", consumes = "multipart/form-data")
+    @PostMapping(value="/{courseId}/create-content", consumes = "multipart/form-data")
     public ResponseEntity<String> createContent(
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
             @RequestHeader(value = "X-User-Id", required = false) String instructorId,
-            @PathVariable("course-id") String courseId,
+            @PathVariable("courseId") String courseId,
             @ModelAttribute @Valid SectionRequest sectionRequest,
             @RequestParam MultipartFile sectionPdf,
             @RequestParam MultipartFile sectionVideo
@@ -155,17 +157,17 @@ public class CourseController {
     }
 
     //get section by id
-    @GetMapping("/section/{section-id}")
+    @GetMapping("/section/{sectionId}")
     public ResponseEntity<SectionResponse> findSectionById(
-            @PathVariable("section-id") String sectionId
+            @PathVariable("sectionId") String sectionId
     ) {
         return ResponseEntity.ok(sectionService.findSectionById(sectionId));
     }
 
     //get all sections for a course
-    @GetMapping("/{course-id}/sections")
+    @GetMapping("/{courseId}/sections")
     public ResponseEntity<PageResponse<SectionResponse>> findSectionsByCourse(
-            @PathVariable("course-id") String courseId,
+            @PathVariable("courseId") String courseId,
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size
     ) {
@@ -213,5 +215,11 @@ public class CourseController {
         return ResponseEntity.ok(courseService.findCoursesAvailableForUser(userId, page, size));
     }
 
-
+    //get the courses by ids
+    @PostMapping("/courses-by-ids")
+    public ResponseEntity<List<CourseEnrollResponse>> findCoursesByIds(
+            @RequestBody List<String> courseIds
+    ) {
+        return ResponseEntity.ok(courseService.findCoursesByIds(courseIds));
+    }
 }

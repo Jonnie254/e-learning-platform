@@ -8,10 +8,7 @@ import com.jonnie.elearning.category.Category;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.course.Course;
 import com.jonnie.elearning.course.requests.CourseRequest;
-import com.jonnie.elearning.course.responses.CourseCartResponse;
-import com.jonnie.elearning.course.responses.CourseResponse;
-import com.jonnie.elearning.course.responses.InstructorCourseResponse;
-import com.jonnie.elearning.course.responses.SingleCourseResponse;
+import com.jonnie.elearning.course.responses.*;
 import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.feign.enrollment.EnrollmentClient;
 import com.jonnie.elearning.tag.Tag;
@@ -205,4 +202,10 @@ public class CourseService {
                 courses.isFirst()
         );
     }
+
+    public List<CourseEnrollResponse> findCoursesByIds(List<String> courseIds) {
+        List<Course> courses = courseRepository.findAllById(courseIds);
+        return courseMapper.toCoursesResponse(courses);
+    }
+
 }

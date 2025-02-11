@@ -6,13 +6,12 @@
 <main class="container mx-auto px-4 py-8">
   <h1 class="text-4xl font-semibold mb-6">Course Details</h1>
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
     <!-- Left Column - Course Image and Basic Info -->
     <div class="lg:col-span-2">
       <div class="bg-white rounded-lg shadow-sm mb-4">
         <div class="p-4">
           <img
-            [src]="course.courseImageUrl"
+            ngSrc="course.courseImageUrl"
             class="rounded-lg w-full h-96 object-cover object-center mb-4"
             alt="Course Image"
           />
@@ -63,7 +62,6 @@
       </div>
     </div>
   </div>
-
     <!-- Other Courses Section -->
   <div class="bg-white rounded-lg shadow-sm mt-4">
     <div>

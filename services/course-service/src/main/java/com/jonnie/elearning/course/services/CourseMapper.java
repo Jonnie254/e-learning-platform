@@ -127,6 +127,17 @@ public class CourseMapper {
                         .toList())
                 .build();
     }
+
+    public List<CourseEnrollResponse> toCoursesResponse(List<Course> courses) {
+        return courses.stream()
+                .map(course -> CourseEnrollResponse.builder()
+                        .courseId(course.getCourseId())
+                        .courseName(course.getCourseName())
+                        .courseUrlImage(course.getCourseUrlImage())
+                        .InstructorName(course.getInstructorName())
+                        .build())
+                .toList();
+    }
 }
 
 

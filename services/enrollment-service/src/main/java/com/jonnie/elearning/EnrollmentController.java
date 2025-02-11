@@ -5,9 +5,11 @@ import com.jonnie.elearning.cart.CartService;
 import com.jonnie.elearning.cartitem.CartItemResponse;
 import com.jonnie.elearning.cartitem.CartItemService;
 import com.jonnie.elearning.common.PageResponse;
+import com.jonnie.elearning.enrollment.EnrollmentResponse;
 import com.jonnie.elearning.enrollment.EnrollmentService;
 import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.progress.ProgressService;
+import com.jonnie.elearning.progress.SectionStatusResponse;
 import com.jonnie.elearning.utils.ROLE;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -136,15 +138,24 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getEnrolledCourses(userId));
     }
 
-    //method to get the details of the enrolled
-
+    //method to get the details of the enrolled in
+    @GetMapping("/enrolled-courses-details")
+    public ResponseEntity<PageResponse<EnrollmentResponse>> getEnrolledCoursesDetails(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ){
+        validateUser(userId, userRole, ROLE.STUDENT);
+        return ResponseEntity.ok(enrollmentService.getEnrolledCoursesDetails(userId, page, size));
+    }
 
     //method to initialize progress
-    @PostMapping("/initialize-progress/{course-id}")
+    @PostMapping("/initialize-progress/{courseId}")
     public ResponseEntity<Map<String, String>> initializeProgress(
             @RequestHeader("X-User-Id") String userId,
             @RequestHeader("X-User-Role") String userRole,
-            @PathVariable("course-id") String courseId
+            @PathVariable("courseId") String courseId
     ) {
         validateUser(userId, userRole, ROLE.STUDENT);
         try {
@@ -160,4 +171,38 @@ public class EnrollmentController {
                     .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
         }
     }
+
+    //get the status of the section
+    @GetMapping("/get-section-status/{sectionId}")
+    public ResponseEntity<SectionStatusResponse> getSectionStatus(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @PathVariable("sectionId") String sectionId
+    ) {
+        validateUser(userId, userRole, ROLE.STUDENT);
+        return ResponseEntity.ok(progressService.getSectionStatus(userId, sectionId));
+    }
+
+    //method to toggle the section status
+    @PutMapping("/toggle-section-status/{sectionId}")
+    public ResponseEntity<Map<String, String>> toggleSectionStatus(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @PathVariable("sectionId") String sectionId
+    ) {
+        validateUser(userId, userRole, ROLE.STUDENT);
+        try {
+            progressService.toggleSectionStatus(userId, sectionId);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Section status toggled successfully");
+            return ResponseEntity.ok(response);
+        } catch (BusinessException e) {
+            return ResponseEntity.status(BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
+        } catch (Exception e) {
+            log.error("An unexpected error occurred", e);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
+        }
+    }
+
 }

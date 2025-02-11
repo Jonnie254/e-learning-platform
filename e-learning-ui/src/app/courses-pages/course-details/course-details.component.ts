@@ -3,7 +3,7 @@ import { NavbarComponent } from '../../shared-components/navbar/navbar.component
 import { CourseDetailsResponse, CourseResponse, PageResponse } from '../../interfaces/responses';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '../../services/courses-service.service';
-import { CurrencyPipe, NgForOf } from '@angular/common';
+import {CurrencyPipe, NgForOf, NgOptimizedImage} from '@angular/common';
 import { CoursesCardComponent } from '../courses-card/courses-card.component';
 import {AuthService} from '../../services/auth-service.service';
 import {EnrollmentService} from '../../services/enrollment.service';
@@ -18,7 +18,8 @@ import {take} from 'rxjs';
     CurrencyPipe,
     NgForOf,
     CoursesCardComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    NgOptimizedImage
   ],
   templateUrl: './course-details.component.html',
   styleUrl: './course-details.component.scss'
@@ -113,6 +114,4 @@ export class CourseDetailsComponent {
     this.addMessage = '';
     this.errorMessage = '';
   }
-
-
 }

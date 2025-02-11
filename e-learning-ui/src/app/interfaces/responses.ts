@@ -46,12 +46,40 @@ export interface cartItem {
 
 }
 
+export interface enrollmentResponse {
+  content: courseEnrollment[];
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+  first: boolean;
+}
 
-export interface cartItemResponse {
-  cartItemId: string;
+export interface courseEnrollment {
+  enrollmentId: string;
+  course: courseDetails;
+}
+
+export interface courseDetails {
   courseId: string;
   courseName: string;
+  courseUrlImage: string;
   instructorName: string;
-  courseImageUrl: string;
-  price: number;
+}
+
+
+export interface CourseSection {
+  sectionId: string;
+  sectionName: string;
+  sectionDescription: string;
+  pdfUrl: string;
+  videoUrl: string;
+  expanded?: boolean;
+  isCompleted?: boolean;
+}
+
+export  interface SectionStatus {
+  sectionId: string;
+  isCompleted: boolean;
 }

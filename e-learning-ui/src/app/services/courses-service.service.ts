@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {CourseDetailsResponse, CourseResponse, PageResponse} from '../interfaces/responses';
+import {
+  CourseDetailsResponse,
+  CourseResponse,
+  CourseSection,
+  PageResponse
+} from '../interfaces/responses';
 import {EnrollmentService} from './enrollment.service';
 import {map} from 'rxjs';
 import {AuthService} from './auth-service.service';
@@ -62,6 +67,27 @@ export class CoursesService {
       })
     );
   }
+
+  //method to get courses sections
+  getCourseSections(courseId: string, page: { size: number; page: number }) {
+    const token = this.authService.getToken();
+    return this.httpClient.get<PageResponse<CourseSection>>(`${this.baseUrl}/${courseId}/sections`, {
+      params:{
+        page: page.page.toString(),
+        size: page.size.toString()
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
+  //get the sections status
+
+
+
+
+
 
   //method to get courses that are available for enrollment
   getAvailableCourses(page: {size: number; page: number}, size: number) {

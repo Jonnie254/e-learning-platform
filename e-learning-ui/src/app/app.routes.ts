@@ -29,15 +29,18 @@ export const routes: Routes = [
     path:'courses', component:CoursesComponent
   },
   {
-    path:'courses/:courseId', component:CourseDetailsComponent
+    path:'courses/:courseId', loadComponent: () => import('./courses-pages/course-details/course-details.component').then(m => m.CourseDetailsComponent)
   },
   {
-    path:'cart', component:CartDetailsComponent
+    path:'cart', loadComponent: () => import('./courses-pages/cart-details/cart-details.component').then(m => m.CartDetailsComponent)
   },
   {
-    path:'payment-success', component:PaymentSuccessComponent
+    path:'payment-success', loadComponent: () => import('./student-pages/payment-success/payment-success.component').then(m => m.PaymentSuccessComponent)
   },
   {
     path:'my-courses', loadComponent: () => import('./student-pages/my-courses/my-courses.component').then(m => m.MyCoursesComponent)
+  },
+  {
+    path:'enrolled-course/:courseId', loadComponent: () => import('./student-pages/enrolled-course/enrolled-course.component').then(m => m.EnrolledCourseComponent)
   }
 ];

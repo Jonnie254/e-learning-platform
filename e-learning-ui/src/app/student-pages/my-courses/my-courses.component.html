@@ -3,7 +3,7 @@
 <section class="font-sans w-full px-8 py-4 min-h-screen bg-white">
   <div class="items-center max-w-screen-xl gap-8 px-4 py-8 mx-auto xl:gap-16 md:grid md:grid-cols-2 sm:py-8 lg:px-6">
     <!-- Header -->
-    <div>
+    <div class="md:col-span-2">
       <div>
         <h1 class="text-3xl font-semibold text-gray-800 md:text-4xl">My Courses</h1>
         <p class="mt-2 text-gray-600 ">Here are the courses you have enrolled in. Start learning now!</p>
@@ -19,8 +19,9 @@
       </div>
         <hr class="border-gray-300 w-full mt-4 mb-2"/>
       <!-- Courses enrolled -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-        <div class="bg-gray-100 col-span-2 lg:col-span-3 relative flex flex-col gap-4 p-6 shadow-lg rounded-xl border border-gray-300 min-h-[250px]">
+      <div *ngIf="userEnrollments && userEnrollments.content && userEnrollments.content.length > 0; else noCourses" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        <div *ngFor="let enrollment of userEnrollments.content"
+          class="bg-gray-100 col-span-2 lg:col-span-3 relative flex flex-col gap-4 p-6 shadow-lg rounded-xl border border-gray-300 min-h-[250px]">
           <!-- Progress Circle (Top Right) -->
           <div class="absolute top-4 right-4 w-16 h-16">
             <svg class="w-full h-full" viewBox="0 0 36 36">
@@ -29,7 +30,7 @@
                       stroke-dasharray="100" stroke-dashoffset="50"></circle>
             </svg>
             <div class="absolute inset-0 flex items-center justify-center">
-              <p class="text-blue-500 font-semibold text-lg">50%</p>
+              <p class="text-blue-500 font-semibold text-lg">0%</p>
             </div>
           </div>
           <!-- Course Image & Info -->
@@ -37,17 +38,17 @@
             <!-- Course Image -->
             <div class="w-32 h-32 shrink-0 rounded-lg overflow-hidden">
               <img class="w-full h-full object-cover"
-                   src="http://res.cloudinary.com/do9a5sjgi/image/upload/v1738056927/e-learning/Screenshot%202024-10-19%20004028.png.png"
+                   src="{{enrollment.course.courseUrlImage}}"
                    alt="course" />
             </div>
             <!-- Course Info -->
             <div class="flex-1">
-              <h3 class="text-xl font-semibold">Course Name</h3>
-              <p class="text-gray-600 text-lg">Instructor: <span class="font-semibold">Instructor Name</span></p>
+              <h3 class="text-xl font-semibold">{{enrollment.course.courseName}}</h3>
+              <p class="text-gray-600 text-lg">Instructor: <span class="font-semibold">{{enrollment.course.instructorName}}</span></p>
             </div>
           </div>
           <!-- Go to Course Button (Below) -->
-          <button class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-100 text-blue-600 rounded-lg border border-blue-300
+          <button (click)="redirectToCourse(enrollment.course.courseId)" class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-100 text-blue-600 rounded-lg border border-blue-300
                   hover:bg-blue-500 hover:text-white transition text-lg">
             <p class="font-semibold">Go to course</p>
             <i class="pi pi-eye"></i>
@@ -57,8 +58,17 @@
     </div>
     </div>
   <div>
+    <ng-template #noCourses>
+      <div class="flex flex-col items-center justify-center min-h-screen">
+        <h2 class="text-2xl font-semibold text-gray-700">Your cart is empty</h2>
+        <p class="text-gray-600 mt-2">Browse courses and add them to your cart.</p>
+        <button routerLink="/courses" class="mt-4 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold
+      hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-md">
+          Browse Courses
+        </button>
+      </div>
+    </ng-template>
   </div>
-
 </section>
 
 

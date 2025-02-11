@@ -10,6 +10,7 @@ import com.jonnie.elearning.course.requests.UpdateSectionRequest;
 import com.jonnie.elearning.course.responses.AllSectionId;
 import com.jonnie.elearning.course.responses.SectionResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
+import com.jonnie.elearning.feign.enrollment.EnrollmentClient;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class SectionService {
     private final CourseRepository courseRepository;
     private final SectionRepository sectionRepository;
     private final S3Client amazonS3;
-    ;
+    private final EnrollmentClient enrollmentClient;
     private final CourseMapper courseMapper;
     @Value("${application.aws.bucket-name}")
     private String awsBucketName;
@@ -83,6 +84,7 @@ public class SectionService {
     public PageResponse<SectionResponse> findSectionsByCourse(String courseId, int page, int size) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found"));
+        enrollmentClient.initializeProgress(courseId);
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<Section> sections = sectionRepository.findByCourse(course, pageable);
         List<SectionResponse> sectionResponses = sections.stream()

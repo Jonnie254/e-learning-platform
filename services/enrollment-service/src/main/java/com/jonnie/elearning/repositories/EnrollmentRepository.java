@@ -1,6 +1,8 @@
 package com.jonnie.elearning.repositories;
 
 import com.jonnie.elearning.enrollment.Enrollment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,4 +17,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, String> 
 
     @Query("SELECT e FROM Enrollment e WHERE e.userId = :userId")
     List<Enrollment> findByUserId(String userId);
+
+    @Query("SELECT e FROM Enrollment e WHERE e.userId = :userId")
+    Page<Enrollment> findByUsersId(String userId, Pageable pageable);
 }
