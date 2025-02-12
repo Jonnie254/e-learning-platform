@@ -97,8 +97,8 @@ export class EnrollmentService {
     return this.http.get<SectionStatus>(`${this.baseUrl}/get-section-status/${sectionId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
-  }
 
+  }
 
   //method to complete a section
   completeSection(sectionId: string) {
@@ -107,5 +107,14 @@ export class EnrollmentService {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
+
+  //method to get the progress of the course
+  getCourseProgess(courseId:string){
+    const token = this.authService.getToken();
+    return this.http.get<{progress: number}>(`${this.baseUrl}/get-progress-by-course/${courseId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
 }
 

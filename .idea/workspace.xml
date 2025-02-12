@@ -8,24 +8,22 @@
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/app.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/cart-details/cart-details.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/cart-details/cart-details.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/course-details/course-details.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/course-details/course-details.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/course-details/course-details.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/course-details/course-details.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/login/login.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/services/courses-service.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/services/courses-service.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/services/auth-service.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/services/auth-service.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/services/enrollment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/services/enrollment.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/confirmation-dialog/confirmation-dialog.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/confirmation-dialog/confirmation-dialog.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/pagination/pagination.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/pagination/pagination.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/navbar/navbar.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/navbar/navbar.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/CourseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/CourseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/SectionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/SectionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/AuthenticationServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/AuthenticationServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/authentication-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/authentication-service.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/EnrollmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/EnrollmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/openfeign/course/CourseClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/openfeign/course/CourseClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/repositories/EnrollmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/repositories/EnrollmentRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,9 +36,9 @@
       <list>
         <option value="HTML File" />
         <option value="Enum" />
-        <option value="Interface" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -140,10 +138,10 @@
       <recent name="com.jonnie.elearning" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.jonnie.elearning.openfeign" />
       <recent name="com.jonnie.elearning.openfeign.course" />
       <recent name="com.jonnie.elearning.kafka" />
       <recent name="com.jonnie.elearning.payment" />
-      <recent name="com.jonnie.elearning.openfeign" />
       <recent name="com.jonnie.elearning.utils" />
     </key>
   </component>
@@ -377,7 +375,9 @@
       <workItem from="1739169831856" duration="19588000" />
       <workItem from="1739208271939" duration="16314000" />
       <workItem from="1739258728181" duration="9805000" />
-      <workItem from="1739290965880" duration="4154000" />
+      <workItem from="1739290965880" duration="14690000" />
+      <workItem from="1739371622304" duration="2306000" />
+      <workItem from="1739375560775" duration="8465000" />
     </task>
     <servers />
   </component>
@@ -391,11 +391,6 @@
           <properties class="io.jsonwebtoken.ExpiredJwtException" package="io.jsonwebtoken" />
           <option name="timeStamp" value="6" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/e-learning-ui/src/app/student-pages/courses/courses.component.ts</url>
-          <line>2</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

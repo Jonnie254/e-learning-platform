@@ -42,5 +42,8 @@ export const routes: Routes = [
   },
   {
     path:'enrolled-course/:courseId', loadComponent: () => import('./student-pages/enrolled-course/enrolled-course.component').then(m => m.EnrolledCourseComponent)
+  },
+  {
+    path:'request-role', loadComponent: () => import('./auth-pages/request-role/request-role.component').then(m => m.RequestRoleComponent)
   }
 ];

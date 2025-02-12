@@ -29,6 +29,8 @@ spring:
       max-request-size: 50MB
 
 application:
+  config:
+    enrollment-url: http://localhost:8222/api/v1/enrollments
   mailing:
     frontend:
       activationUrl: http://localhost:4200/activate-account

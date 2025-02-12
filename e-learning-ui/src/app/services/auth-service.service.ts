@@ -128,4 +128,17 @@ export class AuthService {
   isAuthenticated() {
     return this.isAuthenticatedSubject.value;
   }
+
+  makeRoleRequest() {
+    const token = this.getToken();
+    const body = {
+      roleRequest: { requestedRole: "INSTRUCTOR" },
+      status: "PENDING"
+    };
+
+    return this.http.post(`${this.baseUrl}/request-instructor`, body, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
 }

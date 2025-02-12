@@ -27,10 +27,11 @@
             <svg class="w-full h-full" viewBox="0 0 36 36">
               <circle class="text-gray-200 stroke-current" stroke-width="3" cx="18" cy="18" r="15" fill="none"></circle>
               <circle class="text-blue-400 stroke-current" stroke-width="3" cx="18" cy="18" r="15" fill="none"
-                      stroke-dasharray="100" stroke-dashoffset="50"></circle>
+                      [attr.stroke-dasharray]="progressCircleDashArray(enrollment.course.progress)"
+                      [attr.stroke-dashoffset]="progressCircleDashOffset(enrollment.course.progress)"></circle>
             </svg>
             <div class="absolute inset-0 flex items-center justify-center">
-              <p class="text-blue-500 font-semibold text-lg">0%</p>
+              <p class="text-blue-500 font-semibold text-sm">{{ enrollment.course.progress }}%</p>
             </div>
           </div>
           <!-- Course Image & Info -->
@@ -59,9 +60,9 @@
     </div>
   <div>
     <ng-template #noCourses>
-      <div class="flex flex-col items-center justify-center min-h-screen">
-        <h2 class="text-2xl font-semibold text-gray-700">Your cart is empty</h2>
-        <p class="text-gray-600 mt-2">Browse courses and add them to your cart.</p>
+      <div class="flex flex-col items-center  min-h-screen">
+        <h2 class="text-2xl font-semibold text-gray-700">Your enrolled course is empty</h2>
+        <p class="text-gray-600 mt-2">Browse courses to enroll.</p>
         <button routerLink="/courses" class="mt-4 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold
       hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-md">
           Browse Courses

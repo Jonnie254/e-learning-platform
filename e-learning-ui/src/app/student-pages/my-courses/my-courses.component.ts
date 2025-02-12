@@ -21,6 +21,7 @@ export class MyCoursesComponent {
   userEnrollments: enrollmentResponse = {} as enrollmentResponse;
 
 
+
   constructor(
     private enrollmentService: EnrollmentService,
     private router: Router
@@ -31,8 +32,10 @@ export class MyCoursesComponent {
   getUserEnrollments() {
     this.enrollmentService.getEnrollments().subscribe({
       next: (response) => {
-        console.log('User enrollments:', response);
         this.userEnrollments = response;
+        this.userEnrollments.content.forEach((enrollment) => {
+          this.getCourseProgress(enrollment.course.courseId);
+        });
       },
       error: (error) => {
         console.error('Error fetching user enrollments:', error);
@@ -40,8 +43,34 @@ export class MyCoursesComponent {
     })
   }
 
+  getCourseProgress(courseId: string){
+    this.enrollmentService.getCourseProgess(courseId).subscribe({
+      next: (response) =>{
+        const course = this.userEnrollments.content.
+        find((enrollment) => enrollment.course.courseId === courseId);
+        if(course){
+          course.course.progress = response.progress;
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching course progress:', error);
+      }
+    });
+  }
+
   redirectToCourse(courseId: string) {
     this.router.navigate(['/enrolled-course', courseId]);
 
   }
+
+  progressCircleDashArray(progress: number): string {
+    return `${progress * 0.628} 94.2`;
+  }
+
+  progressCircleDashOffset(progress: number): string {
+    return `${94.2 - (progress * 0.628)}`;
+  }
+
+
+
 }

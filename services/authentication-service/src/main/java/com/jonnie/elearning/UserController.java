@@ -1,6 +1,8 @@
 package com.jonnie.elearning;
 
 import com.jonnie.elearning.common.PageResponse;
+import com.jonnie.elearning.exceptions.InvalidRoleRequestException;
+import com.jonnie.elearning.openfeign.enrollment.EnrollmentClient;
 import com.jonnie.elearning.role.RoleResponse;
 import com.jonnie.elearning.role.UserRoleRequest;
 import com.jonnie.elearning.services.AuthenticationResponse;
@@ -18,12 +20,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final EnrollmentClient enrollmentClient;
 
     // method to register a new user
     @PostMapping("/register")
@@ -63,12 +68,21 @@ public class UserController {
 
     // method to request to become an instructor
     @PostMapping("/request-instructor")
-    public ResponseEntity<Void> requestInstructor(
+    public ResponseEntity<Map<String, String>> requestInstructor(
             @RequestHeader("X-User-Id") String userId,
             @RequestBody @Valid UserRoleRequest userRoleRequest
     ) {
-        userService.requestInstructor(userId, userRoleRequest);
-        return ResponseEntity.accepted().build();
+        try {
+            boolean hasEnrollments = enrollmentClient.hasEnrollments(userId);
+            if (hasEnrollments) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Since you've purchased courses using this account, you are restricted from becoming an instructor." +
+                        " Please contact support for assistance or consider using a different account for instructor access."));
+            }
+            userService.requestInstructor(userId, userRoleRequest);
+            return ResponseEntity.accepted().build();
+        } catch (InvalidRoleRequestException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
     //get user details via the id
     @GetMapping("/user/{user-id}")
@@ -98,11 +112,11 @@ public class UserController {
         }
         return ResponseEntity.ok(userService.getAllActiveUsers(page, size, userId));
     }
+
     //get all the role requests
     @GetMapping("/all-role-requests")
     public  ResponseEntity<PageResponse<RoleResponse>> getAllRoleRequests(
             @RequestHeader("X-User-Role") String userRole,
-            @RequestHeader("X-User-Id") String userId,
             @RequestParam(name="page", defaultValue = "0", required = false) int page,
             @RequestParam(name="size", defaultValue = "10", required = false) int size
     ) {
@@ -122,7 +136,6 @@ public class UserController {
         if (!"ADMIN".equalsIgnoreCase(userRole)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-
         return switch (action.toLowerCase()) {
             case "approve" -> {
                 userService.approveRoleRequest(requestId, userId);

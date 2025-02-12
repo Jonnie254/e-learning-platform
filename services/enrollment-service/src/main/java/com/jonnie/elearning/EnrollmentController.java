@@ -8,6 +8,7 @@ import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.enrollment.EnrollmentResponse;
 import com.jonnie.elearning.enrollment.EnrollmentService;
 import com.jonnie.elearning.exceptions.BusinessException;
+import com.jonnie.elearning.progress.ProgressResponse;
 import com.jonnie.elearning.progress.ProgressService;
 import com.jonnie.elearning.progress.SectionStatusResponse;
 import com.jonnie.elearning.utils.ROLE;
@@ -199,10 +200,28 @@ public class EnrollmentController {
         } catch (BusinessException e) {
             return ResponseEntity.status(BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
         } catch (Exception e) {
-            log.error("An unexpected error occurred", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
         }
+    }
+
+    //get the progress of the user
+    @GetMapping("/get-progress-by-course/{courseId}")
+    public ResponseEntity<ProgressResponse> getProgress(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @PathVariable("courseId") String courseId
+    ) {
+        validateUser(userId, userRole, ROLE.STUDENT);
+        return ResponseEntity.ok(progressService.getProgress(userId, courseId));
+    }
+
+    //check if the user has exists in enrollment
+    @PostMapping("/check-user-enrollment-status/{userId}")
+    public ResponseEntity<Boolean> hasEnrollments(
+            @PathVariable("userId") String userId
+    ) {
+        return ResponseEntity.ok(enrollmentService.hasEnrollments(userId));
     }
 
 }

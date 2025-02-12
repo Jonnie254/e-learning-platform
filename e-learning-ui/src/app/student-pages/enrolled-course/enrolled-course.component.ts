@@ -29,7 +29,6 @@ export class EnrolledCourseComponent {
   size: number = 5;
   courseId!: string;
   courseSection: PageResponse<CourseSection> = {};
-
   isConfirmationDialogVisible: boolean = false;
   modalTitle: string = '';
   modalMessage: string = '';
@@ -70,24 +69,43 @@ export class EnrolledCourseComponent {
       });
    }
 
-   getSectionStatus(sectionId: string){
+  getSectionStatus(sectionId: string) {
     this.enrollmentService.getSectionStatus(sectionId).subscribe({
-      next:(response =>{
-        const section = this.courseSection.content?.find(section => section.sectionId === sectionId);
-        if(section){
+      next: (response) => {
+        const section = this.courseSection.content?.find(s => s.sectionId === sectionId);
+        if (section) {
           section.isCompleted = response.isCompleted;
+          console.log(`Section ${sectionId} completed status:`, section.isCompleted);
         }
-      })
+      },
+      error: (error) => {
+        console.error('Error fetching section status:', error);
+      }
     });
-   }
+  }
 
-   totalPages() {
-     return this.courseSection.totalPages as number;
-   }
-
-    onPageChange(newPage: number) {
-    this.page = newPage;
-    this.getCourseSections();
+  toggleCompletion(sectionId: string) {
+    const section = this.courseSection.content?.find(sec => sec.sectionId === sectionId);
+    if (!section) return;
+    this.enrollmentService.completeSection(sectionId).subscribe({
+      next: () => {
+        this.notification = {
+          show: true,
+          message: 'Section completed successfully',
+          type: 'success'
+        };
+        section.isCompleted = true;
+        setTimeout(() => this.closeNotification(), 5000);
+      },
+      error: (error) => {
+        console.error('Error completing section:', error);
+        this.notification = {
+          show: true,
+          message: 'Error completing section',
+          type: 'error'
+        };
+      }
+    });
   }
 
   showConfirmationDialog(sectionId:string){
@@ -101,26 +119,15 @@ export class EnrolledCourseComponent {
     this.actionType = 'complete';
   }
 
-  toggleCompletion(sectionId: string) {
-    this.enrollmentService.completeSection(sectionId).subscribe({
-      next: () =>{
-        this.notification = {
-          show: true,
-          message: 'Section completed successfully',
-          type: 'success'
-        }
-        setTimeout(() => this.closeNotification(), 5000);
-        this.getSectionStatus(sectionId);
-      },
-      error: (error) => {
-        console.error('Error completing section:', error);
-        this.notification = {
-          show: true,
-          message: 'Error completing section',
-          type: 'error'
-        }
-      }
-    });
+
+
+  totalPages() {
+    return this.courseSection.totalPages as number;
+  }
+
+  onPageChange(newPage: number) {
+    this.page = newPage;
+    this.getCourseSections();
   }
   toggleSectionExpansion(section: CourseSection) {
     section.expanded = !section.expanded;

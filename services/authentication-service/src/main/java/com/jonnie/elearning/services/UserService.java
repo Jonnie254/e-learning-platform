@@ -230,7 +230,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
         // Check if the requested role is 'INSTRUCTOR'
-        if (userRoleRequest.roleRequest().getRequestedRole() != ROLE.INSTRUCTOR) {
+        if (!userRoleRequest.roleRequest().getRequestedRole().equals(ROLE.INSTRUCTOR)) {
             throw new InvalidRoleRequestException("Only INSTRUCTOR role can be requested.");
         }
 
@@ -239,14 +239,12 @@ public class UserService {
         if (existingRequest) {
             throw new InvalidRoleRequestException("You already have a pending request to become an instructor.");
         }
-
         // Create a new RoleRequest object with 'PENDING' status
         RoleRequest roleRequest = RoleRequest.builder()
                 .user(existingUser)
                 .requestedRole(ROLE.INSTRUCTOR)
                 .status(RoleRequestStatus.PENDING)
                 .build();
-
         // Save the RoleRequest to the repository
         roleRequestRepository.save(roleRequest);
     }

@@ -66,6 +66,7 @@ export interface courseDetails {
   courseName: string;
   courseUrlImage: string;
   instructorName: string;
+  progress: number;
 }
 
 
@@ -82,4 +83,8 @@ export interface CourseSection {
 export  interface SectionStatus {
   sectionId: string;
   isCompleted: boolean;
+}
+
+export interface ProgressResponse {
+  progress: number;
 }

@@ -46,4 +46,8 @@ public class EnrollmentService {
                 .totalElements(enrollments.getTotalElements())
                 .build();
     }
+
+    public Boolean hasEnrollments(String userId) {
+        return enrollmentRepository.existsByUserId(userId);
+    }
 }

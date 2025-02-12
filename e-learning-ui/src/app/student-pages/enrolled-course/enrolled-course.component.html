@@ -1,5 +1,6 @@
 <app-navbar></app-navbar>
-<app-confirmation-dialog  [isVisible] = "isConfirmationDialogVisible"
+<app-confirmation-dialog
+  [isVisible] = "isConfirmationDialogVisible"
                           [title]="modalTitle"
                           [message]="modalMessage"
                           [iconClass]="modalIconClass"
@@ -16,7 +17,7 @@
   (close)="closeNotification()">
 </app-notifications>
 
-<main class="font-sans  px-8 min-h-screen bg-white">
+<main class="font-sans px-8 min-h-screen bg-white">
   <div class="items-center w-full max-w-screen-xl gap-8 px-4 py-8 mx-auto xl:gap-16 md:grid md:grid-cols-2 sm:py-8 lg:px-6">
     <div class="md:col-span-2">
       <div class="border-2 p-4 w-full">

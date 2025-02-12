@@ -12,7 +12,6 @@
     <h2 class="text-center text-2xl font-semibold mb-6">Login</h2>
 
     <form #loginForm="ngForm" (ngSubmit)="onLogin()" class="space-y-6">
-
       <div class="relative flex items-center mb-3">
         <i class="pi pi-envelope absolute right-3 text-gray-400"></i>
         <input type="email" placeholder="Email" name="email" [(ngModel)]="loginData.email" required

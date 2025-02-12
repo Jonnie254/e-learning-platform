@@ -20,4 +20,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, String> 
 
     @Query("SELECT e FROM Enrollment e WHERE e.userId = :userId")
     Page<Enrollment> findByUsersId(String userId, Pageable pageable);
+
+    Boolean existsByUserId(String userId);
 }
