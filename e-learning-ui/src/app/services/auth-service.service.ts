@@ -12,6 +12,7 @@ export class AuthService {
   baseUrl: string = 'http://localhost:8222/api/v1/users';
   isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private userIdSubject = new BehaviorSubject<string>('');
+  private userRoleSubject = new BehaviorSubject<string | null>(null);
   redirectUrl: string | null = null;
 
   constructor(private http: HttpClient, private router: Router) {
@@ -21,6 +22,11 @@ export class AuthService {
   // Method to get the token from localStorage
   getToken(): string {
     return localStorage.getItem('token') || '';
+  }
+
+  // Method to get the user role
+  get userRole$(): Observable<string | null> {
+    return this.userRoleSubject.asObservable();
   }
 
   // Register the user
@@ -46,7 +52,7 @@ export class AuthService {
       tap((res: UserDetailsResponse) => {
         console.log('User details response:', res);
         if (res && res.role) {
-          console.log('User role:', res.role);
+          this.userRoleSubject.next(res.role);
           this.redirectBasedOnRole(res.role);
         } else {
           console.error('User details are missing!');
@@ -60,15 +66,19 @@ export class AuthService {
     );
   }
 
+  // Check if user is authenticated and set the role if needed
   checkAuthStatus() {
     const token = localStorage.getItem('token');
     const isAuthenticated = !!token;
     this.isAuthenticatedSubject.next(isAuthenticated);
-    if (isAuthenticated) {
+
+    // Only fetch user details if the role is not already set
+    if (isAuthenticated && !this.userRoleSubject.value) {
       this.getUserDetails().subscribe({
         next: (res: UserDetailsResponse) => {
           if (res.id) {
             this.userIdSubject.next(res.id);
+            this.userRoleSubject.next(res.role);
           } else {
             this.userIdSubject.next('');
           }
@@ -84,7 +94,7 @@ export class AuthService {
     }
   }
 
-  get AuthChanged$(): Observable<boolean>{
+  get AuthChanged$(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
   }
 
@@ -92,6 +102,7 @@ export class AuthService {
     return this.userIdSubject.asObservable();
   }
 
+  // Get user details from the API
   getUserDetails() {
     const token = localStorage.getItem('token');
     return this.http.get<UserDetailsResponse>(`${this.baseUrl}/user-details`, {
@@ -99,14 +110,15 @@ export class AuthService {
     });
   }
 
+  // Redirect based on the role
   private redirectBasedOnRole(role: string) {
     let redirectUrl = '';
     switch (role) {
       case 'ADMIN':
-        redirectUrl = '/admin-dashboard';
+        redirectUrl = '/dashboard';
         break;
       case 'INSTRUCTOR':
-        redirectUrl = '/instructor-dashboard';
+        redirectUrl = '/dashboard';
         break;
       case 'STUDENT':
         redirectUrl = '/landing-page';
@@ -118,17 +130,21 @@ export class AuthService {
     this.router.navigate([redirect]);
   }
 
+  // Logout the user and redirect to login page
   logout() {
     localStorage.removeItem('token');
     this.isAuthenticatedSubject.next(false);
+    this.userRoleSubject.next(null);
     this.userIdSubject.next('');
     this.router.navigate(['/login']);
   }
 
+  // Check if the user is authenticated
   isAuthenticated() {
     return this.isAuthenticatedSubject.value;
   }
 
+  // Make a request to change the user's role
   makeRoleRequest() {
     const token = this.getToken();
     const body = {
@@ -140,5 +156,4 @@ export class AuthService {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
-
 }

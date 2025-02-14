@@ -6,25 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/app.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/login/login.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/register/register.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/register/register.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/cart-details/cart-details.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/cart-details/cart-details.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/course-details/course-details.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/courses-pages/course-details/course-details.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/services/auth-service.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/services/auth-service.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/services/enrollment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/services/enrollment.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/navbar/navbar.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/navbar/navbar.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/AuthenticationServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/AuthenticationServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/authentication-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/authentication-service.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/EnrollmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/EnrollmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/EnrollmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/repositories/EnrollmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/repositories/EnrollmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/com/jonnie/elearning/PaymentController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +42,7 @@
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 2
+  &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2rl0NiHe4WuTUSR6q5gP9K8WSrP" />
   <component name="ProjectLevelVcsManager">
@@ -65,53 +54,54 @@
     <option name="showLibraryContents" value="true" />
     <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.ConfigServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.DiscoveryServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.GatewayMsApplication.executor&quot;: &quot;Run&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Maven.config-server [clean].executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.AuthenticationServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ConfigServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.CourseServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.DiscoveryServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.EnrollmentServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.GatewayMsApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.NotificationServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.PaymentServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
-    &quot;database.data.extractors.current.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jonnie/Desktop/e-learning-platform&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\jonnie\\Desktop\\e-learning-platform\\e-learning-ui\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ConfigServerApplication.executor": "Run",
+    "Application.DiscoveryServiceApplication.executor": "Run",
+    "Application.GatewayMsApplication.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Maven.config-server [clean].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.AuthenticationServiceApplication.executor": "Run",
+    "Spring Boot.ConfigServerApplication.executor": "Run",
+    "Spring Boot.CourseServiceApplication.executor": "Run",
+    "Spring Boot.DiscoveryServiceApplication.executor": "Run",
+    "Spring Boot.EnrollmentServiceApplication.executor": "Run",
+    "Spring Boot.GatewayMsApplication.executor": "Run",
+    "Spring Boot.NotificationServiceApplication.executor": "Run",
+    "Spring Boot.PaymentServiceApplication.executor": "Run",
+    "dart.analysis.tool.window.visible": "false",
+    "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
+    "database.data.extractors.current.id": "Comma-separated (CSV)_id",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/jonnie/Desktop/e-learning-platform",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.0",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "show.migrate.to.gradle.popup": "false",
+    "ts.external.directory.path": "C:\\Users\\jonnie\\Desktop\\e-learning-platform\\e-learning-ui\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -298,8 +288,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.24807.4" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.24807.4" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
       </set>
     </attachedChunks>
   </component>
@@ -377,7 +367,9 @@
       <workItem from="1739258728181" duration="9805000" />
       <workItem from="1739290965880" duration="14690000" />
       <workItem from="1739371622304" duration="2306000" />
-      <workItem from="1739375560775" duration="8465000" />
+      <workItem from="1739375560775" duration="13461000" />
+      <workItem from="1739543413205" duration="323000" />
+      <workItem from="1739543908568" duration="23305000" />
     </task>
     <servers />
   </component>

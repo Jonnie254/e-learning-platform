@@ -14,7 +14,6 @@ import {AuthService} from '../../services/auth-service.service';
     NotificationsComponent,
     FormsModule,
     NgIf,
-    NgOptimizedImage
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'

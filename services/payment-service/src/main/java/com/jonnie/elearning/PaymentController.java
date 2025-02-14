@@ -42,7 +42,7 @@ public class PaymentController {
             boolean isPaymentSuccess = paymentService.completePayPalPayment(paymentId, token, payerId);
             if (isPaymentSuccess) {
                 return ResponseEntity.status(HttpStatus.FOUND)
-                        .header(HttpHeaders.LOCATION, "http://localhost:4200/payment-success")
+                        .header(HttpHeaders.LOCATION, "http://localhost:4200/my-courses")
                         .build();
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

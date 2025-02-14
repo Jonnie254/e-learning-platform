@@ -1,0 +1,121 @@
+<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+  <div class="px-6 py-3 lg:px-5 lg:pl-3">
+    <div class="flex items-center justify-between">
+      <!-- Left: Logo -->
+      <div class="flex items-center justify-center rtl:justify-end">
+        <button class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline">
+        </button>
+        <a class="flex gap-2 ms-2 md:me-24" routerLink="dashboard">
+          <img src="skillverse.png" alt="Skillverse" class="w-10 h-10">
+          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-gray-700 dark:text-gray-200 cursor-pointer">
+            SkillVerse
+          </span>
+        </a>
+      </div>
+
+      <!-- Right: User Profile -->
+      <div class="flex items-center relative">
+        <div class="flex items-center ms-3">
+          <!-- Profile Button -->
+          <div class="flex items-center" (click)="toggleDropdown()">
+            <button
+                    class="flex text-sm items-center bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 hover:ring-2 hover:ring-gray-300 dark:hover:ring-gray-500">
+              <span class="sr-only">User menu</span>
+              <img [src]="user.profilePicUrl ? user.profilePicUrl : 'profilepic.svg'" class="w-12 h-12 rounded-full sm:w-10 sm:h-10" alt="Profile picture">
+            </button>
+            <i class="pi pi-chevron-down w-5 h-5 text-gray-500 dark:text-gray-400 ml-2"></i>
+          </div>
+          <!-- Dropdown Menu -->
+          <div *ngIf="isDropdownOpen" class="absolute right-0 top-14 z-50 my-4 w-48 text-base bg-white dark:bg-gray-700 divide-y divide-gray-100 rounded-lg shadow-lg">
+            <div class="px-4 py-2">
+              <p class="text-md text-gray-900 dark:text-gray-300">{{user.email}}</p>
+            </div>
+            <ul class="py-1">
+              <li>
+                <a class="block px-4 py-2 text-sm text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer" routerLink="profile">
+                  Profile
+                </a>
+              </li>
+              <li>
+                <a class="block px-4 py-2 text-sm text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer" (click)="logout()">
+                  Log out
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<aside id="logo-sidebar"
+       class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-blue-900 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+       aria-label="Sidebar">
+  <div class="h-full px-3 pb-4 overflow-y-auto bg-blue-900 dark:bg-gray-800">
+    <ul class="space-y-2 font-medium">
+      <li *ngIf="(userRole$ | async) === 'ADMIN'">
+        <a routerLink="admin-analytics" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center p-2 text-gray-100 font-semibold rounded-lg  dark:text-white hover:bg-white hover:text-red-500 dark:hover:bg-gray-700 group">
+          <i
+            class="pi pi-gauge w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+          <span class="ms-3">Dashboard</span>
+        </a>
+      </li>
+      <li *ngIf="(userRole$ | async) === 'INSTRUCTOR'">
+        <a routerLink="instructor-analytics" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center p-2 text-gray-100 font-semibold rounded-lg  dark:text-white hover:bg-white hover:text-red-500 dark:hover:bg-gray-700 group">
+          <i
+            class="pi pi-gauge w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+          <span class="ms-3">Dashboard</span>
+        </a>
+      </li>
+      <li *ngIf="(userRole$ | async) === 'ADMIN' || (userRole$ | async) === 'INSTRUCTOR'">
+        <a routerLink="manage-courses" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center p-2 text-gray-100 font-semibold rounded-lg dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-gray-700 group">
+          <i
+            class="pi pi-calendar  w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+          <span class="flex-1 ms-3 whitespace-nowrap">Manage Courses</span>
+        </a>
+      </li>
+      <li *ngIf="(userRole$ | async) === 'INSTRUCTOR'">
+        <a routerLink="inbox" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center p-2 text-gray-100 font-semibold rounded-lg hover:text-red-500 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <i
+            class="pi pi-inbox w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+          <span class="flex-1 ms-3 whitespace-nowrap">Inbox</span>
+          <span
+            class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
+        </a>
+      </li>
+      <li *ngIf="(userRole$ | async) === 'ADMIN'">
+        <a routerLink="users" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center p-2 text-gray-100 font-semibold hover:text-red-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <i
+            class="pi pi-users  w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 group-hover:text-red-500 dark:group-hover:text-white"></i>
+          <span class="flex-1 ms-3 whitespace-nowrap">Manage Users</span>
+        </a>
+      </li>
+      <li *ngIf="(userRole$ | async) === 'ADMIN' || (userRole$ | async) === 'INSTRUCTOR'">
+        <a routerLink="profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center p-2 text-gray-100 font-semibold rounded-lg hover:text-red-500 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <i  class="pi
+pi-user w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+          <span class="flex-1 ms-3 whitespace-nowrap">Profile</span>
+        </a>
+      </li>
+      <li *ngIf="(userRole$ | async) === 'ADMIN' || (userRole$ | async) === 'INSTRUCTOR'">
+        <a (click)="logout()"
+           class="flex items-center p-2 text-gray-100 font-semibold hover:text-red-500 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <i
+            class="pi pi-sign-out  w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+          <span class="flex-1 ms-3 whitespace-nowrap">Log out</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</aside>
+<div class="p-4 sm:ml-64">
+  <div class="p-4  border-gray-200 rounded-lg dark:border-gray-700 mt-10">
+    <router-outlet></router-outlet>
+  </div>
+</div>

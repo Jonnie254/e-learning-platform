@@ -73,18 +73,27 @@ export class CartDetailsComponent {
   }
 
   confirmAction() {
+    console.log(`Confirming action...`);
+    console.log(`Action Type: ${this.actionType}`);
+    console.log(`Item to Remove ID: ${this.itemToRemoveId}`);
+
     if (this.actionType === 'remove' && this.itemToRemoveId) {
+      console.log(`✅ Removing item with ID: ${this.itemToRemoveId}`);
       this.removeItem(this.itemToRemoveId);
     } else if (this.actionType === 'checkout') {
+      console.log('✅ Proceeding to checkout...');
       this.checkoutFromCart();
     } else {
+      console.error('❌ Error: Invalid action type or missing item ID.');
       this.notification = {
         show: true,
         message: 'An error occurred while processing the action',
         type: 'error'
       };
     }
+
     setTimeout(() => {
+      console.log('🛑 Closing modal and notification...');
       this.closeModal();
       this.closeNotification();
     }, 3000);
@@ -92,7 +101,13 @@ export class CartDetailsComponent {
 
 
   showConfirmationDialog(courseId: string) {
+    if (!courseId) {
+      console.error("❌ Error: Invalid course ID provided to showConfirmationDialog.");
+      return;
+    }
     this.itemToRemoveId = courseId;
+    console.log(`📌 Setting itemToRemoveId to: ${this.itemToRemoveId}`);
+
     this.modalTitle = 'Remove Course from Cart';
     this.modalMessage = 'Are you sure you want to remove this item from your cart?';
     this.modalIconClass = 'pi pi-trash';
@@ -103,6 +118,7 @@ export class CartDetailsComponent {
 
 
   showCheckoutDialog() {
+    this.actionType = 'checkout';
     this.modalTitle = 'Checkout';
     this.modalMessage = 'Are you sure you want to checkout?';
     this.modalIconClass = 'pi pi-check';
