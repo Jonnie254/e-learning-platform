@@ -1,6 +1,7 @@
 package com.jonnie.elearning.cart;
 
 import com.jonnie.elearning.cartitem.CartItem;
+import com.jonnie.elearning.utils.CartStatus;
 import com.jonnie.elearning.utils.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,8 @@ public class Cart {
     private BigDecimal totalAmount;
     @Enumerated(EnumType.STRING)
     PaymentMethod paymentMethod;
+    @Enumerated(EnumType.STRING)
+    private CartStatus status;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)

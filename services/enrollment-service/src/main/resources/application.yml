@@ -12,13 +12,13 @@ spring:
          spring.json.type.mapping: cartConfirmation:com.jonnie.elearning.kafka.cart.CartConfirmation
     consumer:
       bootstrap-servers: localhost:9092
-      group-id: enrollment-group
+      group-id: enrollment-group, cart-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
         #point to the class that will be used to deserialize the message
-        spring.json.type.mapping: enrollmentConfirmation:com.jonnie.elearning.kafka.enrollment.EnrollmentConfirmation
+        spring.json.type.mapping: enrollmentConfirmation:com.jonnie.elearning.kafka.enrollment.EnrollmentConfirmation, cartNotification:com.jonnie.elearning.kafka.cart.CartNotification
       auto-offset-reset: earliest
 
 

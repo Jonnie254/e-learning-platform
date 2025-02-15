@@ -14,4 +14,18 @@ public class KafkaTopic {
                 .name("enrollment-topic")
                 .build();
     }
+
+    @Bean
+    public NewTopic payment(){
+        return TopicBuilder
+                .name("payment-topic")
+                .build();
+    }
+
+    @Bean
+    public NewTopic cart(){
+        return TopicBuilder
+                .name("cart-status-topic")
+                .build();
+    }
 }

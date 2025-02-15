@@ -2,10 +2,14 @@ package com.jonnie.elearning.payment;
 
 import com.jonnie.elearning.config.paypal.PayPalClient;
 import com.jonnie.elearning.exceptions.BusinessException;
+import com.jonnie.elearning.kafka.cart.CartNotification;
+import com.jonnie.elearning.kafka.cart.CartProducer;
 import com.jonnie.elearning.kafka.enrollment.EnrollmentConfirmation;
 import com.jonnie.elearning.kafka.enrollment.EnrollmentProducer;
 import com.jonnie.elearning.kafka.notification.NotificationProducer;
 import com.jonnie.elearning.kafka.notification.PaymentNotificationRequest;
+import com.jonnie.elearning.kafka.payment.PaymentCompletedEvent;
+import com.jonnie.elearning.utils.CartStatus;
 import com.jonnie.elearning.utils.PaymentMethod;
 import com.paypal.api.payments.*;
 import com.paypal.api.payments.Payment;
@@ -14,8 +18,11 @@ import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 
 import java.util.ArrayList;
@@ -30,6 +37,8 @@ public class PaymentService {
     private final PayPalClient payPalClient;
     private final EnrollmentProducer enrollmentProducer;
     private final NotificationProducer notificationProducer;
+    private final CartProducer cartProducer;
+    private final ApplicationEventPublisher eventPublisher;
     @Value("${application.paypal-url.cancel-url}")
     private String cancelUrl;
     @Value("${application.paypal-url.success-url}")
@@ -88,7 +97,6 @@ public class PaymentService {
     @Transactional
     public boolean completePayPalPayment(String paymentId, String token, String payerId) {
         log.info("Starting PayPal payment execution. Payment ID: {}, Payer ID: {}", paymentId, payerId);
-
         try {
             Payment executedPayment = payPalClient.executePayment(paymentId, payerId);
             log.info("Payment execution response received. State: {}", executedPayment.getState());
@@ -100,31 +108,9 @@ public class PaymentService {
                 log.info("Payment record found. Marking as paid. Payment ID: {}", paymentId);
                 paymentRecord.setPaid(true);
                 paymentRepository.save(paymentRecord);
-                log.info("Payment record updated and saved successfully. Payment ID: {}", paymentId);
-
-                // Prepare and send payment notification
-                PaymentNotificationRequest paymentNotificationRequest = new PaymentNotificationRequest(
-                        paymentRecord.getCartReference(),
-                        paymentRecord.getAmount(),
-                        paymentRecord.getPaymentMethod(),
-                        paymentRecord.getCustomerFirstName(),
-                        paymentRecord.getCustomerLastName(),
-                        paymentRecord.getCustomerEmail()
-                );
-                log.info("Sending payment notification: {}", paymentNotificationRequest);
-                notificationProducer.sendPaymentNotification(paymentNotificationRequest);
-
-                // Prepare and send enrollment confirmation
-                EnrollmentConfirmation enrollmentConfirmation = new EnrollmentConfirmation(
-                        paymentRecord.getCourseIds(),
-                        paymentRecord.getUserId(),
-                        paymentRecord.isPaid(),
-                        paymentRecord.getPaymentMethod(),
-                        paymentRecord.getInstructorIds()
-                );
-                log.info("Sending enrollment confirmation: {}", enrollmentConfirmation);
-                enrollmentProducer.sendEnrollmentConfirmation(enrollmentConfirmation);
-
+                log.info("Payment record updated successfully. Payment ID: {}", paymentId);
+                log.info("Publishing the event. Payment ID: {}", paymentId);
+                eventPublisher.publishEvent(new PaymentCompletedEvent(this, paymentRecord));
                 log.info("PayPal payment process completed successfully. Payment ID: {}", paymentId);
                 return true;
             } else {
@@ -139,5 +125,6 @@ public class PaymentService {
             throw new BusinessException("Unexpected error executing payment: " + e.getMessage());
         }
     }
+
 
 }

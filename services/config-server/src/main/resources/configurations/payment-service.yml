@@ -14,7 +14,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-        spring.json.type.mapping: enrollmentConfirmation:com.jonnie.elearning.kafka.enrollment.EnrollmentConfirmation, paymentConfirmation:com.jonnie.elearning.kafka.notification.PaymentNotificationRequest
+        spring.json.type.mapping: enrollmentConfirmation:com.jonnie.elearning.kafka.enrollment.EnrollmentConfirmation, paymentConfirmation:com.jonnie.elearning.kafka.notification.PaymentNotificationRequest, cartNotification:com.jonnie.elearning.kafka.cart.CartNotification
 
 
 server:

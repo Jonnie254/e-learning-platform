@@ -29,7 +29,6 @@ export class RequestRoleComponent {
   modalIconClass: string = '';
   modalConfirmButtonText: string = '';
   modalCancelButtonText: string = '';
-  actionType: 'complete' | 'checkout' = 'complete';
 
   constructor(
     private authService: AuthService,
@@ -73,11 +72,9 @@ export class RequestRoleComponent {
       },
       error: (error) => {
         let errorMessage = 'Error submitting request. Please try again later.';
-
         if (error.status === 400 && error.error?.error) {
           errorMessage = error.error.error;
         }
-
         this.notification = {
           show: true,
           message: errorMessage,
@@ -85,7 +82,7 @@ export class RequestRoleComponent {
         };
         setTimeout(() => {
           this.closeNotification();
-        }, 3000);
+        }, 5000);
       }
     });
   }

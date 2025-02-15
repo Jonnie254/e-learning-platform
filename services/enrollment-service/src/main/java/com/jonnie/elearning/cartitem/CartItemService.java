@@ -8,6 +8,7 @@ import com.jonnie.elearning.openfeign.course.CourseResponse;
 import com.jonnie.elearning.repositories.CartItemRepository;
 import com.jonnie.elearning.repositories.CartRepository;
 import com.jonnie.elearning.repositories.EnrollmentRepository;
+import com.jonnie.elearning.utils.CartStatus;
 import com.jonnie.elearning.utils.PaymentMethod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,16 +44,18 @@ public class CartItemService {
         CourseResponse courseResponse = courseClient.getCourseById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found"));
 
-        // Fetch the user's cart, or create one if it doesn't exist
-        Cart cart = cartRepository.findByUserId(userId)
+        // Retrieve user's active cart OR create a new one
+        Cart cart = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE)
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
                     newCart.setUserId(userId);
                     newCart.setTotalAmount(BigDecimal.ZERO);
                     newCart.setPaymentMethod(PaymentMethod.PAYPAL);
                     newCart.setReference(generateCartReference());
+                    newCart.setStatus(CartStatus.ACTIVE);
                     return cartRepository.save(newCart);
                 });
+
         // Check if the course is already in the cart
         Optional<CartItem> existingCartItem = cartItemRepository.findByCartAndCourseId(cart, courseId);
         if (existingCartItem.isPresent()) {
@@ -68,10 +71,17 @@ public class CartItemService {
     //method to get all the cart items
     public PageResponse<CartItemResponse> getAllCartItems(String userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<CartItem> cartItems = cartItemRepository.findAllByUserId(userId, pageable);
+
+        // Find the user's active cart
+        Cart cart = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE)
+                .orElseThrow(() -> new BusinessException("No active cart found"));
+
+        // Fetch cart items for the active cart
+        Page<CartItem> cartItems = cartItemRepository.findAllByCart(cart, pageable);
         List<CartItemResponse> cartItemResponses = cartItems.stream()
                 .map(cartItemMapper::fromCartItem)
                 .toList();
+
         return new PageResponse<>(
                 cartItemResponses,
                 cartItems.getNumber(),
@@ -85,7 +95,7 @@ public class CartItemService {
 
     //method to remove a course from the cart
     public void removeCartItem(String userId, String courseId) {
-        Cart cart = cartRepository.findByUserId(userId)
+        Cart cart = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE)
                 .orElseThrow(() -> new BusinessException("Cart not found"));
         CartItem cartItem = cartItemRepository.findByCartAndCourseId(cart, courseId)
                 .orElseThrow(() -> new BusinessException("Course not found in the cart"));

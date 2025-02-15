@@ -13,7 +13,8 @@ public interface CartItemRepository extends JpaRepository<CartItem, String> {
     @Query("SELECT c FROM CartItem c WHERE c.cart = ?1 AND c.courseId = ?2")
     Optional<CartItem> findByCartAndCourseId(Cart cart, String courseId);
 
-
     @Query("SELECT c FROM CartItem c WHERE c.userId = ?1")
     Page<CartItem> findAllByUserId(String userId, Pageable pageable);
+
+    Page<CartItem> findAllByCart(Cart cart, Pageable pageable);
 }

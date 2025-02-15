@@ -13,5 +13,4 @@ import {RouterLink} from '@angular/router';
   styleUrl: './landing-page.component.scss'
 })
 export class LandingPageComponent {
-
 }

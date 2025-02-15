@@ -11,6 +11,7 @@ import com.jonnie.elearning.openfeign.payment.PaymentRequest;
 import com.jonnie.elearning.openfeign.user.UserClient;
 import com.jonnie.elearning.openfeign.user.UserResponse;
 import com.jonnie.elearning.repositories.CartRepository;
+import com.jonnie.elearning.utils.CartStatus;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,16 +36,11 @@ public class CartService {
         log.info("Starting checkout process for userId: {}", userId);
 
         Cart cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> {
-                    log.error("Cart not found for userId: {}", userId);
-                    return new BusinessException("Cart not found");
-                });
+                .orElseThrow(() -> new BusinessException("Cart not found"));
 
         if (cart.getCartItems().isEmpty()) {
-            log.error("Cart is empty for userId: {}", userId);
             throw new BusinessException("Cart is empty");
         }
-
         List<String> courseIds = cart.getCartItems().stream()
                 .map(CartItem::getCourseId)
                 .collect(Collectors.toList());
@@ -52,26 +48,23 @@ public class CartService {
                 .map(CartItem::getInstructorId)
                 .distinct()
                 .collect(Collectors.toList());
-
-        log.info("Payment request prepared for cart: {}", cart.getReference());
         PaymentRequest paymentRequest = getPaymentRequest(
                 cart, courseIds, instructorIds, userClient);
         try {
-            log.info("Making payment request for cart: {}", cart.getReference());
             ResponseEntity<Map<String, String>> response = paymentClient.requestToMakePayment(paymentRequest);
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 String approvalUrl = response.getBody().get("approvalUrl");
                 log.info("Payment successful, redirecting to: {}", approvalUrl);
 
+                cart.setStatus(CartStatus.PENDING);
+                cartRepository.save(cart);
                 List<CartItemNotifyResponse> cartItemNotifyResponses = cart.getCartItems().stream()
                         .map(cartItem -> new CartItemNotifyResponse(
                                 cartItem.getCourseName(),
                                 cartItem.getPrice()
                         ))
                         .toList();
-
-                log.info("Sending cart confirmation to Kafka: {}", cart.getReference());
                 cartConfirmationProducer.sendCartConfirmation(
                         new CartConfirmation(
                                 cart.getReference(),
@@ -84,8 +77,6 @@ public class CartService {
                                 cartItemNotifyResponses
                         )
                 );
-
-                cartRepository.delete(cart);
                 return approvalUrl;
             } else {
                 log.error("Unexpected response from payment service: {}", response);
@@ -97,6 +88,21 @@ public class CartService {
         }
     }
 
+    //handle the payment success
+    public void  handlePaymentSuccess(String cartReference){
+        Cart cart = cartRepository.findByReference(cartReference)
+                .orElseThrow(() -> new BusinessException("Cart not found"));
+        cart.setStatus(CartStatus.CHECKED_OUT);
+        cartRepository.save(cart);
+    }
+
+    //handle the payment failure
+    public void handlePaymentFailure(String cartReference){
+        Cart cart = cartRepository.findByReference(cartReference)
+                .orElseThrow(() -> new BusinessException("Cart not found"));
+        cart.setStatus(CartStatus.ACTIVE);
+        cartRepository.save(cart);
+    }
 
     private static PaymentRequest getPaymentRequest(Cart cart,
                                                     List<String> courseIds,
@@ -125,6 +131,7 @@ public class CartService {
                 cart.getCartId(),
                 cart.getTotalAmount(),
                 cart.getReference(),
+                cart.getStatus(),
                 cart.getCartItems(
                         ).stream()
                         .map(cartItem -> new CartItemResponse(

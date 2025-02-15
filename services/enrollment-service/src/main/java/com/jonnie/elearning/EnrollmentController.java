@@ -65,7 +65,6 @@ public class EnrollmentController {
         }
     }
 
-    //Removed unnecessary validationResponse check
     @GetMapping("/get-all-items")
     public ResponseEntity<PageResponse<CartItemResponse>> getAllCartItems(
             @RequestHeader("X-User-Id") String userId,
@@ -77,7 +76,7 @@ public class EnrollmentController {
         return ResponseEntity.ok(cartItemService.getAllCartItems(userId, page, size));
     }
 
-    // Corrected the validation call
+
     @DeleteMapping("/remove-cart-item/{course-id}")
     public ResponseEntity<Map<String, String>> removeCartItem(
             @RequestHeader("X-User-Id") String userId,
