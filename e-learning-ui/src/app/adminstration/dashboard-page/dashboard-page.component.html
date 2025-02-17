@@ -69,8 +69,16 @@
           <span class="ms-3">Dashboard</span>
         </a>
       </li>
-      <li *ngIf="(userRole$ | async) === 'ADMIN' || (userRole$ | async) === 'INSTRUCTOR'">
-        <a routerLink="manage-courses" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+      <li *ngIf="(userRole$ | async) === 'ADMIN'">
+        <a routerLink="admin-courses" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center p-2 text-gray-100 font-semibold rounded-lg dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-gray-700 group">
+          <i
+            class="pi pi-calendar  w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+          <span class="flex-1 ms-3 whitespace-nowrap">Manage Courses</span>
+        </a>
+      </li>
+      <li *ngIf="(userRole$ | async) === 'INSTRUCTOR'">
+        <a routerLink="instructor-courses" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
            class="flex items-center p-2 text-gray-100 font-semibold rounded-lg dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-gray-700 group">
           <i
             class="pi pi-calendar  w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -114,8 +122,8 @@ pi-user w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400 gr
     </ul>
   </div>
 </aside>
-<div class="p-4 sm:ml-64">
-  <div class="p-4  border-gray-200 rounded-lg dark:border-gray-700 mt-10">
+<div class="p-1 sm:ml-64">
+  <div class="p-4 border-gray-200 rounded-lg  mt-10">
     <router-outlet></router-outlet>
   </div>
 </div>

@@ -9,14 +9,14 @@ export const roleGuard: CanActivateFn = (route, state) => {
   return authService.userRole$.pipe(
     map(role =>{
       if(!role){
-        router.navigate(['/login']);
+        router.navigate(['/landing-page']);
         return false;
       }
       const allowedRoles = route.data?.['allowedRoles'] as string[];
       if(allowedRoles.includes(role)){
         return true;
       }else{
-        router.navigate(['/login']);
+        router.navigate(['/landing-page']);
         return false;
       }
     })

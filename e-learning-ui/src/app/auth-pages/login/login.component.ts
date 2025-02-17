@@ -36,7 +36,7 @@ export class LoginComponent {
       this.loading = true;
       this.authService.loginUser(this.loginData).subscribe({
         next: (res: any) => {
-          if (res && res.token) { // Ensure a token exists before marking login as successful
+          if (res && res.token) {
             this.loginSuccess = true;
             this.loginError = false;
             this.loginMessage = 'Login successful';

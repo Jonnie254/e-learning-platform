@@ -101,7 +101,14 @@ public class CartItemService {
                 .orElseThrow(() -> new BusinessException("Course not found in the cart"));
         cartItemRepository.delete(cartItem);
         cart.setTotalAmount(cart.getTotalAmount().subtract(cartItem.getPrice()));
-        cartRepository.save(cart);
+
+        boolean cartIsEmpty = cartItemRepository.countByCart(cart) == 0;
+        log.info("Cart is empty: {}", cartIsEmpty);
+        if (cartIsEmpty) {
+         cartRepository.delete(cart);
+        } else{
+            cartRepository.save(cart);
+        }
     }
 
     //method to generate the cart reference

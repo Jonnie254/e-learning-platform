@@ -84,7 +84,6 @@ export class CartDetailsComponent {
         type: 'error'
       };
     }
-    this.resetValues();
     setTimeout(() => {
       this.closeNotification();
     }, 3000);
@@ -146,16 +145,7 @@ export class CartDetailsComponent {
   }
 
   closeModal() {
-    this.resetValues();
-  }
-
-  resetValues() {
-    this.modalTitle = '';
-    this.modalMessage = '';
-    this.modalIconClass = '';
-    this.modalConfirmButtonText = '';
-    this.modalCancelButtonText = '';
-    this.itemToRemoveId = '';
     this.isConfirmationDialogVisible = false;
   }
+
 }

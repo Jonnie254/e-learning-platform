@@ -50,16 +50,13 @@ export class AuthService {
       }),
       switchMap(() => this.getUserDetails()),
       tap((res: UserDetailsResponse) => {
-        console.log('User details response:', res);
         if (res && res.role) {
           this.userRoleSubject.next(res.role);
           this.redirectBasedOnRole(res.role);
         } else {
-          console.error('User details are missing!');
         }
       }),
       catchError((err) => {
-        console.error('Login failed:', err);
         this.isAuthenticatedSubject.next(false);
         return of(null);
       })
@@ -87,7 +84,7 @@ export class AuthService {
           if (err.status === 401 || err.status === 403) {
             this.userIdSubject.next('');
             localStorage.removeItem('token');
-            this.router.navigate(['/login']);
+            this.router.navigate(['/landing-page']);
           }
         }
       });
@@ -136,7 +133,7 @@ export class AuthService {
     this.isAuthenticatedSubject.next(false);
     this.userRoleSubject.next(null);
     this.userIdSubject.next('');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/landing-page']);
   }
 
   // Check if the user is authenticated

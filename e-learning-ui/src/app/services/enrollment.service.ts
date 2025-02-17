@@ -29,21 +29,22 @@ export class EnrollmentService {
       return;
     }
     return this.http.get<Cart>(`${this.baseUrl}/get-cart`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     }).pipe(
       tap((cart: Cart) => {
-        console.log('Cart fetched successfully:', cart);
+        if (!cart.cartId) {
+          console.warn('No active cart found');
+        } else {
+          console.log('Cart fetched successfully:', cart);
+        }
         this.cartSubject.next(cart);
       }),
       catchError((error) => {
-        console.error('Error fetching cart:', error);
-        this.cartSubject.next({cartId: '', totalAmount: 0, reference: '', cartItems: []});
-        return of({cartId: '', totalAmount: 0, reference: '', cartItems: []});
+        return of({ cartId: '', totalAmount: 0, reference: '', status: 'ACTIVE', cartItems: [] }); // Return empty cart
       })
     );
   }
+
 
   addCartItem(courseId: string) {
     const token = this.authService.getToken();

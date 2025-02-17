@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/courses")
 @RequiredArgsConstructor
@@ -16,15 +19,22 @@ public class TagController {
     private final TagService tagService;
 
     @PostMapping("/create-tag")
-    public ResponseEntity<String> create(
+    public ResponseEntity<Map<String, String>> create(
             @RequestHeader("X-User-Role") String userRole,
             @RequestBody @Valid TagRequest tagRequest
     ){
         if(!userRole.equalsIgnoreCase(ROLE.ADMIN.name())){
-            return ResponseEntity.badRequest().body("You are not authorized to create a tag");
+            Map<String, String> response = new  HashMap<> ();
+            response.put("message", "You are not authorized to perform this operation");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
-        return ResponseEntity.ok(tagService.createTag(tagRequest));
+        String tagId = tagService.createTag(tagRequest);
+        Map<String, String> response = new HashMap<>();
+        response.put("tagId", tagId);
+        return ResponseEntity.ok(response);
     }
+
+
     @GetMapping("/tags")
     public ResponseEntity<PageResponse<TagResponse>> findAll(
             @RequestHeader("X-User-Role") String userRole,

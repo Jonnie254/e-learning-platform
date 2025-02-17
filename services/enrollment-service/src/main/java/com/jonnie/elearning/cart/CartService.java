@@ -18,8 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -125,15 +127,24 @@ public class CartService {
     }
 
     public CartResponse getCart(String userId) {
-        Cart cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new BusinessException("Cart not found"));
+        Optional<Cart> cartOptional = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE);
+
+        if (cartOptional.isEmpty()) {
+            return new CartResponse(
+                    "",
+                    BigDecimal.ZERO,
+                    "",
+                    CartStatus.ACTIVE,
+                    List.of()
+            );
+        }
+        Cart cart = cartOptional.get();
         return new CartResponse(
                 cart.getCartId(),
                 cart.getTotalAmount(),
                 cart.getReference(),
                 cart.getStatus(),
-                cart.getCartItems(
-                        ).stream()
+                cart.getCartItems().stream()
                         .map(cartItem -> new CartItemResponse(
                                 cartItem.getCartItemId(),
                                 cartItem.getCourseId(),
@@ -141,8 +152,8 @@ public class CartService {
                                 cartItem.getInstructorName(),
                                 cartItem.getCourseImageUrl(),
                                 cartItem.getPrice()))
-                        .toList(
-                        )
+                        .toList()
         );
     }
+
 }

@@ -25,10 +25,21 @@ export class ConfirmationDialogComponent {
 
   closeModal(){
     this.onClose.emit();
+    this.resetValues();
   }
 
   confirmAction(){
     this.onConfirm.emit();
+    this.resetValues();
+  }
+
+  resetValues(){
+    this.title = '';
+    this.message = '';
+    this.iconClass = '';
+    this.confirmButtonText = 'Yes';
+    this.cancelButtonText = 'No';
+    this.isVisible = false;
   }
 
 }

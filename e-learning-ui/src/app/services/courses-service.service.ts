@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {
+  CategoryResponse,
   CourseDetailsResponse,
   CourseResponse,
   CourseSection,
-  PageResponse
+  PageResponse, TagResponse
 } from '../interfaces/responses';
 import {EnrollmentService} from './enrollment.service';
 import {map} from 'rxjs';
@@ -54,8 +55,6 @@ export class CoursesService {
     return coursesObservable.pipe(
       map((response: PageResponse<CourseResponse>) => {
         const cartItems = this.enrollmentService.getCartItems();
-
-        // Remove courses that are in the cart
         const filteredCourses = response.content?.filter(course =>
           !cartItems.some(cartItem => cartItem.courseId === course.courseId)
         ) || [];
@@ -82,17 +81,10 @@ export class CoursesService {
     })
   }
 
-  //get the sections status
-
-
-
-
-
-
-  //method to get courses that are available for enrollment
-  getAvailableCourses(page: {size: number; page: number}, size: number) {
+  //get the tags
+  getTags(page: { size: number; page: number }) {
     const token = this.authService.getToken();
-   return this.httpClient.get<PageResponse<CourseResponse>>(`${this.baseUrl}/available-for-user`, {
+    return this.httpClient.get<PageResponse<TagResponse>>(`${this.baseUrl}/tags`, {
       params: {
         page: page.page.toString(),
         size: page.size.toString()
@@ -101,5 +93,31 @@ export class CoursesService {
         Authorization: `Bearer ${token}`
       }
     });
-   }
+  }
+
+  //get all the categories
+  getCategories(page: { size: number; page: number }) {
+    const token = this.authService.getToken();
+    return this.httpClient.get<PageResponse<CategoryResponse>>(`${this.baseUrl}/all-categories`, {
+      params: {
+        page: page.page.toString(),
+        size: page.size.toString()
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
+  //add a course
+  addCourse(formData: any){
+    const token = this.authService.getToken();
+    return this.httpClient.post(`${this.baseUrl}/create-course`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+  }
+
 }

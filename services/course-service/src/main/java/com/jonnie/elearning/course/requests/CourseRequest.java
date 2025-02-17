@@ -12,7 +12,7 @@ public record CourseRequest(
         @NotNull(message = "Course name is required")
         @NotEmpty(message = "Course name is required")
         String courseName,
-        @NotNull(message = "Instructor id is required")
+        @NotNull(message = "course description is required")
         @NotNull(message = "Course description is required")
         @NotEmpty(message = "Course description is required")
         String courseDescription,

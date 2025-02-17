@@ -18,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/courses")
@@ -30,26 +32,33 @@ public class CourseController {
 
     //method to create a course
     @PostMapping(value = "/create-course", consumes = "multipart/form-data")
-    public ResponseEntity<String> create(
+    public ResponseEntity<Map<String, String>> create(
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
             @RequestHeader(value = "X-User-Id", required = false) String instructorId,
             @ModelAttribute @Valid CourseRequest courseRequest,
             @RequestParam MultipartFile courseImage
     ) {
+        Map<String, String> response = new HashMap<>();
         if (userRole == null || instructorId == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing required headers: X-User-Role or X-User-Id");
+            response.put("message", "Missing required headers: X-User-Role or X-User-Id");
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         if (!ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to create a course");
+            response.put("message", "You are not authorized to create a course");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
         if (courseImage.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course image is required");
+            response.put("message", "Course image is required");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         try {
+            log.info("Creating course with name: {}", courseRequest);
             String courseId = courseService.createCourse(courseRequest, instructorId, courseImage);
-            return ResponseEntity.status(HttpStatus.CREATED).body(courseId);
+            response.put("courseId", courseId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the course");
+            response.put("message", "An error occurred while creating the course");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
     // method to find all courses

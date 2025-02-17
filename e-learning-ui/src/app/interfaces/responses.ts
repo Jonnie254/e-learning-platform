@@ -29,6 +29,8 @@ export interface CourseDetailsResponse {
   description: string,
   whatYouWillLearn: string[],
 }
+
+
 export interface Cart{
   cartId: string;
   totalAmount: number;
@@ -69,7 +71,6 @@ export interface courseDetails {
   progress: number;
 }
 
-
 export interface CourseSection {
   sectionId: string;
   sectionName: string;
@@ -83,6 +84,16 @@ export interface CourseSection {
 export  interface SectionStatus {
   sectionId: string;
   isCompleted: boolean;
+}
+
+export interface TagResponse {
+  tagId: string;
+  tagName: string;
+}
+
+export interface CategoryResponse {
+  categoryId: string;
+  categoryName: string;
 }
 
 export interface ProgressResponse {

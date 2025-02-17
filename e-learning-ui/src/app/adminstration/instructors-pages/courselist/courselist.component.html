@@ -1,0 +1,63 @@
+<div class="bg-white  p-4">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <i class="pi pi-search"></i>
+      <input type="text" placeholder="Search" class="px-4 py-2 bg-gray-100 w-72 text-gray-800 text-sm border-2 border-solid border-gray-300 focus:bg-transparent rounded-lg" />
+    </div>
+    <div class="flex items center gap-2">
+      <label for="sort" class="text-gray-800 text-sm font-semibold">Sort By</label>
+      <select id="sort" class="px-4 py-2 bg-gray-100 text-gray-800 text-sm border-2 border-solid border-gray-300 focus:bg-transparent rounded-lg">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+      </select>
+    </div>
+  </div>
+  <div class="mt-4">
+    <table class="w-full">
+      <thead>
+      <tr>
+        <th class="text-left">Course Name</th>
+        <th class="text-left">Price</th>
+        <th class="text-left">Students</th>
+        <th class="text-left">Status</th>
+        <th class="text-left">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Introduction to Web Development</td>
+        <td>$50</td>
+        <td>100</td>
+        <td>Published</td>
+        <td>
+          <button class="bg-gray-800 text-white font-bold py-1 px-2 rounded-lg cursor-pointer hover:bg-gray-600">Edit</button>
+          <button class="bg-red-500 text-white font-bold py-1 px-2 rounded-lg cursor-pointer hover:bg-red-600">Delete</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Introduction to Web Development</td>
+        <td>$50</td>
+        <td>100</td>
+        <td>Published</td>
+        <td>
+          <button class="bg-gray-800 text-white font-bold py-1 px-2 rounded-lg cursor-pointer hover:bg-gray-600">Edit</button>
+          <button class="bg-red-500 text-white font-bold py-1 px-2 rounded-lg cursor-pointer hover:bg-red-600">Delete</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Introduction to Web Development</td>
+        <td>$50</td>
+        <td>100</td>
+        <td>Published</td>
+        <td>
+          <button class="bg-gray-800 text-white font-bold py-1 px-2 rounded-lg cursor-pointer hover:bg-gray-600">Edit</button>
+          <button class="bg-red-500 text-white font-bold py-1 px-2 rounded-lg cursor-pointer hover:bg-red-600">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <app-pagination>
+
+  </app-pagination>
+</div>

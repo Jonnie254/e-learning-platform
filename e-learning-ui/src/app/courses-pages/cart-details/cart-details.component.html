@@ -1,19 +1,18 @@
 <app-navbar></app-navbar>
 <app-confirmation-dialog  [isVisible] = "isConfirmationDialogVisible"
-  [title]="modalTitle"
-  [message]="modalMessage"
-  [iconClass]="modalIconClass"
-  [confirmButtonText]="modalConfirmButtonText"
-  [cancelButtonText]="modalCancelButtonText"
-  (onConfirm)="confirmAction()"
-  (onClose)="closeModal()"
-  (onCancel)="closeModal()">
+                          [title]="modalTitle"
+                          [message]="modalMessage"
+                          [iconClass]="modalIconClass"
+                          [confirmButtonText]="modalConfirmButtonText"
+                          [cancelButtonText]="modalCancelButtonText"
+                          (onConfirm)="confirmAction()"
+                          (onClose)="closeModal()"
+                          (onCancel)="closeModal()">
 </app-confirmation-dialog>
-<app-notifications
-  [show]="notification.show"
-  [message]="notification.message"
-  [type]="notification.type"
-  (close)="closeNotification()">
+<app-notifications   [show]="notification.show"
+                     [message]="notification.message"
+                     [type]="notification.type"
+                     (close)="closeNotification()">
 </app-notifications>
 
 <div class="container font-sans w-full px-8 py-4 min-h-screen">

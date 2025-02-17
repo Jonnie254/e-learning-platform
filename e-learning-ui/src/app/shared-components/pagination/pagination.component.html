@@ -5,7 +5,7 @@
       <button
         title="First Page"
         (click)="goToFirstPage()"
-        disabled="currentPage === 0"
+         [class.disabled]="currentPage === 0"
         class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50"
       >
         <i class="pi pi-angle-double-left"></i>
@@ -17,7 +17,7 @@
       <button
         title="Previous Page"
         (click)="goToPreviousPage()"
-        :disabled="currentPage === 0"
+        [class.disabled]="currentPage === 0"
         class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50"
       >
         <i class="pi pi-angle-left"></i>
@@ -36,7 +36,7 @@
       <button
         title="Next Page"
         (click)="goToNextPage()"
-        disabled="currentPage === totalPages - 1"
+        [class.disabled]="currentPage === totalPages - 1"
         class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50"
       >
         <i class="pi pi-angle-right"></i>
@@ -48,7 +48,7 @@
       <button
         title="Last Page"
         (click)="goToLastPage()"
-        disabled="currentPage === totalPages - 1"
+        [class.disabled]="currentPage === totalPages - 1"
         class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50"
       >
         <i class="pi pi-angle-double-right"></i>
