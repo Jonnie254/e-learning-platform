@@ -99,3 +99,22 @@ export interface CategoryResponse {
 export interface ProgressResponse {
   progress: number;
 }
+
+export interface InstructorCoursesResponse {
+  courseId: string;
+  courseName: string;
+  courseImageUrl: string;
+  price: number;
+  category: string;
+}
+
+export interface InstructorFullCourseDetailsResponse{
+  courseId: string;
+  courseName: string;
+  courseUrlImage: string;
+  price: number;
+  courseDescription: string;
+  whatYouWillLearn: string[];
+  tags: TagResponse[];
+  category: CategoryResponse;
+}

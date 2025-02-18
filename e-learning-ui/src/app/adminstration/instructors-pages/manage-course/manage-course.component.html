@@ -105,21 +105,30 @@
       </div>
 
       <!-- Step 3: Course Media -->
-      <div *ngIf="currentStepIndex === 2">
-        <label for="uploadFile1" class="bg-white text-center rounded w-full max-w-sm min-h-[180px] py-4 px-4 flex flex-col items-center justify-center cursor-pointer border-dashed border-2 border-gray-300 mx-auto font-[sans-serif] hover:border-gray-400">
-          <i class="pi pi-upload w-10 mb-3 text-gray-400"></i>
-          <p class="text-gray-400 font-semibold text-sm">Drag & Drop or <span class="text-gray-700">Choose file</span> to upload</p>
-          <input type="file" id="uploadFile1" (change)="onFileChange($event)" class="hidden" />
-          <p class="text-xs text-gray-400 mt-2">PNG, JPG and WEBP are Allowed.</p>
-        </label>
-
+      <div *ngIf="currentStepIndex === 2" class="p-6 bg-gray-50 rounded-lg shadow-lg">
+        <!-- Image preview from backend URL if available -->
+        <div *ngIf="courseData.imageUrl" class="mb-4">
+          <p class="text-sm text-gray-600 mt-2 text-center">Current Course Image:</p>
+          <div class="relative w-full max-w-xs mx-auto">
+            <img [src]="courseData.imageUrl" alt="Course Image" class="w-full h-32 object-cover rounded-lg border border-gray-200 shadow-sm" />
+            <div class="absolute top-0 right-0 bg-gray-700 text-white p-1 rounded-bl-lg shadow-md text-xs">Current</div>
+          </div>
+        </div>
+        <!-- File upload area -->
+        <div class="text-center mb-4">
+          <label for="uploadFile1" class="relative w-full max-w-sm min-h-[180px] py-4 px-4 flex flex-col items-center justify-center cursor-pointer border-dashed border-2 border-gray-300 mx-auto rounded-lg transition-all duration-300 ease-in-out hover:border-gray-400 hover:bg-gray-50">
+            <i class="pi pi-upload w-10 mb-3 text-gray-400"></i>
+            <p class="text-gray-400 font-semibold text-sm">Drag & Drop or <span class="text-gray-700">Choose file</span> to upload</p>
+            <input type="file" id="uploadFile1" (change)="onFileChange($event)" class="absolute inset-0 opacity-0 cursor-pointer" />
+            <p class="text-xs text-gray-400 mt-2">PNG, JPG, and WEBP are Allowed.</p>
+          </label>
+        </div>
         <!-- Show selected file name -->
         <p *ngIf="selectedFileName" class="text-sm text-gray-600 mt-2 text-center">
           Selected file: <span class="font-semibold">{{ selectedFileName }}</span>
         </p>
       </div>
-
-      <!-- Buttons -->
+        <!-- Buttons -->
       <div class="flex justify-between gap-4 mt-6">
         <button type="button"
                 class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-300"

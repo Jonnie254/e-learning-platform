@@ -1,6 +1,7 @@
 package com.jonnie.elearning.course.services;
 
 import com.cloudinary.Cloudinary;
+import com.jonnie.elearning.InstructorFullCourseDetailsResponse;
 import com.jonnie.elearning.Repositories.CategoryRepository;
 import com.jonnie.elearning.Repositories.CourseRepository;
 import com.jonnie.elearning.Repositories.TagRepository;
@@ -8,6 +9,7 @@ import com.jonnie.elearning.category.Category;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.course.Course;
 import com.jonnie.elearning.course.requests.CourseRequest;
+import com.jonnie.elearning.course.requests.UpdateCourseRequest;
 import com.jonnie.elearning.course.responses.*;
 import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.feign.enrollment.EnrollmentClient;
@@ -15,6 +17,7 @@ import com.jonnie.elearning.tag.Tag;
 import com.jonnie.elearning.feign.user.AuthenticationClient;
 import com.jonnie.elearning.feign.user.UserResponse;
 import com.jonnie.elearning.utils.ROLE;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -206,6 +210,59 @@ public class CourseService {
     public List<CourseEnrollResponse> findCoursesByIds(List<String> courseIds) {
         List<Course> courses = courseRepository.findAllById(courseIds);
         return courseMapper.toCoursesResponse(courses);
+    }
+    public InstructorFullCourseDetailsResponse findCourseByIdForInstructor(String courseId, String instructorId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
+        if (!course.getInstructorId().equals(instructorId)) {
+            throw new BusinessException("You are not authorized to view this course");
+        }
+        return courseMapper.toInstructorFullCourseResponse(course);
+    }
+
+    @Transactional
+    public void updateCourse(@Valid UpdateCourseRequest updateCourseRequest,
+                             String courseId,
+                             String instructorId,
+                             MultipartFile newCourseImage) {
+
+        Course existingCourse = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
+
+        if (!existingCourse.getInstructorId().equals(instructorId)) {
+            throw new BusinessException("You are not authorized to update this course");
+        }
+
+        courseMapper.updateCourseFromRequest(updateCourseRequest, existingCourse);
+
+        updateCategory(updateCourseRequest.categoryId(), existingCourse);
+        updateTags(updateCourseRequest.tagIds(), existingCourse);
+
+        if (newCourseImage != null && !newCourseImage.isEmpty()) {
+            String newCourseImageUrl = uploadCourseImage(newCourseImage);
+            existingCourse.setCourseUrlImage(newCourseImageUrl);
+        }
+
+        courseRepository.save(existingCourse);
+    }
+
+    private void updateCategory(String categoryId, Course existingCourse) {
+        if (categoryId != null) {
+            Category category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new BusinessException("Category not found for ID: " + categoryId));
+            existingCourse.setCategory(category);
+        }
+    }
+
+
+    private void updateTags(List<String> tagIds, Course existingCourse) {
+        if (tagIds != null && !tagIds.isEmpty()) {
+            List<Tag> updatedTags = tagRepository.findAllById(tagIds);
+            if (updatedTags.size() != tagIds.size()) {
+                throw new BusinessException("One or more tags not found.");
+            }
+            existingCourse.setTags(updatedTags);
+        }
     }
 
 }

@@ -4,7 +4,7 @@ import {
   CategoryResponse,
   CourseDetailsResponse,
   CourseResponse,
-  CourseSection,
+  CourseSection, InstructorCoursesResponse, InstructorFullCourseDetailsResponse,
   PageResponse, TagResponse
 } from '../interfaces/responses';
 import {EnrollmentService} from './enrollment.service';
@@ -36,7 +36,6 @@ export class CoursesService {
   getCourseById(courseId: string) {
     return this.httpClient.get<CourseDetailsResponse>(`${this.baseUrl}/${courseId}`);
   }
-
   // method to get filtered courses
   getFilteredCourses(page: { size: number; page: number }, size: number) {
     const token = this.authService.getToken();
@@ -66,7 +65,6 @@ export class CoursesService {
       })
     );
   }
-
   //method to get courses sections
   getCourseSections(courseId: string, page: { size: number; page: number }) {
     const token = this.authService.getToken();
@@ -80,7 +78,6 @@ export class CoursesService {
       }
     })
   }
-
   //get the tags
   getTags(page: { size: number; page: number }) {
     const token = this.authService.getToken();
@@ -94,7 +91,6 @@ export class CoursesService {
       }
     });
   }
-
   //get all the categories
   getCategories(page: { size: number; page: number }) {
     const token = this.authService.getToken();
@@ -108,7 +104,6 @@ export class CoursesService {
       }
     })
   }
-
   //add a course
   addCourse(formData: any){
     const token = this.authService.getToken();
@@ -117,7 +112,37 @@ export class CoursesService {
         Authorization: `Bearer ${token}`
       }
     });
-
+  }
+  // method to get the instructor courses
+  getInstructorCourses(page: { size: number; page: number }) {
+    const token = this.authService.getToken();
+    return this.httpClient.get<PageResponse<InstructorCoursesResponse>>(`${this.baseUrl}/instructor-courses`, {
+      params: {
+        page: page.page.toString(),
+        size: page.size.toString()
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+  //method to get full details for the course for the instructor
+  getFullCourseDetails(courseId: string) {
+    const token = this.authService.getToken();
+    return this.httpClient.get<InstructorFullCourseDetailsResponse>(`${this.baseUrl}/instructor-course/${courseId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+  //method to update the course
+  updateCourse(courseId: string, formData: any) {
+    const token = this.authService.getToken();
+    return this.httpClient.put(`${this.baseUrl}/update-course/${courseId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 
 }

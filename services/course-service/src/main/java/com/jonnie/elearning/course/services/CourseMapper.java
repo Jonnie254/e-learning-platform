@@ -1,17 +1,23 @@
 package com.jonnie.elearning.course.services;
 
+import com.jonnie.elearning.InstructorFullCourseDetailsResponse;
 import com.jonnie.elearning.category.Category;
+import com.jonnie.elearning.category.CategoryResponse;
 import com.jonnie.elearning.course.Course;
 import com.jonnie.elearning.course.Section;
 import com.jonnie.elearning.course.requests.CourseRequest;
 import com.jonnie.elearning.course.requests.SectionRequest;
+import com.jonnie.elearning.course.requests.UpdateCourseRequest;
 import com.jonnie.elearning.course.requests.UpdateSectionRequest;
 import com.jonnie.elearning.course.responses.*;
+import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.tag.Tag;
 import com.jonnie.elearning.feign.user.UserResponse;
+import com.jonnie.elearning.tag.TagResponse;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -138,6 +144,48 @@ public class CourseMapper {
                         .build())
                 .toList();
     }
+
+    public InstructorFullCourseDetailsResponse toInstructorFullCourseResponse(Course course) {
+        return InstructorFullCourseDetailsResponse.builder()
+                .courseId(course.getCourseId())
+                .courseName(course.getCourseName())
+                .courseDescription(course.getDescription())
+                .courseUrlImage(course.getCourseUrlImage())
+                .category(CategoryResponse.builder()
+                        .categoryId(course.getCategory().getCategoryId())
+                        .categoryName(course.getCategory().getCategoryName())
+                        .build())
+                .tags(course.getTags()
+                        .stream()
+                        .map(tag -> TagResponse.builder()
+                                .tagId(tag.getTagId())
+                                .tagName(tag.getTagName())
+                                .build())
+                        .toList())
+                .whatYouWillLearn(course.getWhatYouWillLearn())
+                .price(course.getPrice())
+                .build();
+    }
+
+    public void updateCourseFromRequest(@Valid UpdateCourseRequest updateCourseRequest, Course existingCourse) {
+        if (updateCourseRequest.courseName() != null) {
+            existingCourse.setCourseName(updateCourseRequest.courseName());
+        }
+        if (updateCourseRequest.courseDescription() != null) {
+            existingCourse.setDescription(updateCourseRequest.courseDescription());
+        }
+        if (updateCourseRequest.price() != null) {
+            try {
+                existingCourse.setPrice(new BigDecimal(updateCourseRequest.price()));
+            } catch (NumberFormatException e) {
+                throw new BusinessException("Invalid price format: " + updateCourseRequest.price());
+            }
+        }
+        if (updateCourseRequest.whatYouWillLearn() != null) {
+            existingCourse.setWhatYouWillLearn(updateCourseRequest.whatYouWillLearn());
+        }
+    }
+
 }
 
 

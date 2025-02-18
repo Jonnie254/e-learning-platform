@@ -91,17 +91,27 @@ export const routes: Routes = [
         }
       },
       {
-        path:'instructor-courses',loadComponent:() => import('./adminstration/instructors-pages/instructor-courses/instructor-courses.component').then(m => m.InstructorCoursesComponent),
+        path:'instructor-courses',loadComponent:() => import('./adminstration/instructors-pages/instructor-courses/instructor-courses.component')
+          .then(m => m.InstructorCoursesComponent),
         children:[
           {
-            path:'', loadComponent:() => import('./adminstration/instructors-pages/courselist/courselist.component').then(m => m.CourselistComponent),
+            path:'', loadComponent:() => import('./adminstration/instructors-pages/courselist/courselist.component')
+              .then(m => m.CourselistComponent),
           },
           {
-            path:'course-list', loadComponent:() => import('./adminstration/instructors-pages/courselist/courselist.component').then(m => m.CourselistComponent),
+            path:'course-list', loadComponent:() => import('./adminstration/instructors-pages/courselist/courselist.component')
+              .then(m => m.CourselistComponent),
           },
           {
-            path:'manage-course', loadComponent:() => import('./adminstration/instructors-pages/manage-course/manage-course.component').then(m => m.ManageCourseComponent),
+            path: 'manage-course/:courseId',
+            loadComponent: () => import('./adminstration/instructors-pages/manage-course/manage-course.component')
+              .then(m => m.ManageCourseComponent),
           },
+          {
+            path:'manage-course', loadComponent:() => import('./adminstration/instructors-pages/manage-course/manage-course.component')
+              .then(m => m.ManageCourseComponent),
+          },
+
         ]
         // canActivate: [roleGuard, authGuard],
         // data:{
@@ -109,18 +119,21 @@ export const routes: Routes = [
         // }
       },
       {
-        path:'profile',loadComponent:() => import('./auth-pages/profile-page/profile-page.component').then(m => m.ProfilePageComponent),
+        path:'profile',loadComponent:() => import('./auth-pages/profile-page/profile-page.component')
+          .then(m => m.ProfilePageComponent),
         canActivate: [authGuard]
       },
       {
-        path:'users', loadComponent:() => import('./adminstration/admin-pages/manage-users/manage-users.component').then(m => m.ManageUsersComponent),
+        path:'users', loadComponent:() => import('./adminstration/admin-pages/manage-users/manage-users.component')
+          .then(m => m.ManageUsersComponent),
         canActivate: [roleGuard, authGuard],
         data:{
           allowedRoles:['ADMIN']
         }
       },
       {
-        path:'inbox', loadComponent:() => import('./shared-components/inbox-page/inbox-page.component').then(m => m.InboxPageComponent),
+        path:'inbox', loadComponent:() => import('./shared-components/inbox-page/inbox-page.component')
+          .then(m => m.InboxPageComponent),
         canActivate: [roleGuard, authGuard],
         data:{
           allowedRoles:['INSTRUCTOR']

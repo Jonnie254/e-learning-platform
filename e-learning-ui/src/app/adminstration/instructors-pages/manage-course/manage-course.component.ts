@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
     ConfirmationDialogComponent
 } from "../../../shared-components/confirmation-dialog/confirmation-dialog.component";
@@ -7,6 +7,7 @@ import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CoursesService} from '../../../services/courses-service.service';
 import {CategoryResponse, PageResponse, TagResponse} from '../../../interfaces/responses';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-manage-course',
@@ -24,6 +25,7 @@ import {CategoryResponse, PageResponse, TagResponse} from '../../../interfaces/r
   styleUrl: './manage-course.component.scss'
 })
 export class ManageCourseComponent {
+  courseId: string = '';
   isConfirmationDialogVisible: boolean = false;
   modalTitle: string = '';
   modalMessage: string = '';
@@ -67,12 +69,55 @@ export class ManageCourseComponent {
     price: '',
     whatYouWillLearn: [''],
     selectedTags: [] as TagResponse[],
-    selectedCategory: ''
+    selectedCategory: '',
+    imageUrl: ''
   };
 
-  constructor(private coursesService: CoursesService) {
+  constructor(
+    private coursesService: CoursesService,
+    private route: ActivatedRoute
+    ) {
     this.getAvailableTags();
     this.getAllCategories();
+    this.getCourseId();
+  }
+
+  getCourseId(){
+    this.route.paramMap.subscribe({
+      next: (params) =>{
+        this.courseId = params.get('courseId') as string;
+        if(this.courseId){
+          this.actionType = 'update';
+          this.getCourseDetails();
+        } else{
+          this.actionType = 'add';
+        }
+      }
+    })
+  }
+
+  getCourseDetails(){
+    this.coursesService.getFullCourseDetails(this.courseId).subscribe({
+      next: (response) => {
+        this.courseData = {
+          name: response.courseName,
+          description: response.courseDescription,
+          price: response.price.toString(),
+          whatYouWillLearn: response.whatYouWillLearn,
+          selectedTags: response.tags,
+          selectedCategory: response.category.categoryId,
+          imageUrl: response.courseUrlImage
+        };
+        this.addCourseForm.patchValue({
+          courseName: this.courseData.name,
+          courseDescription: this.courseData.description,
+          coursePrice: this.courseData.price,
+          whatYouWillLearn: this.courseData.whatYouWillLearn,
+          courseSelectedTags: this.courseData.selectedTags.map(tag => tag.tagId),
+          courseSelectedCategory: this.courseData.selectedCategory
+        });
+      }
+    });
   }
 
   getAvailableTags() {
@@ -152,13 +197,11 @@ export class ManageCourseComponent {
     this.modalCancelButtonText = 'Cancel';
   }
 
-
   addCourse() {
     console.log('Add Course button clicked');
     this.actionType = 'add';
     this.confirmAction();
   }
-
 
   updateCourse() {
     this.actionType = 'update';
@@ -169,7 +212,7 @@ export class ManageCourseComponent {
     if (this.actionType === 'add') {
       this.addCourseData();
     } else if (this.actionType === 'update') {
-      // todo update course
+     this.updateCourseData();
     }
     this.closeModal();
   }
@@ -220,6 +263,53 @@ export class ManageCourseComponent {
     });
   }
 
+  updateCourseData() {
+    if (!this.addCourseForm.valid) {
+      this.notification = { show: true, message: 'Please fill in all required fields', type: 'error' };
+      setTimeout(() => this.closeNotification(), 3000);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('courseName', this.addCourseForm.value.courseName);
+    formData.append('courseDescription', this.addCourseForm.value.courseDescription);
+    formData.append('price', this.addCourseForm.value.coursePrice);
+    formData.append('categoryId', this.addCourseForm.value.courseSelectedCategory);
+    formData.append('whatYouWillLearn', JSON.stringify(this.addCourseForm.value.whatYouWillLearn));
+
+    const selectedTags = Array.isArray(this.addCourseForm.value.courseSelectedTags)
+      ? this.addCourseForm.value.courseSelectedTags
+      : [this.addCourseForm.value.courseSelectedTags];
+
+    selectedTags.forEach((tagId: string) => {
+      formData.append('tagIds', tagId);
+    });
+
+    if (this.selectedFile) {
+      formData.append('courseImage', this.selectedFile);
+    }
+
+    console.log('Form data for update:', formData);
+
+    this.coursesService.updateCourse(this.courseId, formData).subscribe({
+      next: (response) => {
+        this.notification = {show: true, message: 'Course updated successfully', type: 'success'};
+        this.validationErrors = {};
+        this.addCourseForm.reset();
+        this.selectedFile = null;
+        setTimeout(() => this.closeNotification(), 3000);
+      },
+      error: (error) => {
+        if (error.error.errors) {
+          this.validationErrors = error.error.errors;
+        } else {
+          this.notification = {show: true, message: 'An unexpected error occurred', type: 'error'};
+        }
+        setTimeout(() => this.closeNotification(), 3000);
+      }
+    });
+  }
+
   nextStep() {
     if (this.currentStepIndex < this.steps.length - 1) {
       this.currentStepIndex++;
@@ -227,7 +317,6 @@ export class ManageCourseComponent {
       this.confirmAction();
     }
   }
-
 
   prevStep() {
     if (this.currentStepIndex > 0) {
