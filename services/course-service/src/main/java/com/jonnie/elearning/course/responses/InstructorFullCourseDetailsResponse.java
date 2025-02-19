@@ -1,4 +1,4 @@
-package com.jonnie.elearning;
+package com.jonnie.elearning.course.responses;
 
 
 import com.jonnie.elearning.category.CategoryResponse;

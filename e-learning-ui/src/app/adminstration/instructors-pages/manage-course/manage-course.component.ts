@@ -7,7 +7,7 @@ import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CoursesService} from '../../../services/courses-service.service';
 import {CategoryResponse, PageResponse, TagResponse} from '../../../interfaces/responses';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-manage-course',
@@ -75,7 +75,8 @@ export class ManageCourseComponent {
 
   constructor(
     private coursesService: CoursesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
     ) {
     this.getAvailableTags();
     this.getAllCategories();
@@ -175,16 +176,23 @@ export class ManageCourseComponent {
 
   onFileChange(event: any) {
     const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.selectedFileName = file.name;
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      this.notification = { show: true, message: 'File size must be under 5MB.', type: 'error' };
+      return;
     }
+
+    if (!['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(file.type)) {
+      this.notification = { show: true, message: 'Only JPEG and PNG images are allowed.', type: 'error' };
+      return;
+    }
+    this.selectedFile = file;
+    this.selectedFileName = file.name;
   }
 
   confirmAction() {
-    console.log('Confirm action triggered');
     this.isConfirmationDialogVisible = true;
-    console.log('Modal visibility:', this.isConfirmationDialogVisible);
     if (this.actionType === 'add') {
       this.modalTitle = 'Confirm Course Addition';
       this.modalMessage = 'Are you sure you want to add this course?';
@@ -197,17 +205,6 @@ export class ManageCourseComponent {
     this.modalCancelButtonText = 'Cancel';
   }
 
-  addCourse() {
-    console.log('Add Course button clicked');
-    this.actionType = 'add';
-    this.confirmAction();
-  }
-
-  updateCourse() {
-    this.actionType = 'update';
-    this.confirmAction();
-  }
-
   onConfirmAction() {
     if (this.actionType === 'add') {
       this.addCourseData();
@@ -217,13 +214,7 @@ export class ManageCourseComponent {
     this.closeModal();
   }
 
-  addCourseData() {
-    if (!this.addCourseForm.valid) {
-      this.notification = { show: true, message: 'Please fill in all required fields', type: 'error' };
-      setTimeout(() => this.closeNotification(), 3000);
-      return;
-    }
-
+  prepareFormData(): FormData {
     const formData = new FormData();
     formData.append('courseName', this.addCourseForm.value.courseName);
     formData.append('courseDescription', this.addCourseForm.value.courseDescription);
@@ -238,28 +229,43 @@ export class ManageCourseComponent {
     selectedTags.forEach((tagId: string) => {
       formData.append('tagIds', tagId);
     });
+
     if (this.selectedFile) {
       formData.append('courseImage', this.selectedFile);
     }
 
-    console.log('Form data:', formData);
+    return formData;
+  }
+
+  handleCourseResponse(successMessage: string) {
+    this.notification = { show: true, message: successMessage, type: 'success' };
+    this.validationErrors = {};
+    this.addCourseForm.reset();
+    this.selectedFile = null;
+    setTimeout(() => this.closeNotification(), 3000);
+  }
+
+  handleCourseError(error: any) {
+    if (error.error.errors) {
+      this.validationErrors = error.error.errors;
+    } else {
+      this.notification = { show: true, message: 'An unexpected error occurred', type: 'error' };
+    }
+    setTimeout(() => this.closeNotification(), 3000);
+  }
+
+  addCourseData() {
+    if (!this.addCourseForm.valid) {
+      this.notification = { show: true, message: 'Please fill in all required fields', type: 'error' };
+      setTimeout(() => this.closeNotification(), 3000);
+      return;
+    }
+
+    const formData = this.prepareFormData();
 
     this.coursesService.addCourse(formData).subscribe({
-      next: (response) => {
-        this.notification = { show: true, message: 'Course added successfully', type: 'success' };
-        this.validationErrors = {};
-        this.addCourseForm.reset();
-        this.selectedFile = null;
-        setTimeout(() => this.closeNotification(), 3000);
-      },
-      error: (error) => {
-        if (error.error.errors) {
-          this.validationErrors = error.error.errors;
-        } else {
-          this.notification = { show: true, message: 'An unexpected error occurred', type: 'error' };
-        }
-        setTimeout(() => this.closeNotification(), 3000);
-      }
+      next: () => this.handleCourseResponse('Course added successfully'),
+      error: (error) => this.handleCourseError(error)
     });
   }
 
@@ -270,43 +276,20 @@ export class ManageCourseComponent {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('courseName', this.addCourseForm.value.courseName);
-    formData.append('courseDescription', this.addCourseForm.value.courseDescription);
-    formData.append('price', this.addCourseForm.value.coursePrice);
-    formData.append('categoryId', this.addCourseForm.value.courseSelectedCategory);
-    formData.append('whatYouWillLearn', JSON.stringify(this.addCourseForm.value.whatYouWillLearn));
-
-    const selectedTags = Array.isArray(this.addCourseForm.value.courseSelectedTags)
-      ? this.addCourseForm.value.courseSelectedTags
-      : [this.addCourseForm.value.courseSelectedTags];
-
-    selectedTags.forEach((tagId: string) => {
-      formData.append('tagIds', tagId);
-    });
-
-    if (this.selectedFile) {
-      formData.append('courseImage', this.selectedFile);
-    }
-
-    console.log('Form data for update:', formData);
+    const formData = this.prepareFormData();
 
     this.coursesService.updateCourse(this.courseId, formData).subscribe({
-      next: (response) => {
-        this.notification = {show: true, message: 'Course updated successfully', type: 'success'};
-        this.validationErrors = {};
-        this.addCourseForm.reset();
-        this.selectedFile = null;
-        setTimeout(() => this.closeNotification(), 3000);
+      next: () => {
+        this.handleCourseResponse('Course updated successfully');
+        setTimeout(() => this.navigateToCourses(), 3000);
       },
-      error: (error) => {
-        if (error.error.errors) {
-          this.validationErrors = error.error.errors;
-        } else {
-          this.notification = {show: true, message: 'An unexpected error occurred', type: 'error'};
-        }
-        setTimeout(() => this.closeNotification(), 3000);
-      }
+      error: (error) => this.handleCourseError(error)
+    });
+  }
+
+  navigateToCourses() {
+    this.router.navigate(['/dashboard/instructor-courses']).then(r => {
+      return;
     });
   }
 

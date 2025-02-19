@@ -1,7 +1,7 @@
 package com.jonnie.elearning.course.services;
 
 import com.cloudinary.Cloudinary;
-import com.jonnie.elearning.InstructorFullCourseDetailsResponse;
+import com.jonnie.elearning.course.responses.InstructorFullCourseDetailsResponse;
 import com.jonnie.elearning.Repositories.CategoryRepository;
 import com.jonnie.elearning.Repositories.CourseRepository;
 import com.jonnie.elearning.Repositories.TagRepository;

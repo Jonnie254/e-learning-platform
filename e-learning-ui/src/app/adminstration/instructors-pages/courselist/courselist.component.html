@@ -24,25 +24,24 @@
       </tr>
       </thead>
       <tbody class="whitespace-nowrap">
-      <tr *ngFor="let course of courses.content">
+      <tr *ngFor="let course of courses.content" class="hover:bg-gray-100 transition duration-200">
         <td class="py-3 px-4 border-b border-gray-200">
-          <img [src]="course.courseImageUrl" alt="Course Image" class="w-16 h-16 object-cover
-          object-center rounded-lg" />
+          <img [src]="course.courseImageUrl" alt="Course Image" class="w-16 h-16 object-cover object-center rounded-lg" />
         </td>
-        <td class="py-3 px-4 border-b border-gray-200 hover:underline cursor-pointer"
-            (click)="navigateToManageCourse(course)">{{ course.courseName }}</td>
+        <td class="py-3 px-4 border-b border-gray-200 hover:underline cursor-pointer">
+          {{ course.courseName }}
+        </td>
         <td class="py-3 px-4 border-b border-gray-200">{{ course.category }}</td>
         <td class="py-3 px-4 border-b border-gray-200">{{ course.price | currency: 'USD' }}</td>
         <td class="px-4 gap-2 border-b border-gray-200">
           <div class="flex items-center gap-2">
-            <i class="pi pi-pencil text-blue-500 cursor-pointer text-xl" title="Edit"></i>
-            <i class="pi pi-trash text-red-500 cursor-pointer text-xl" title="Delete"></i>
+            <i (click)="navigateToManageCourse(course)" class="pi pi-pencil text-blue-500 cursor-pointer text-xl hover:scale-110 transition-transform" title="Edit"></i>
+            <i (click)="navigateToCourseSections(course)" class="pi pi-ellipsis-v text-red-500 cursor-pointer text-xl hover:scale-110 transition-transform" title="View Sections"></i>
           </div>
         </td>
       </tr>
       </tbody>
     </table>
-
   </div>
   <app-pagination
     [currentPage]="page"

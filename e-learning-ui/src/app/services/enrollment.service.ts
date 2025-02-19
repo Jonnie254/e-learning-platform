@@ -33,7 +33,7 @@ export class EnrollmentService {
     }).pipe(
       tap((cart: Cart) => {
         if (!cart.cartId) {
-          console.warn('No active cart found');
+       console.log('No cart found');
         } else {
           console.log('Cart fetched successfully:', cart);
         }

@@ -118,3 +118,13 @@ export interface InstructorFullCourseDetailsResponse{
   tags: TagResponse[];
   category: CategoryResponse;
 }
+
+export interface InstructorCourseSectionResponse {
+  sectionId: string;
+  sectionName: string;
+  courseName: string;
+  sectionDescription: string;
+  pdfUrl: string;
+  videoUrl: string;
+}
+

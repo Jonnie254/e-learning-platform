@@ -1,6 +1,6 @@
 package com.jonnie.elearning.course.services;
 
-import com.jonnie.elearning.InstructorFullCourseDetailsResponse;
+import com.jonnie.elearning.course.responses.InstructorFullCourseDetailsResponse;
 import com.jonnie.elearning.category.Category;
 import com.jonnie.elearning.category.CategoryResponse;
 import com.jonnie.elearning.course.Course;
@@ -94,10 +94,7 @@ public class CourseMapper {
                 .build();
     }
 
-    public Section toUpdateSection(@Valid
-                                UpdateSectionRequest updateSectionRequest,
-                                String updatedsectionPdfUrl,
-                                String updatedsectionVideoUrl,
+    public Section toUpdateSection(@Valid UpdateSectionRequest updateSectionRequest, String updatedsectionPdfUrl, String updatedsectionVideoUrl,
                                    Section existingSection) {
         if (updateSectionRequest.sectionName() != null) {
             existingSection.setSectionName(updateSectionRequest.sectionName());
@@ -186,6 +183,16 @@ public class CourseMapper {
         }
     }
 
+    public InstructorSectionResponse fromInstructorSection(Section section) {
+        return InstructorSectionResponse.builder()
+                .sectionId(section.getSectionId())
+                .sectionName(section.getSectionName())
+                .courseName(section.getCourse().getCourseName())
+                .sectionDescription(section.getSectionDescription())
+                .pdfUrl(section.getPdfUrl())
+                .videoUrl(section.getVideoUrl())
+                .build();
+    }
 }
 
 

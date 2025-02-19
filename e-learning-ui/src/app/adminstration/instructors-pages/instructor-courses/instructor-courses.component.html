@@ -1,13 +1,15 @@
 <div class="flex flex-col items-center justify-center max-w-full mb-2">
-  <h1 class="text-2xl font-semibold">Manage Course Dashboard</h1>
+  <h1 class="text-2xl font-semibold mt-2">Manage Course Dashboard</h1>
+
   <!-- Dynamic Button -->
   <div class="flex justify-end w-full mt-2">
     <button
       (click)="toggleView()"
       class="bg-gray-800 flex items-center gap-3 hover:border-gray-500 cursor-pointer text-white font-bold py-2 px-4 rounded">
-      <i class="pi" [ngClass]="isManageCourseRoute ? 'pi-arrow-left' : 'pi-plus'"></i>
+      <i class="pi" [ngClass]="isManageCourseRoute || isSectionListRoute ? 'pi-arrow-left' : 'pi-plus'"></i>
       <span>{{ buttonText }}</span>
     </button>
   </div>
 </div>
 <router-outlet></router-outlet>
+

@@ -6,3 +6,9 @@ export interface CourseRequest {
   courseSelectedTags: string[];
   courseSelectedCategory: string;
 }
+
+export interface SectionRequest {
+  sectionId?: string;
+  sectionName: string;
+  sectionDescription: string;
+}

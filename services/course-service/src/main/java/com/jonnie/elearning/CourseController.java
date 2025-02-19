@@ -44,7 +44,6 @@ public class CourseController {
         return null;
     }
 
-
     //method to create a course
     @PostMapping(value = "/create-course", consumes = "multipart/form-data")
     public ResponseEntity<Map<String, String>> create(
@@ -229,12 +228,33 @@ public class CourseController {
     ) {
         return ResponseEntity.ok(sectionService.findSectionsByCourse(courseId, page, size));
     }
-    //get the section ids for a course
+
+    //get the section ids for a course for the user
     @GetMapping("/sections/{course-id}")
     public ResponseEntity<AllSectionId> findSectionIdsByCourse(
             @PathVariable("course-id") String courseId
     ) {
         return ResponseEntity.ok(sectionService.findSectionIdsByCourse(courseId));
+    }
+
+    //get the sections for course and to a specific instructor
+    @GetMapping("/instructor-course-sections/{courseId}")
+    public ResponseEntity<PageResponse<InstructorSectionResponse>> findSectionsByCourseForInstructor(
+            @RequestHeader(value = "X-User-Id", required = false) String instructorId,
+            @RequestHeader(value = "X-User-Role", required = false) String userRole,
+            @PathVariable("courseId") String courseId,
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size
+    ) {
+        if (instructorId == null || instructorId.isEmpty()) {
+            return ResponseEntity.badRequest().body(PageResponse.<InstructorSectionResponse>builder().build());
+        }
+
+        if (!ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(PageResponse.<InstructorSectionResponse>builder().build());
+        }
+
+        return ResponseEntity.ok(sectionService.findSectionsByCourseForInstructor(courseId, instructorId, page, size));
     }
 
     //update the section content

@@ -4,7 +4,7 @@ import {
   CategoryResponse,
   CourseDetailsResponse,
   CourseResponse,
-  CourseSection, InstructorCoursesResponse, InstructorFullCourseDetailsResponse,
+  CourseSection, InstructorCourseSectionResponse, InstructorCoursesResponse, InstructorFullCourseDetailsResponse,
   PageResponse, TagResponse
 } from '../interfaces/responses';
 import {EnrollmentService} from './enrollment.service';
@@ -139,6 +139,19 @@ export class CoursesService {
   updateCourse(courseId: string, formData: any) {
     const token = this.authService.getToken();
     return this.httpClient.put(`${this.baseUrl}/update-course/${courseId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+  //method to get the course sections details for the instructor
+  getAllSectionsDetailsForCourse(courseId: string, page: { size: number; page: number }) {
+    const token = this.authService.getToken();
+    return this.httpClient.get<PageResponse<InstructorCourseSectionResponse>>(`${this.baseUrl}/instructor-course-sections/${courseId}`, {
+      params:{
+        page: page.page.toString(),
+        size: page.size.toString()
+      },
       headers: {
         Authorization: `Bearer ${token}`
       }

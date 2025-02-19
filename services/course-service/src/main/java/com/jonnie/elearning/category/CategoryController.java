@@ -1,12 +1,16 @@
 package com.jonnie.elearning.category;
 
 import com.jonnie.elearning.common.PageResponse;
+import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.utils.ROLE;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/courses")
@@ -15,14 +19,25 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("/create-category")
-    public ResponseEntity<String> createCategory(
+    public ResponseEntity<Map<String, String>> createCategory(
             @RequestHeader("X-User-Role") String userRole,
-            @RequestBody @Valid CategoryRequest categoryRequest
-            ){
+            @RequestBody @Valid CategoryRequest categoryRequest) {
+
         if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "You are not authorized to perform this action"));
         }
-        return ResponseEntity.ok(categoryService.createCategory(categoryRequest));
+
+        try {
+            String categoryId = categoryService.createCategory(categoryRequest);
+            return ResponseEntity.ok(Map.of("categoryId", categoryId));
+        } catch (BusinessException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "An unexpected error occurred"));
+        }
     }
 
     @GetMapping("/all-categories")

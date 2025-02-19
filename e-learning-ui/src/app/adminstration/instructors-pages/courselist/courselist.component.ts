@@ -44,8 +44,14 @@ export class CourselistComponent {
   totalPages() {
    return this.courses.totalPages as number;
   }
-
   navigateToManageCourse(course: InstructorCoursesResponse) {
     this.router.navigate(['/dashboard/instructor-courses/manage-course', course.courseId]);
+  }
+
+  navigateToCourseSections(course: InstructorCoursesResponse) {
+    this.router.navigate(
+      ['/dashboard/instructor-courses/sections', course.courseId],
+      { queryParams: { courseName: course.courseName } }
+    );
   }
 }

@@ -8,6 +8,7 @@ import com.jonnie.elearning.course.Course;
 import com.jonnie.elearning.course.requests.SectionRequest;
 import com.jonnie.elearning.course.requests.UpdateSectionRequest;
 import com.jonnie.elearning.course.responses.AllSectionId;
+import com.jonnie.elearning.course.responses.InstructorSectionResponse;
 import com.jonnie.elearning.course.responses.SectionResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.feign.enrollment.EnrollmentClient;
@@ -152,8 +153,6 @@ public class SectionService {
 
     //get all section ids for a course
     public AllSectionId findSectionIdsByCourse(String courseId) {
-        log.info("Fetching section IDs for course: {}", courseId);
-
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found"));
 
@@ -166,5 +165,28 @@ public class SectionService {
         }
 
         return new AllSectionId(sectionIds);
+    }
+
+    public PageResponse<InstructorSectionResponse> findSectionsByCourseForInstructor(
+            String courseId, String instructorId, int page, int size) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessException("Course not found"));
+        if (!instructorId.equals(course.getInstructorId())) {
+            throw new BusinessException("You can't view content for a course you don't own");
+        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Section> sections = sectionRepository.findByCourse(course, pageable);
+        List<InstructorSectionResponse> sectionResponses = sections.stream()
+                .map(courseMapper::fromInstructorSection)
+                .toList();
+        return new PageResponse<>(
+                sectionResponses,
+                sections.getNumber(),
+                sections.getSize(),
+                sections.getTotalElements(),
+                sections.getTotalPages(),
+                sections.isLast(),
+                sections.isFirst()
+        );
     }
 }

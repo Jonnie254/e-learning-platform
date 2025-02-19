@@ -1,0 +1,88 @@
+<div class="bg-white p-4">
+  <!-- Header -->
+  <div class="flex items-center justify-between my-1">
+    <!-- Search Input -->
+    <div class="flex items-center gap-2">
+      <i class="pi pi-search"></i>
+      <input type="text" placeholder="Search"
+             class="px-4 py-2 bg-gray-100 w-72 text-gray-800 text-sm border-2 border-solid border-gray-300 focus:bg-transparent rounded-lg" />
+    </div>
+
+    <!-- Title -->
+    <div>
+      <h1 class="text-xl font-semibold flex items-center justify-center">Section List for {{courseName}} </h1>
+    </div>
+
+    <!-- Sort & Add Section -->
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <label for="sort" class="text-gray-800 text-sm font-semibold">Sort By</label>
+        <select id="sort"
+                class="px-4 py-2 bg-gray-100 text-gray-800 text-sm border-2 border-solid border-gray-300 focus:bg-transparent rounded-lg">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+      </div>
+
+      <!-- Add Section Button -->
+      <button (click)="navigateToAddSection()"
+              class="bg-gray-800 flex items-center gap-2 text-white font-bold py-2 px-4 rounded hover:border-gray-500 cursor-pointer">
+        <i class="pi pi-plus"></i>
+        <span>Add Section</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Sections Table or No Sections Message -->
+  <div class="font-serif overflow-x-auto">
+      <table  *ngIf="section.content && section.content.length > 0; else noSectionsMessage" class="min-w-full bg-white">
+        <thead class="bg-gray-800 whitespace-nowrap">
+        <tr>
+          <th class="text-left py-2 px-4 font-semibold text-sm text-gray-100">Section Name</th>
+          <th class="text-left py-2 px-4 font-semibold text-sm text-gray-100">Video</th>
+          <th class="text-left py-2 px-4 font-semibold text-sm text-gray-100">PDF</th>
+          <th class="text-left py-2 px-4 font-semibold text-sm text-gray-100">Actions</th>
+        </tr>
+        </thead>
+        <tbody class="whitespace-nowrap">
+        <tr *ngFor="let section of section.content" class="hover:bg-gray-100 transition duration-200">
+          <td class="py-3 px-4 border-b border-gray-200 hover:underline cursor-pointer">
+            {{ section.sectionName }}
+          </td>
+          <td class="py-3 px-4 border-b border-gray-200">
+            <a *ngIf="section.videoUrl" [href]="section.videoUrl" target="_blank" class="text-blue-500 hover:underline">
+              🎥 Watch Video
+            </a>
+          </td>
+          <td class="py-3 px-4 border-b border-gray-200">
+            <a *ngIf="section.pdfUrl" [href]="section.pdfUrl" target="_blank" rel="noopener noreferrer" class="text-green-500 hover:underline">
+              📄 View PDF
+            </a>
+          </td>
+          <td class="px-4 gap-2 border-b border-gray-200">
+            <div class="flex items-center gap-2">
+              <i (click)="navigateToUpdateSection(section)" class="pi pi-pencil text-blue-500 cursor-pointer text-xl hover:scale-110 transition-transform" title="Edit"></i>
+              <i class="pi pi-ellipsis-v text-red-500 cursor-pointer text-xl hover:scale-110 transition-transform" title="View Course"></i>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    <!-- Pagination -->
+    <ng-template #noSectionsMessage>
+      <div class="flex flex-col items-center justify-center text-gray-600 mt-8">
+        <i class="pi pi-exclamation-circle text-4xl"></i>
+        <p class="text-lg font-semibold mt-2">No sections added for this course yet.</p>
+        <button (click)="navigateToAddSection()" class="mt-4 bg-gray-800 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="pi pi-plus"></i> Add First Section
+        </button>
+      </div>
+    </ng-template>
+  </div>
+  <app-pagination
+    *ngIf="section.content && section.content.length > 0"
+    [currentPage]="page"
+    [totalPages]="totalPages()"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>
