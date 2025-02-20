@@ -22,8 +22,7 @@ export class CourselistComponent {
   courses: PageResponse<InstructorCoursesResponse> = {};
   constructor(
     private coursesService: CoursesService,
-    private router: Router
-              ) {
+    private router: Router) {
     this.getInstructorCourses();
   }
 

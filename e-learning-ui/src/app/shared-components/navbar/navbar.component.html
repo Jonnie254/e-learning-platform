@@ -67,16 +67,16 @@ md:border-0 md:bg-transparent">
                [ngClass]="{'hidden': !isUserDropdownOpen}">
             <ul class="py-1" aria-label="submenu">
               <li>
-                <a routerLink="/profile"
-                   class="block px-4 py-2 text-sm text-white hover:bg-blue-700">Profile</a>
-              </li>
-              <li>
                 <a routerLink="/my-courses"
                    class="block px-4 py-2 text-sm text-white hover:bg-blue-700">My Courses</a>
               </li>
               <li>
                 <a routerLink="/my-inbox"
-                   class="block px-4 py-2 text-sm text-white hover:bg-blue-700">My Wishlist</a>
+                   class="block px-4 py-2 text-sm text-white hover:bg-blue-700">Inbox</a>
+              </li>
+              <li>
+                <a routerLink="/manage-profile"
+                   class="block px-4 py-2 text-sm text-white hover:bg-blue-700">Profile</a>
               </li>
               <li>
                 <a routerLink="/request-role"

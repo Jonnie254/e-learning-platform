@@ -174,7 +174,7 @@ public class SectionService {
         if (!instructorId.equals(course.getInstructorId())) {
             throw new BusinessException("You can't view content for a course you don't own");
         }
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").ascending());
         Page<Section> sections = sectionRepository.findByCourse(course, pageable);
         List<InstructorSectionResponse> sectionResponses = sections.stream()
                 .map(courseMapper::fromInstructorSection)

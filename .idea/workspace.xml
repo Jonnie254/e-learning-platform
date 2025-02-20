@@ -6,23 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/courselist/courselist.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/courselist/courselist.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/courselist/courselist.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/courselist/courselist.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/instructor-courses/instructor-courses.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/instructor-courses/instructor-courses.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/instructor-courses/instructor-courses.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/instructor-courses/instructor-courses.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/manage-course/manage-course.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/manage-course/manage-course.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/manage-course/manage-course.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/manage-course/manage-course.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/manage-section/manage-section.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/manage-section/manage-section.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/manage-section/manage-section.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/manage-section/manage-section.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/section-list/section-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/instructors-pages/section-list/section-list.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/app.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/requests.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/requests.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/profile-page/profile-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/profile-page/profile-page.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/profile-page/profile-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/auth-pages/profile-page/profile-page.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/users.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/services/courses-service.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/services/courses-service.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/services/enrollment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/services/enrollment.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/navbar/navbar.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/navbar/navbar.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/CourseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/CourseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/InstructorFullCourseDetailsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/responses/InstructorFullCourseDetailsResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/category/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/category/CategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/SectionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/SectionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/Enrollment.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/enrollment/Enrollment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/enrollment/PaymentConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/enrollment/EnrollmentConsumer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -386,7 +384,10 @@
       <workItem from="1739862662051" duration="8953000" />
       <workItem from="1739882991484" duration="27032000" />
       <workItem from="1739963454264" duration="3618000" />
-      <workItem from="1739973736498" duration="922000" />
+      <workItem from="1739973736498" duration="19095000" />
+      <workItem from="1740043262190" duration="3095000" />
+      <workItem from="1740068687205" duration="8892000" />
+      <workItem from="1740080509110" duration="697000" />
     </task>
     <servers />
   </component>

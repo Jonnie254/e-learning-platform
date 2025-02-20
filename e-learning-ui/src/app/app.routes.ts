@@ -29,47 +29,64 @@ export const routes: Routes = [
     path:'courses', component:CoursesComponent
   },
   {
-    path:'courses/:courseId', loadComponent: () => import('./courses-pages/course-details/course-details.component').then(m => m.CourseDetailsComponent)
+    path:'courses/:courseId', loadComponent: () =>
+      import('./courses-pages/course-details/course-details.component')
+        .then(m => m.CourseDetailsComponent)
   },
   {
-    path:'cart', loadComponent: () => import('./courses-pages/cart-details/cart-details.component').then(m => m.CartDetailsComponent),
-    canActivate: [authGuard, roleGuard],
+    path:'manage-profile', loadComponent:() =>
+      import('./auth-pages/profile-page/profile-page.component')
+        .then(m => m.ProfilePageComponent),
+
+  },
+  {
+    path:'cart', loadComponent: () =>
+      import('./courses-pages/cart-details/cart-details.component')
+        .then(m => m.CartDetailsComponent),
+      canActivate: [authGuard, roleGuard],
     data:{
       allowedRoles:['STUDENT']
     }
   },
   {
     path:'payment-success', loadComponent: () =>
-      import('./student-pages/payment-success/payment-success.component').then(m => m.PaymentSuccessComponent)
+      import('./student-pages/payment-success/payment-success.component')
+        .then(m => m.PaymentSuccessComponent)
   },
   {
     path:'my-courses', loadComponent: () =>
-      import('./student-pages/my-courses/my-courses.component').then(m => m.MyCoursesComponent)
+      import('./student-pages/my-courses/my-courses.component')
+        .then(m => m.MyCoursesComponent)
   },
   {
     path:'enrolled-course/:courseId', loadComponent: () =>
-      import('./student-pages/enrolled-course/enrolled-course.component').then(m => m.EnrolledCourseComponent),
+      import('./student-pages/enrolled-course/enrolled-course.component')
+        .then(m => m.EnrolledCourseComponent),
     canActivate: [authGuard]
   },
   {
     path:'request-role', loadComponent: () =>
-      import('./auth-pages/request-role/request-role.component').then(m => m.RequestRoleComponent),
+      import('./auth-pages/request-role/request-role.component')
+        .then(m => m.RequestRoleComponent),
     canActivate: [authGuard]
   },
   {
     path:'profile',loadComponent:() =>
-      import('./auth-pages/profile-page/profile-page.component').then(m => m.ProfilePageComponent),
+      import('./auth-pages/profile-page/profile-page.component')
+        .then(m => m.ProfilePageComponent),
     canActivate: [authGuard]
   },
   {
     path:'dashboard',
     loadComponent: () =>
-      import('./adminstration/dashboard-page/dashboard-page.component').then(m => m.DashboardPageComponent),
+      import('./adminstration/dashboard-page/dashboard-page.component')
+        .then(m => m.DashboardPageComponent),
     children:[
       {
         path:'',loadComponent:() =>
-          import('./adminstration/admin-pages/analytics-page/analytics-page.component').then(m => m.AnalyticsPageComponent),
-        canActivate: [roleGuard, authGuard],
+          import('./adminstration/admin-pages/analytics-page/analytics-page.component')
+            .then(m => m.AnalyticsPageComponent),
+          canActivate: [roleGuard, authGuard],
         data:{
           allowedRoles:['ADMIN', 'INSTRUCTOR']
         }
@@ -77,7 +94,8 @@ export const routes: Routes = [
       {
         path:'admin-analytics',
         loadComponent:() =>
-          import('./adminstration/admin-pages/analytics-page/analytics-page.component').then(m => m.AnalyticsPageComponent),
+          import('./adminstration/admin-pages/analytics-page/analytics-page.component')
+            .then(m => m.AnalyticsPageComponent),
         canActivate: [roleGuard, authGuard],
         data:{
           allowedRoles:['ADMIN']
@@ -86,7 +104,8 @@ export const routes: Routes = [
       {
         path:'instructor-analytics',
         loadComponent:() =>
-          import('./adminstration/admin-pages/analytics-page/analytics-page.component').then(m => m.AnalyticsPageComponent),
+          import('./adminstration/admin-pages/analytics-page/analytics-page.component')
+            .then(m => m.AnalyticsPageComponent),
         canActivate: [roleGuard, authGuard],
         data:{
           allowedRoles:['INSTRUCTOR']
@@ -104,28 +123,28 @@ export const routes: Routes = [
       {
         path:'instructor-courses',loadComponent:() =>
           import('./adminstration/instructors-pages/instructor-courses/instructor-courses.component')
-          .then(m => m.InstructorCoursesComponent),
+            .then(m => m.InstructorCoursesComponent),
         children:[
           {
             path:'', loadComponent:() =>
               import('./adminstration/instructors-pages/courselist/courselist.component')
-              .then(m => m.CourselistComponent),
+                .then(m => m.CourselistComponent),
           },
           {
             path:'course-list', loadComponent:() =>
               import('./adminstration/instructors-pages/courselist/courselist.component')
-              .then(m => m.CourselistComponent),
+                .then(m => m.CourselistComponent),
           },
           {
             path: 'manage-course/:courseId',
             loadComponent: () =>
               import('./adminstration/instructors-pages/manage-course/manage-course.component')
-              .then(m => m.ManageCourseComponent),
+                .then(m => m.ManageCourseComponent),
           },
           {
             path:'manage-course', loadComponent:() =>
               import('./adminstration/instructors-pages/manage-course/manage-course.component')
-              .then(m => m.ManageCourseComponent),
+                .then(m => m.ManageCourseComponent),
           },
           {
             path:'sections/:courseId', loadComponent:() =>
@@ -133,16 +152,11 @@ export const routes: Routes = [
                 .then(m => m.SectionListComponent),
           },
           {
-            path:'manage-section/:courseId', loadComponent:() =>
-              import('./adminstration/instructors-pages/manage-section/manage-section.component')
-                .then(m => m.ManageSectionComponent)
-          },
-          {
-            path:'manage-section/:sectionId', loadComponent:() =>
+            path: 'manage-section/:courseId/:sectionId',
+            loadComponent: () =>
               import('./adminstration/instructors-pages/manage-section/manage-section.component')
                 .then(m => m.ManageSectionComponent)
           }
-
         ]
         // canActivate: [roleGuard, authGuard],
         // data:{
@@ -150,21 +164,24 @@ export const routes: Routes = [
         // }
       },
       {
-        path:'profile',loadComponent:() => import('./auth-pages/profile-page/profile-page.component')
-          .then(m => m.ProfilePageComponent),
+        path:'profile',loadComponent:() =>
+          import('./auth-pages/profile-page/profile-page.component')
+            .then(m => m.ProfilePageComponent),
         canActivate: [authGuard]
       },
       {
-        path:'users', loadComponent:() => import('./adminstration/admin-pages/manage-users/manage-users.component')
-          .then(m => m.ManageUsersComponent),
+        path:'users', loadComponent:() =>
+          import('./adminstration/admin-pages/manage-users/manage-users.component')
+            .then(m => m.ManageUsersComponent),
         canActivate: [roleGuard, authGuard],
         data:{
           allowedRoles:['ADMIN']
         }
       },
       {
-        path:'inbox', loadComponent:() => import('./shared-components/inbox-page/inbox-page.component')
-          .then(m => m.InboxPageComponent),
+        path:'inbox', loadComponent:() =>
+          import('./shared-components/inbox-page/inbox-page.component')
+            .then(m => m.InboxPageComponent),
         canActivate: [roleGuard, authGuard],
         data:{
           allowedRoles:['INSTRUCTOR']

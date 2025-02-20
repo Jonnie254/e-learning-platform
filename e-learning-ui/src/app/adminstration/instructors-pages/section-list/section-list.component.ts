@@ -69,14 +69,16 @@ export class SectionListComponent {
   }
 
   navigateToAddSection() {
-    this.router.navigate(['/dashboard/instructor-courses/manage-section', this.courseId],
-      { queryParams: { courseName: this.courseName } });
+    this.router.navigate([
+      '/dashboard/instructor-courses/manage-section',
+      this.courseId, 'new'
+    ], { queryParams: { courseName: this.courseName } });
   }
-
   navigateToUpdateSection(section: InstructorCourseSectionResponse) {
-    this.router.navigate(['/dashboard/instructor-courses/manage-section', section.sectionId]
-    ,
-      { queryParams: { courseName: this.courseName } });
+    this.router.navigate([
+      '/dashboard/instructor-courses/manage-section',
+      this.courseId, section.sectionId
+    ], { queryParams: { courseName: this.courseName } });
   }
 
 }

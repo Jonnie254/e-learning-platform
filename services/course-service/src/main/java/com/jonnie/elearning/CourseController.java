@@ -160,7 +160,7 @@ public class CourseController {
     }
 
     // create section for the course
-    @PostMapping(value = "/{courseId}/create-content", consumes = "multipart/form-data")
+    @PostMapping(value = "/create-section-content/{courseId}", consumes = "multipart/form-data")
     public ResponseEntity<Map<String, Object>> createContent(
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
             @RequestHeader(value = "X-User-Id", required = false) String instructorId,
@@ -258,11 +258,11 @@ public class CourseController {
     }
 
     //update the section content
-    @PutMapping("/section/{section-id}/update-content")
+    @PutMapping("/section/update-content/{sectionId}")
     public ResponseEntity<Map<String, String>> updateSectionContent(
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
             @RequestHeader(value = "X-User-Id", required = false) String instructorId,
-            @PathVariable("section-id") String sectionId,
+            @PathVariable("sectionId") String sectionId,
             @ModelAttribute UpdateSectionRequest updateSectionRequest,
             @RequestParam(required = false) MultipartFile newSectionPdf,
             @RequestParam(required = false) MultipartFile newSectionVideo

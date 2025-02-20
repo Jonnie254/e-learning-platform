@@ -157,5 +157,32 @@ export class CoursesService {
       }
     });
   }
+  //method to add a section
+  addSection(courseId: string, formData: FormData) {
+    const token = this.authService.getToken();
+    return this.httpClient.post(`${this.baseUrl}/create-section-content/${courseId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+  //method to get the section details
+  getSectionDetails(sectionId: string | null) {
+    const token = this.authService.getToken();
+    return this.httpClient.get<InstructorCourseSectionResponse>(`${this.baseUrl}/section/${sectionId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
+  }
+  //method to update the section
+  updateSection(sectionId: string, formData: FormData) {
+    const token = this.authService.getToken();
+    return this.httpClient.put(`${this.baseUrl}/section/update-content/${sectionId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    });
+  }
 }

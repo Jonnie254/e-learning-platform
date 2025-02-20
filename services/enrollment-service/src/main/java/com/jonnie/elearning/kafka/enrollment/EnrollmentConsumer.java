@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PaymentConsumer {
+public class EnrollmentConsumer {
     private final EnrollmentRepository enrollmentRepository;
 
     @KafkaListener(topics = "enrollment-topic", groupId = "enrollment-group")

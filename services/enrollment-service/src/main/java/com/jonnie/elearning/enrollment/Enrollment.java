@@ -30,7 +30,6 @@ public class Enrollment {
     private boolean isPaid;
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
-
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
