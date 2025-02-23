@@ -193,6 +193,16 @@ public class CourseMapper {
                 .videoUrl(section.getVideoUrl())
                 .build();
     }
+
+    public List<CourseDetailsResponse> toCourseDetailsResponse(List<Course> courses) {
+        return courses.stream()
+                .map(course -> CourseDetailsResponse.builder()
+                        .courseId(course.getCourseId())
+                        .courseName(course.getCourseName())
+                        .courseUrlImage(course.getCourseUrlImage())
+                        .build())
+                .toList();
+    }
 }
 
 

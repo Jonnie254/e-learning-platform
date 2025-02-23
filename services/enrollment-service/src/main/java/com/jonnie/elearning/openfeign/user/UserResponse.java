@@ -4,12 +4,12 @@ import lombok.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserResponse {
-    public String id;
-    public String firstName;
-    public String lastName;
-    public String email;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String email;
 }

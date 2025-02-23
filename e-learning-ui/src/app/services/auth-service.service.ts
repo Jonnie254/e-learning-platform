@@ -107,6 +107,17 @@ export class AuthService {
     });
   }
 
+  //method to update the user profile
+  updateUserProfile(formData: FormData) {
+    const token = this.getToken();
+    return this.http.put(`${this.baseUrl}/update-user`, formData, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+
+
+
   // Redirect based on the role
   private redirectBasedOnRole(role: string) {
     let redirectUrl = '';

@@ -242,7 +242,6 @@ public class CourseService {
             String newCourseImageUrl = uploadCourseImage(newCourseImage);
             existingCourse.setCourseUrlImage(newCourseImageUrl);
         }
-
         courseRepository.save(existingCourse);
     }
 
@@ -265,4 +264,8 @@ public class CourseService {
         }
     }
 
+    public List<CourseDetailsResponse> getCoursesByIds(List<String> courseIds) {
+        List<Course> courses = courseRepository.findAllById(courseIds);
+        return courseMapper.toCourseDetailsResponse(courses);
+    }
 }

@@ -2,10 +2,10 @@ package com.jonnie.elearning.enrollment;
 
 
 import com.jonnie.elearning.common.PageResponse;
-import com.jonnie.elearning.exceptions.BusinessException;
+import com.jonnie.elearning.enrollment.responses.CourseEnrollmentResponse;
+import com.jonnie.elearning.enrollment.responses.EnrollmentStatsResponse;
 import com.jonnie.elearning.openfeign.course.CourseClient;
 import com.jonnie.elearning.openfeign.course.CourseEnrollResponse;
-import com.jonnie.elearning.openfeign.course.CourseResponse;
 import com.jonnie.elearning.repositories.EnrollmentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,4 +54,59 @@ public class EnrollmentService {
     public Boolean hasEnrollments(String userId) {
         return enrollmentRepository.existsByUserId(userId);
     }
+
+    public EnrollmentStatsResponse getTotalInstructorEnrollments(String userId) {
+        long totalEnrollments = enrollmentRepository.countByInstructorIds(userId);
+        return EnrollmentStatsResponse.builder()
+                .totalEnrollments((int) totalEnrollments)
+                .build();
+    }
+
+    public EnrollmentStatsResponse getTotalAdminEnrollments() {
+        long totalEnrollments = enrollmentRepository.count();
+        return EnrollmentStatsResponse.builder()
+                .totalEnrollments((int) totalEnrollments)
+                .build();
+    }
+
+    public PageResponse<CourseEnrollmentResponse> getInstructorsTotalCourseEnrollments(String userId, int page, int size) {
+        List<Enrollment> enrollments = enrollmentRepository.findByInstructorIds(userId);
+
+        Map<String, Integer> enrollmentsPerCourse = enrollments.stream()
+                .flatMap(enrollment -> enrollment.getCourseIds().stream())
+                .collect(Collectors.groupingBy(courseId -> courseId, Collectors.summingInt(e -> 1)));
+
+        List<String> courseIds = new ArrayList<>(enrollmentsPerCourse.keySet());
+
+        int fromIndex = page * size;
+        int toIndex = Math.min(fromIndex + size, courseIds.size());
+
+        if (fromIndex >= courseIds.size()) {
+            return new PageResponse<>(Collections.emptyList(), page, size, courseIds.size(), (int) Math.ceil((double) courseIds.size() / size), true, page == 0);
+        }
+
+        List<String> paginatedCourseIds = courseIds.subList(fromIndex, toIndex);
+        List<CourseEnrollResponse> courses = courseClient.getCoursesByIds(paginatedCourseIds);
+        List<CourseEnrollmentResponse> courseEnrollmentResponses = courses.stream()
+                .map(course -> new CourseEnrollmentResponse(
+                        course.getCourseId(),
+                        course.getCourseName(),
+                        course.getCourseUrlImage(),
+                        course.getInstructorName(),
+                        enrollmentsPerCourse.getOrDefault(course.getCourseId(), 0)
+                ))
+                .toList();
+
+        return new PageResponse<>(
+                courseEnrollmentResponses,
+                page,
+                size,
+                courseIds.size(),
+                (int) Math.ceil((double) courseIds.size() / size),
+                toIndex >= courseIds.size(),
+                page == 0
+        );
+    }
+
+
 }

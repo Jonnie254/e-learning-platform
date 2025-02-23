@@ -300,4 +300,11 @@ public class CourseController {
     ) {
         return ResponseEntity.ok(courseService.findCoursesByIds(courseIds));
     }
+
+    @PostMapping("/courses-earnings")
+    public ResponseEntity<List<CourseDetailsResponse>> getCoursesByIds(
+            @RequestBody List<String> courseIds
+    ) {
+        return ResponseEntity.ok(courseService.getCoursesByIds(courseIds));
+    }
 }

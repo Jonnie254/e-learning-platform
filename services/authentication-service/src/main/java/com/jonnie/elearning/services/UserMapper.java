@@ -30,7 +30,7 @@ public class UserMapper {
                 .build();
     }
 
-    public User toUpdate(User existingUser, UserUpdateRequest userUpdateRequest) {
+    public User toUpdate(User existingUser, UserUpdateRequest userUpdateRequest, String profileImageUrl) {
         if (userUpdateRequest.firstName() != null) {
             existingUser.setFirstName(userUpdateRequest.firstName());
         }
@@ -43,12 +43,12 @@ public class UserMapper {
         if (userUpdateRequest.password() != null && !userUpdateRequest.password().isBlank()) {
             existingUser.setPassword(passwordEncoder.encode(userUpdateRequest.password()));
         }
-
-        if (userUpdateRequest.role() != null) {
-            existingUser.setRole(ROLE.valueOf(userUpdateRequest.role()));
+        if (profileImageUrl != null) {
+            existingUser.setProfilePicUrl(profileImageUrl);
         }
         return existingUser;
     }
+
 
     public UserResponse toUserResponse(User user) {
         return UserResponse.builder()

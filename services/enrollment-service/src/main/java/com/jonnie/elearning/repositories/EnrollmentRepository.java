@@ -22,4 +22,10 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, String> 
     Page<Enrollment> findByUsersId(String userId, Pageable pageable);
 
     Boolean existsByUserId(String userId);
+
+    @Query("SELECT e FROM Enrollment e JOIN e.instructorIds i WHERE i = :userId")
+    List<Enrollment> findByInstructorIds(String userId);
+
+    @Query("SELECT COUNT(e) FROM Enrollment e JOIN e.instructorIds i WHERE i = :userId")
+    long countByInstructorIds(String userId);
 }

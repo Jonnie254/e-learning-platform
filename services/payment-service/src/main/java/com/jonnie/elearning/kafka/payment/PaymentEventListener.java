@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import com.jonnie.elearning.payment.CoursePaymentDetails;
 
 @Component
 @RequiredArgsConstructor
@@ -40,11 +41,15 @@ public class PaymentEventListener {
                 CartStatus.CHECKED_OUT
         );
         EnrollmentConfirmation enrollmentConfirmation = new EnrollmentConfirmation(
-                paymentRecord.getCourseIds(),
+                paymentRecord.getCoursePaymentDetails().stream()
+                        .map(CoursePaymentDetails::courseId)
+                        .toList(), // Extract course IDs
                 paymentRecord.getUserId(),
-                paymentRecord.isPaid(),
+                paymentRecord.isPaid(), // Ensure method exists
                 paymentRecord.getPaymentMethod(),
-                paymentRecord.getInstructorIds()
+                paymentRecord.getCoursePaymentDetails().stream()
+                        .map(CoursePaymentDetails::instructorId)
+                        .toList() // Extract instructor IDs
         );
 
         //send kafka messages

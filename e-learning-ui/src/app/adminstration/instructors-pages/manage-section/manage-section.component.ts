@@ -112,7 +112,6 @@ export class ManageSectionComponent {
     const formData = new FormData();
     formData.append('sectionName', this.addSectionForm.value.sectionName);
     formData.append('sectionDescription', this.addSectionForm.value.sectionDescription);
-
     if (this.selectedPdfFile) {
       formData.append('sectionPdf', this.selectedPdfFile);
     }

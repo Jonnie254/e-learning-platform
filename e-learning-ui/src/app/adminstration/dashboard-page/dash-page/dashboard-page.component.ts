@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {AsyncPipe, NgIf} from '@angular/common';
-import {AuthService} from '../../services/auth-service.service';
+import {AuthService} from '../../../services/auth-service.service';
 import {Observable} from 'rxjs';
-import {User} from '../../interfaces/users';
+import {User} from '../../../interfaces/users';
 
 @Component({
   selector: 'app-dashboard-page',

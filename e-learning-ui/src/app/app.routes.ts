@@ -79,37 +79,39 @@ export const routes: Routes = [
   {
     path:'dashboard',
     loadComponent: () =>
-      import('./adminstration/dashboard-page/dashboard-page.component')
+      import('./adminstration/dashboard-page/dash-page/dashboard-page.component')
         .then(m => m.DashboardPageComponent),
-    children:[
+    children: [
       {
-        path:'',loadComponent:() =>
-          import('./adminstration/admin-pages/analytics-page/analytics-page.component')
-            .then(m => m.AnalyticsPageComponent),
-          canActivate: [roleGuard, authGuard],
-        data:{
-          allowedRoles:['ADMIN', 'INSTRUCTOR']
-        }
+        path: '',
+        redirectTo: 'analytics',
+        pathMatch: 'full'
       },
       {
-        path:'admin-analytics',
-        loadComponent:() =>
-          import('./adminstration/admin-pages/analytics-page/analytics-page.component')
-            .then(m => m.AnalyticsPageComponent),
-        canActivate: [roleGuard, authGuard],
-        data:{
-          allowedRoles:['ADMIN']
-        }
-      },
-      {
-        path:'instructor-analytics',
-        loadComponent:() =>
-          import('./adminstration/admin-pages/analytics-page/analytics-page.component')
-            .then(m => m.AnalyticsPageComponent),
-        canActivate: [roleGuard, authGuard],
-        data:{
-          allowedRoles:['INSTRUCTOR']
-        }
+        path: 'analytics',
+        loadComponent: () =>
+          import('./adminstration/dashboard-page/analytics/analytics.component')
+            .then(m => m.AnalyticsComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./adminstration/dashboard-page/analytics-page/analytics-page.component')
+                .then(m => m.AnalyticsPageComponent)
+          },
+          {
+            path: 'analytics-summary',
+            loadComponent: () =>
+              import('./adminstration/dashboard-page/analytics-page/analytics-page.component')
+                .then(m => m.AnalyticsPageComponent)
+          },
+          {
+            path: 'enrollment-summary',
+            loadComponent: () =>
+              import('./adminstration/dashboard-page/enrollment-summary/enrollment-summary.component')
+                .then(m => m.EnrollmentSummaryComponent)
+          }
+        ]
       },
       {
         path:'admin-courses',loadComponent:() =>

@@ -1,11 +1,11 @@
 package com.jonnie.elearning.cart;
 
-import com.jonnie.elearning.cartitem.CartItem;
 import com.jonnie.elearning.cartitem.CartItemResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.kafka.cart.CartConfirmation;
 import com.jonnie.elearning.kafka.cart.CartConfirmationProducer;
 import com.jonnie.elearning.kafka.cart.CartItemNotifyResponse;
+import com.jonnie.elearning.openfeign.payment.CoursePaymentDetails;
 import com.jonnie.elearning.openfeign.payment.PaymentClient;
 import com.jonnie.elearning.openfeign.payment.PaymentRequest;
 import com.jonnie.elearning.openfeign.user.UserClient;
@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,103 +32,121 @@ public class CartService {
     private final UserClient userClient;
     private final CartConfirmationProducer cartConfirmationProducer;
 
-    // method to checkout the cart
+    // Checkout the cart
     public String checkoutCart(String userId) {
         log.info("Starting checkout process for userId: {}", userId);
 
         Cart cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new BusinessException("Cart not found"));
+                .orElseThrow(() -> new BusinessException("Cart not found for userId: " + userId));
 
         if (cart.getCartItems().isEmpty()) {
-            throw new BusinessException("Cart is empty");
+            throw new BusinessException("Cart is empty for userId: " + userId);
         }
-        List<String> courseIds = cart.getCartItems().stream()
-                .map(CartItem::getCourseId)
-                .collect(Collectors.toList());
-        List<String> instructorIds = cart.getCartItems().stream()
-                .map(CartItem::getInstructorId)
-                .distinct()
-                .collect(Collectors.toList());
-        PaymentRequest paymentRequest = getPaymentRequest(
-                cart, courseIds, instructorIds, userClient);
+
+        List<CoursePaymentDetails> courseDetails = cart.getCartItems().stream()
+                .map(cartItem -> new CoursePaymentDetails(
+                        cartItem.getCourseId(),
+                        cartItem.getInstructorId(),
+                        cartItem.getPrice()
+                ))
+                .toList();
+
+        PaymentRequest paymentRequest = getPaymentRequest(cart, courseDetails);
+
         try {
             ResponseEntity<Map<String, String>> response = paymentClient.requestToMakePayment(paymentRequest);
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 String approvalUrl = response.getBody().get("approvalUrl");
-                log.info("Payment successful, redirecting to: {}", approvalUrl);
+                log.info("Payment successful for userId: {}. Redirecting to: {}", userId, approvalUrl);
 
                 cart.setStatus(CartStatus.PENDING);
                 cartRepository.save(cart);
+
+                // Notify via Kafka
                 List<CartItemNotifyResponse> cartItemNotifyResponses = cart.getCartItems().stream()
                         .map(cartItem -> new CartItemNotifyResponse(
                                 cartItem.getCourseName(),
                                 cartItem.getPrice()
                         ))
                         .toList();
+
                 cartConfirmationProducer.sendCartConfirmation(
                         new CartConfirmation(
                                 cart.getReference(),
                                 cart.getTotalAmount(),
-                                UserResponse.builder()
-                                        .email(paymentRequest.customerEmail())
-                                        .firstName(paymentRequest.customerFirstName())
-                                        .lastName(paymentRequest.customerLastName())
-                                        .build(),
+                                new UserResponse(
+                                        paymentRequest.userId(),
+                                        paymentRequest.customerFirstName(),
+                                        paymentRequest.customerLastName(),
+                                        paymentRequest.customerEmail()
+                                ),
                                 cartItemNotifyResponses
                         )
                 );
                 return approvalUrl;
             } else {
-                log.error("Unexpected response from payment service: {}", response);
+                log.error("Unexpected response from payment service for userId {}: {}", userId, response);
                 throw new BusinessException("Payment processing failed");
             }
+        } catch (FeignException.BadRequest e) {
+            log.error("Bad Request from payment service for userId {}: {}", userId, e.getMessage(), e);
+            throw new BusinessException("Invalid payment request: " + e.getMessage());
+        } catch (FeignException.NotFound e) {
+            log.error("Payment service not found for userId {}: {}", userId, e.getMessage(), e);
+            throw new BusinessException("Payment service unavailable: " + e.getMessage());
         } catch (FeignException e) {
-            log.error("Error calling payment service: {}", e.getMessage(), e);
+            log.error("Error calling payment service for userId {}: {}", userId, e.getMessage(), e);
             throw new BusinessException("Payment request failed: " + e.getMessage());
         }
     }
 
-    //handle the payment success
-    public void  handlePaymentSuccess(String cartReference){
+    // Handle payment success
+    public void handlePaymentSuccess(String cartReference) {
         Cart cart = cartRepository.findByReference(cartReference)
-                .orElseThrow(() -> new BusinessException("Cart not found"));
+                .orElseThrow(() -> new BusinessException("Cart not found with reference: " + cartReference));
+
         cart.setStatus(CartStatus.CHECKED_OUT);
         cartRepository.save(cart);
+        log.info("Cart successfully checked out. CartReference: {}", cartReference);
     }
 
-    //handle the payment failure
-    public void handlePaymentFailure(String cartReference){
+    // Handle payment failure
+    public void handlePaymentFailure(String cartReference) {
         Cart cart = cartRepository.findByReference(cartReference)
-                .orElseThrow(() -> new BusinessException("Cart not found"));
+                .orElseThrow(() -> new BusinessException("Cart not found with reference: " + cartReference));
+
         cart.setStatus(CartStatus.ACTIVE);
         cartRepository.save(cart);
+        log.info("Cart payment failed. Cart set back to ACTIVE. CartReference: {}", cartReference);
     }
 
-    private static PaymentRequest getPaymentRequest(Cart cart,
-                                                    List<String> courseIds,
-                                                    List<String> instructorIds,
-                                                    UserClient userClient) {
+    // Generate payment request
+    private PaymentRequest getPaymentRequest(Cart cart, List<CoursePaymentDetails> courseDetails) {
         UserResponse user = userClient.getUser()
-                .orElseThrow(() -> new BusinessException("User not found"));
+                .orElseThrow(() -> new BusinessException("User not found for cartId: " + cart.getCartId()));
+
+        log.info("User found for cartId {}: {}", cart.getCartId(), user);
+
         return new PaymentRequest(
                 cart.getTotalAmount(),
                 cart.getPaymentMethod(),
                 cart.getReference(),
                 user.getId(),
-                cart.getCartId(),
-                user.firstName,
-                user.lastName,
-                user.email,
-                courseIds,
-                instructorIds
+                cart.getReference(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                courseDetails
         );
     }
 
+    // Retrieve active cart
     public CartResponse getCart(String userId) {
         Optional<Cart> cartOptional = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE);
 
         if (cartOptional.isEmpty()) {
+            log.info("No active cart found for userId: {}", userId);
             return new CartResponse(
                     "",
                     BigDecimal.ZERO,
@@ -138,7 +155,10 @@ public class CartService {
                     List.of()
             );
         }
+
         Cart cart = cartOptional.get();
+        log.info("Returning active cart for userId: {}", userId);
+
         return new CartResponse(
                 cart.getCartId(),
                 cart.getTotalAmount(),
@@ -155,5 +175,4 @@ public class CartService {
                         .toList()
         );
     }
-
 }

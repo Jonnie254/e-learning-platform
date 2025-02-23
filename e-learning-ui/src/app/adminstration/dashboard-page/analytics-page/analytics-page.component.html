@@ -1,0 +1,63 @@
+<div class="bg-gray-100  p-8 font-sans rounded-md mt-4">
+  <div class="container mx-auto">
+    <h2 class="text-4xl font-bold text-center text-gray-700 mb-8">Analytics</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="bg-orange-100 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-2xl">
+        <div class="flex items-center justify-center bg-gradient-to-r from-orange-400 to-orange-500
+       rounded-full p-3 w-16 h-16 ">
+          <i class="pi pi-chart-line text-white text-2xl"></i>
+        </div>
+        <div class="mt-4">
+          <p class="text-lg font-semibold text-gray-800">Total Courses</p>
+          <p class="text-4xl font-bold text-gray-800">10</p>
+        </div>
+      </div>
+      <div class="bg-amber-50 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-2xl">
+        <div class="flex items-center justify-center bg-gradient-to-r from-green-500 to-teal-500
+        rounded-full p-3 w-16 h-16 ">
+          <i class="pi pi-money-bill text-white text-2xl"></i>
+         </div>
+        <div class="mt-4">
+          <p class="text-lg font-semibold text-gray-800">Total Revenue</p>
+          <p class="text-4xl font-bold text-gray-800">$1000</p>
+        </div>
+      </div>
+      <div  *ngIf="(userRole$ | async) === 'INSTRUCTOR'" (click)="navigateToEnrollmentSummary()" class="bg-lime-50  rounded-lg shadow-sm p-6 cursor-pointer hover:shadow-2xl">
+        <div class="flex items-center justify-center bg-gradient-to-r from-green-400 to-green-500
+        rounded-full p-3 w-16 h-16 ">
+          <i class="pi pi-users text-white text-2xl"></i>
+        </div>
+        <div class="mt-4">
+          <p class="text-lg font-semibold text-gray-800">Total Enrollments</p>
+          <p class="text-4xl font-bold text-gray-800">{{enrollmentStatsResponse.totalEnrollments}}</p>
+        </div>
+      </div>
+      <div  *ngIf="(userRole$ | async) === 'ADMIN'" (click)="navigateToEnrollmentSummary()" class="bg-lime-50  rounded-lg shadow-sm p-6 cursor-pointer hover:shadow-2xl">
+        <div class="flex items-center justify-center bg-gradient-to-r from-green-400 to-green-500
+        rounded-full p-3 w-16 h-16 ">
+          <i class="pi pi-users text-white text-2xl"></i>
+        </div>
+        <div class="mt-4">
+          <p class="text-lg font-semibold text-gray-800">Total Enrollments</p>
+          <p class="text-4xl font-bold text-gray-800">{{enrollmentStatsResponse.totalEnrollments}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bg-slate-400 rounded-md shadow-lg">
+  <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  p-8">
+    <div class="bg-white m-2 rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-gray-800">Total Revenue</h3>
+      <p-chart type="line" [data]="data" [options]="options"></p-chart>
+      </div>
+    <div class="bg-white m-2 rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-gray-800">Total Enrollments</h3>
+      <p-chart type="line" [data]="data" [options]="options"></p-chart>
+    </div>
+    <div class="bg-white m-2 rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-gray-800">Total Courses</h3>
+      <p-chart type="pie" [data]="data" [options]="options" class="w-full md:w-[30rem]" />
+    </div>
+  </div>
+</div>

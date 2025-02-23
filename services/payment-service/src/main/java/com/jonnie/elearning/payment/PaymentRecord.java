@@ -23,20 +23,17 @@ public class PaymentRecord {
     private String userId;
     private String cartId;
     private String cartReference;
-    private List<String> instructorIds;
-    private List<String> courseIds;
     private PaymentMethod paymentMethod;
     private boolean isPaid;
     private BigDecimal amount;
+    private List<CoursePaymentDetails> coursePaymentDetails;
 
-
-    // Add customer details to the PaymentRecord
     private String customerFirstName;
     private String customerLastName;
     private String customerEmail;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+   @CreatedDate
+   private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updatedAt;
 }

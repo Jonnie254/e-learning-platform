@@ -30,8 +30,6 @@ export class CoursesComponent {
   cartItems: CourseResponse[] = [];
   cartSubcription: Subscription = new Subscription();
 
-
-
   constructor(
     private courseService: CoursesService,
     private enrollmentService: EnrollmentService,
@@ -53,7 +51,6 @@ export class CoursesComponent {
         this.coursesResponse = response;
       });
   }
-
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -88,5 +85,4 @@ export class CoursesComponent {
       };
     });
   }
-
 }

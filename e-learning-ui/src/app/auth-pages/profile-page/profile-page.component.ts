@@ -17,7 +17,7 @@ import {User} from '../../interfaces/users';
     AsyncPipe,
     ReactiveFormsModule,
     ConfirmationDialogComponent,
-    NotificationsComponent
+    NotificationsComponent,
   ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss'
@@ -44,16 +44,16 @@ export class ProfilePageComponent {
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
+    profilePicUrl:''
 
 }
-
   profileForm: FormGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
-    confirmPassword: new FormControl('', [Validators.required])
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl(''),
+    confirmPassword: new FormControl('')
   });
 
   constructor(private authService: AuthService) {
@@ -61,25 +61,95 @@ export class ProfilePageComponent {
     this.getUserData();
   }
 
-
   getUserData() {
-    console.log('getting user data');
     this.authService.getUserDetails().subscribe({
       next: (response) => {
-        console.log('user data:', response);
+        console.log("User", response)
         this.userData = response;
+        this.profileForm.patchValue({
+          firstName: this.userData.firstName,
+          lastName: this.userData.lastName,
+          email: this.userData.email,
+          profilePicUrl: this.userData.profilePicUrl
+        })
+      },
+      error: (error) => {
+        console.error('Error fetching user data:', error);
       }
     });
   }
-
   toggleEditMode() {
     this.isEditMode = !this.isEditMode;
     this.buttonText = this.isEditMode ? 'Save' : 'Edit';
+    if (this.isEditMode) {
+      this.profileForm.get('password')?.clearValidators();
+      this.profileForm.get('confirmPassword')?.clearValidators();
+    } else {
+      this.profileForm.patchValue({ password: '', confirmPassword: '' });
+    }
+    this.profileForm.get('password')?.updateValueAndValidity();
+    this.profileForm.get('confirmPassword')?.updateValueAndValidity();
   }
 
 
   onSave() {
+    this.updateUserData();
+  }
 
+  prepareFormData() {
+    const formData = new FormData();
+    formData.append('firstName', this.profileForm.value.firstName);
+    formData.append('lastName', this.profileForm.value.lastName);
+    formData.append('email', this.profileForm.value.email);
+    if (this.profileForm.value.password) {
+      formData.append('password', this.profileForm.value.password);
+    }
+    if (this.profileImageUrl) {
+      formData.append('profilePic', this.profileImageUrl);
+    }
+    return formData;
+  }
+
+  updateUserData(){
+    if(!this.profileForm.valid){
+      this.notification = {
+        show: true,
+        message: 'Please fill all required requirements',
+        type: "error"
+      }
+      return;
+    }
+    const formData = this.prepareFormData();
+    this.spinnerVisible = true;
+    this.authService.updateUserProfile(formData).subscribe({
+      next: (response) => {
+        this.spinnerVisible = false;
+        this.notification = {
+          show: true,
+          message: 'Profile updated successfully',
+          type: 'success'
+        }
+        this.isEditMode = false;
+        this.buttonText = 'Edit';
+        this.profileImageFileName = '';
+        this.getUserData();
+        setTimeout(() => {
+          this.notification = {
+            show: false,
+            message: '',
+            type: 'success'
+          }
+        }, 3000);
+      },
+      error: (error) => {
+        this.spinnerVisible = false;
+        this.notification = {
+          show: true,
+          message: 'Failed to update profile',
+          type: 'error'
+        }
+      }
+    });
   }
 
   getImagesUrl(imageUrl: any) {
@@ -90,11 +160,20 @@ export class ProfilePageComponent {
   }
 
   onConfirmAction() {
+    this.onSave();
+  }
 
+  confirmAction() {
+    this.isConfirmationDialogVisible = true;
+    this.modalTitle = 'Update Profile';
+    this.modalMessage = 'Are you sure you want to update your profile?';
+    this.modalConfirmButtonText = 'Yes';
+    this.modalCancelButtonText = 'No';
+    this.modalIconClass = 'pi pi-exclamation-triangle';
   }
 
   closeModal() {
-
+    this.isConfirmationDialogVisible = false;
   }
 
   closeNotification() {

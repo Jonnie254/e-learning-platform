@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -58,13 +59,16 @@ public class UserController {
 
     // method to upload a profile picture
     @PostMapping(value = "/update-profile-picture", consumes = "multipart/form-data")
-    public ResponseEntity<String> uploadProfilePicture(
+    public ResponseEntity<Map<String, String>> uploadProfilePicture(
             @RequestHeader("X-User-Id") String userId,
             @RequestParam("file") MultipartFile file
     ) {
         userService.uploadProfilePicture(userId, file);
-        return ResponseEntity.accepted().body("Profile picture uploaded successfully");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Profile picture uploaded successfully");
+        return ResponseEntity.accepted().body(response);
     }
+
 
     // method to request to become an instructor
     @PostMapping("/request-instructor")
@@ -75,7 +79,8 @@ public class UserController {
         try {
             boolean hasEnrollments = enrollmentClient.hasEnrollments(userId);
             if (hasEnrollments) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Since you've purchased courses using this account, you are restricted from becoming an instructor." +
+                return ResponseEntity.badRequest().body(Map.of("error",
+                        "Since you've purchased courses using this account, you are restricted from becoming an instructor." +
                         " Please contact support for assistance or consider using a different account for instructor access."));
             }
             userService.requestInstructor(userId, userRoleRequest);
@@ -127,27 +132,30 @@ public class UserController {
     }
 
     @PutMapping("/process-role-request")
-    public ResponseEntity<String> processRoleRequest(
+    public ResponseEntity<Map<String, String>> processRoleRequest(
             @RequestHeader("X-User-Role") String userRole,
             @RequestParam(name = "user-id") String userId,
             @RequestParam(name = "request-id") String requestId,
             @RequestParam(name = "action") String action
     ) {
         if (!"ADMIN".equalsIgnoreCase(userRole)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "Access denied. Only admins can process role requests."));
         }
-        return switch (action.toLowerCase()) {
-            case "approve" -> {
+        Map<String, String> response = new HashMap<>();
+        switch (action.toLowerCase()) {
+            case "approve":
                 userService.approveRoleRequest(requestId, userId);
-                yield ResponseEntity.ok("Role request approved successfully");
-            }
-            case "disapprove" -> {
+                response.put("message", "Role request approved successfully");
+                return ResponseEntity.ok(response);
+            case "disapprove":
                 userService.disapproveRoleRequest(requestId, userId);
-                yield ResponseEntity.ok("Role request disapproved successfully");
-            }
-            default -> ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid action. Valid actions are 'approve' or 'disapprove'");
-        };
+                response.put("message", "Role request disapproved successfully");
+                return ResponseEntity.ok(response);
+            default:
+                response.put("error", "Invalid action. Valid actions are 'approve' or 'disapprove'");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
     //method to deactivate a user
@@ -156,10 +164,8 @@ public class UserController {
             @RequestHeader("X-User-Id") String userId,
             @RequestHeader("X-User-Role") String userRole
     ) {
-        log.info("Received request with X-User-Id: {}, X-User-Role: {}", userId, userRole);
         // Enforce role-based authorization
         if (!"ADMIN".equalsIgnoreCase(userRole)) {
-            log.warn("Unauthorized role: {}. Only ADMIN role can deactivate user.", userRole);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         // Proceed with the deactivation
@@ -169,17 +175,16 @@ public class UserController {
 
     // method to update the user's details
     @PutMapping("/update-user")
-    public ResponseEntity<Void> updateUser(
+    public ResponseEntity<Map<String, String>> updateUser(
             @RequestHeader("X-User-Id") String userId,
-            @RequestHeader("X-User-Role") String userRole,
-            @RequestBody @Valid UserUpdateRequest userUpdateRequest
+            @ModelAttribute @Valid UserUpdateRequest userUpdateRequest,
+            @RequestParam(name = "profilePic", required = false) MultipartFile file
     ) {
         try {
-            if (userId.equals(userUpdateRequest.id()) && userUpdateRequest.role() != null) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
-            userService.updateUser(userId, userRole, userUpdateRequest);
-            return ResponseEntity.ok().build();
+            userService.updateUser(userId, userUpdateRequest, file);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "User details updated successfully");
+            return ResponseEntity.accepted().body(response);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

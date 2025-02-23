@@ -14,7 +14,6 @@ public record PaymentRequest(
         String customerFirstName,
         String customerLastName,
         String customerEmail,
-        List<String> courseIds,
-        List<String> instructorId
+        List<CoursePaymentDetails> coursePaymentDetails
 ) {
 }

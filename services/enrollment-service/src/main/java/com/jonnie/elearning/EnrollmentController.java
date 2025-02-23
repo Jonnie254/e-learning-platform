@@ -7,6 +7,8 @@ import com.jonnie.elearning.cartitem.CartItemService;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.enrollment.EnrollmentResponse;
 import com.jonnie.elearning.enrollment.EnrollmentService;
+import com.jonnie.elearning.enrollment.responses.CourseEnrollmentResponse;
+import com.jonnie.elearning.enrollment.responses.EnrollmentStatsResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.progress.ProgressResponse;
 import com.jonnie.elearning.progress.ProgressService;
@@ -75,7 +77,6 @@ public class EnrollmentController {
         validateUser(userId, userRole, ROLE.STUDENT);
         return ResponseEntity.ok(cartItemService.getAllCartItems(userId, page, size));
     }
-
 
     @DeleteMapping("/remove-cart-item/{course-id}")
     public ResponseEntity<Map<String, String>> removeCartItem(
@@ -221,6 +222,37 @@ public class EnrollmentController {
             @PathVariable("userId") String userId
     ) {
         return ResponseEntity.ok(enrollmentService.hasEnrollments(userId));
+    }
+
+    //method to get the total number of enrollments for the instructor
+    @GetMapping("/total-instructor-enrollments")
+    public ResponseEntity <EnrollmentStatsResponse> getTotalInstructorEnrollments(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole
+    ) {
+        validateUser(userId, userRole, ROLE.INSTRUCTOR);
+        return ResponseEntity.ok(enrollmentService.getTotalInstructorEnrollments(userId));
+    }
+    //method to get the total number of enrollments for the admin
+    @GetMapping("/total-admin-enrollments")
+    public ResponseEntity <EnrollmentStatsResponse> getTotalAdminEnrollments(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole
+    ) {
+        validateUser(userId, userRole, ROLE.ADMIN);
+        return ResponseEntity.ok(enrollmentService.getTotalAdminEnrollments());
+    }
+
+    // method to get the total number of enrollments for the instructor
+    @GetMapping("/instructors-total-course-enrollment")
+    public ResponseEntity<PageResponse<CourseEnrollmentResponse>> getInstructorsTotalCourseEnrollments(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestParam( value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size
+    ) {
+        validateUser(userId, userRole, ROLE.INSTRUCTOR);
+        return ResponseEntity.ok(enrollmentService.getInstructorsTotalCourseEnrollments(userId, page, size));
     }
 
 }

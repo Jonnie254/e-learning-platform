@@ -107,20 +107,17 @@ public class UserService {
     }
 
     //method to update the user's details
-    public void updateUser(String userId, String userRole, UserUpdateRequest userUpdateRequest) {
-        // Fetch the user from the repository using the extracted userId
+    public void updateUser(String userId, UserUpdateRequest userUpdateRequest, MultipartFile file) {
         var existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-
-        // Ensure role-based restrictions, if necessary
-        if (!userRole.equals("ADMIN") && userUpdateRequest.role() != null) {
-            throw new BusinessException("Non-admin users cannot update roles.");
+        String profileImageUrl = null;
+        if (file != null && !file.isEmpty()) {
+            profileImageUrl = storeFile(file, userId);
         }
-        // Map updated fields to the existing user
-        var updatedUser = userMapper.toUpdate(existingUser, userUpdateRequest);
-        // Save the updated user
+        var updatedUser = userMapper.toUpdate(existingUser, userUpdateRequest, profileImageUrl);
         userRepository.save(updatedUser);
     }
+
 
     // method to get all the active users
     public PageResponse<UserResponse> getAllActiveUsers(int page, int size, String userId) {
@@ -167,7 +164,6 @@ public class UserService {
     public void uploadProfilePicture(String userId, MultipartFile file) {
         var existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        // Store the file and get the URL
         String profilePicUrl = storeFile(file, userId);
         // Update the user's profile picture URL
         existingUser.setProfilePicUrl(profilePicUrl);
