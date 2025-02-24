@@ -120,9 +120,9 @@ public class UserService {
 
 
     // method to get all the active users
-    public PageResponse<UserResponse> getAllActiveUsers(int page, int size, String userId) {
+    public PageResponse<UserResponse> getAllActiveStudents(int page, int size, String userId) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<User> users = userRepository.findAllUsersActiveExcludingUser(userId, pageable);
+        Page<User> users = userRepository.findAllActiveStudentsExcludingUser(userId, pageable);
         List<UserResponse> userResponse = users.stream()
                 .map(userMapper::toUserResponse)
                 .toList();

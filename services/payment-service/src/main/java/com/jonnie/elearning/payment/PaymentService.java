@@ -7,7 +7,7 @@ import com.jonnie.elearning.kafka.payment.PaymentCompletedEvent;
 import com.jonnie.elearning.openfeign.courses.CourseClient;
 import com.jonnie.elearning.openfeign.courses.CourseDetailsResponse;
 import com.jonnie.elearning.payment.responses.CourseEarningResponse;
-import com.jonnie.elearning.payment.responses.InstructorEarningResponse;
+import com.jonnie.elearning.payment.responses.TotalRevenueStatsResponse;
 import com.jonnie.elearning.utils.PaymentMethod;
 import com.paypal.api.payments.*;
 import com.paypal.api.payments.Payment;
@@ -27,10 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -144,49 +145,117 @@ public class PaymentService {
         }
     }
 
-    public PageResponse<InstructorEarningResponse> getInstructorTotalEarnings(String instructorId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public TotalRevenueStatsResponse getInstructorTotalEarnings(String instructorId) {
         Query query = Query.query(
                 Criteria.where("isPaid").is(true)
                         .and("coursePaymentDetails.instructorId").is(instructorId)
         );
         List<PaymentRecord> payments = mongoTemplate.find(query, PaymentRecord.class);
+
         if (payments.isEmpty()) {
-            return new PageResponse<>(List.of(), page, size, 0, 0, true, true);
+            return new TotalRevenueStatsResponse(BigDecimal.ZERO);
         }
-        Map<String, BigDecimal> earningsByCourse = payments.stream()
+        BigDecimal totalEarnings = payments.stream()
                 .flatMap(payment -> payment.getCoursePaymentDetails().stream())
                 .filter(details -> details.instructorId().equals(instructorId))
-                .collect(Collectors.groupingBy(
-                        CoursePaymentDetails::courseId,
-                        Collectors.mapping(
-                                details -> new BigDecimal(String.valueOf(details.price())),
-                                Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)
-                        )
-                ));
-        List<String> courseIds = new ArrayList<>(earningsByCourse.keySet());
-        List<CourseDetailsResponse> courseDetails = courseClient.getCoursesByIds(courseIds);
-        List<CourseEarningResponse> courseEarnings = courseDetails.stream()
-                .map(course -> new CourseEarningResponse(
-                        course,
-                        earningsByCourse.getOrDefault(course.getCourseId(), BigDecimal.ZERO)
-                ))
-                .toList();
-        BigDecimal totalEarnings = courseEarnings.stream()
-                .map(CourseEarningResponse::getTotalEarning)
+                .map(details -> new BigDecimal(String.valueOf(details.price())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        int totalElements = courseEarnings.size();
-        int totalPages = (int) Math.ceil((double) totalElements / size);
-        boolean last = page >= totalPages - 1;
-        boolean first = page == 0;
-        List<CourseEarningResponse> paginatedEarnings = courseEarnings.stream()
-                .skip((long) page * size)
-                .limit(size)
-                .toList();
-        return new PageResponse<>(
-                List.of(new InstructorEarningResponse(totalEarnings, paginatedEarnings)),
-                page, size, totalElements, totalPages, last, first
-        );
+
+        return new TotalRevenueStatsResponse(totalEarnings);
     }
 
+    public TotalRevenueStatsResponse getAdminTotalEarnings() {
+        List<PaymentRecord> payments = paymentRepository.findAllByIsPaid(true);
+        if (payments.isEmpty()) {
+            return new TotalRevenueStatsResponse(BigDecimal.ZERO);
+        }
+       BigDecimal totalEarnings = payments.stream()
+               .map(PaymentRecord::getAmount)
+               .filter(Objects::nonNull)
+               .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return new TotalRevenueStatsResponse(totalEarnings);
+    }
+
+    public PageResponse<CourseEarningResponse> getInstructorRevenueSummary(String userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Query query = Query.query(
+                Criteria.where("isPaid").is(true)
+                        .and("coursePaymentDetails.instructorId").is(userId)
+        );
+       long totalElements = mongoTemplate.count(query, PaymentRecord.class);
+       List<PaymentRecord> payments = mongoTemplate.find(query.with(pageable), PaymentRecord.class);
+        if (payments.isEmpty()) {
+            return new PageResponse<>(List.of(), page, size, totalElements, 0, true, true);
+        }
+        Map<String, BigDecimal> earningsPerCourse = payments.stream()
+                .flatMap(payment -> payment.getCoursePaymentDetails().stream())
+                .filter(details -> details.instructorId().equals(userId))
+                .collect(Collectors.groupingBy(
+                        CoursePaymentDetails::courseId,
+                        Collectors.reducing(
+                                BigDecimal.ZERO,
+                                CoursePaymentDetails::price,
+                                BigDecimal::add
+                        )
+                ));
+        return getCourseEarningResponsePageResponse(page, size, totalElements, earningsPerCourse);
+    }
+
+    public PageResponse<CourseEarningResponse> getAdminRevenueSummary(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Query query = Query.query(Criteria.where("isPaid").is(true));
+        var totalElements = mongoTemplate.count(query, PaymentRecord.class);
+
+        List<PaymentRecord> payments = mongoTemplate.find(query.with(pageable), PaymentRecord.class);
+
+        if (payments.isEmpty()) {
+                 return new PageResponse<>(List.of(), page, size, totalElements, 0, true, true);
+        }
+
+        // Check if coursePaymentDetails exist
+        payments.forEach(payment ->
+                log.info("Admin Payment details: {}", payment.getCoursePaymentDetails()));
+
+        Map<String, BigDecimal> earningsPerCourse = payments.stream()
+                .flatMap(payment -> {
+                    if (payment.getCoursePaymentDetails() == null || payment.getCoursePaymentDetails().isEmpty()) {
+                        return Stream.empty();
+                    }
+                    return payment.getCoursePaymentDetails().stream();
+                })
+                .filter(details -> details.courseId() != null)
+                .collect(Collectors.groupingBy(
+                        CoursePaymentDetails::courseId,
+                        Collectors.reducing(
+                                BigDecimal.ZERO,
+                                CoursePaymentDetails::price,
+                                BigDecimal::add
+                        )
+                ));
+        if (earningsPerCourse.isEmpty()) {
+            return new PageResponse<>(List.of(), page, size, totalElements, 0, true, true);
+        }
+        return getCourseEarningResponsePageResponse(page, size, totalElements, earningsPerCourse);
+    }
+
+
+    private PageResponse<CourseEarningResponse> getCourseEarningResponsePageResponse(int page, int size, long totalElements,
+                                                                                     Map<String, BigDecimal> earningsPerCourse) {
+        List<CourseEarningResponse> courseEarningResponses = earningsPerCourse.entrySet().stream()
+                .map(entry -> {
+                    CourseDetailsResponse courseDetails = courseClient.getCourseDetails(entry.getKey());
+                    return CourseEarningResponse.builder()
+                            .courseDetailsResponse(courseDetails)
+                            .totalEarning(entry.getValue())
+                            .build();
+                })
+                .toList();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        return new PageResponse<>(courseEarningResponses,
+                page, size,
+                totalElements,
+                totalPages,
+                page == totalPages - 1,
+                page == 0);
+    }
 }

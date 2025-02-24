@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
 
-    @Query("{ 'isActive': true, '_id': { '$ne': ?0 } }")
-    Page<User> findAllUsersActiveExcludingUser(String userId, Pageable pageable);
+    @Query("{ 'isActive': true, 'role': 'STUDENT', '_id': { '$ne': ?0 } }")
+    Page<User> findAllActiveStudentsExcludingUser(String userId, Pageable pageable);
+
 }

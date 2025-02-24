@@ -268,4 +268,20 @@ public class CourseService {
         List<Course> courses = courseRepository.findAllById(courseIds);
         return courseMapper.toCourseDetailsResponse(courses);
     }
+
+    public TotalCoursesResponse getInstructorTotalCourses(String instructorId) {
+        Long totalCourses = courseRepository.countByInstructorId(instructorId);
+        return courseMapper.toTotalCoursesResponse(totalCourses);
+    }
+
+    public TotalCoursesResponse getAdminTotalCourses() {
+        Long totalCourses = courseRepository.count();
+        return courseMapper.toTotalCoursesResponse(totalCourses);
+    }
+
+    public CourseDetailsResponse getCourseDetails(String key) {
+        Course course = courseRepository.findById(key)
+                .orElseThrow(() -> new BusinessException("Course not found for ID: " + key));
+        return courseMapper.toCourseDetailResponse(course);
+    }
 }

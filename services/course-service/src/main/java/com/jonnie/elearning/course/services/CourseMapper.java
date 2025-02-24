@@ -203,6 +203,20 @@ public class CourseMapper {
                         .build())
                 .toList();
     }
+
+    public TotalCoursesResponse toTotalCoursesResponse(Long totalCourses) {
+        return TotalCoursesResponse.builder()
+                .totalCourses(totalCourses)
+                .build();
+    }
+
+    public CourseDetailsResponse toCourseDetailResponse(Course course) {
+        return CourseDetailsResponse.builder()
+                .courseId(course.getCourseId())
+                .courseName(course.getCourseName())
+                .courseUrlImage(course.getCourseUrlImage())
+                .build();
+    }
 }
 
 

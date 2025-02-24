@@ -255,4 +255,16 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getInstructorsTotalCourseEnrollments(userId, page, size));
     }
 
+    //method to get all enrollments for the admin
+    @GetMapping("/admin-total-course-enrollment")
+    public ResponseEntity<PageResponse<CourseEnrollmentResponse>> getAdminTotalCourseEnrollments(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestParam( value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size
+    ) {
+        validateUser(userId, userRole, ROLE.ADMIN);
+        return ResponseEntity.ok(enrollmentService.getAdminTotalCourseEnrollments(page, size));
+    }
+
 }

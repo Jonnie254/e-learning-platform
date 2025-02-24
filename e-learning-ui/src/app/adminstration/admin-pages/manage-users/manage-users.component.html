@@ -1,1 +1,84 @@
-<p>manage-users works!</p>
+<div class="flex flex-col items-center justify-center max-w-full mb-6">
+  <h1 class="text-3xl font-bold text-gray-800">Manage Users</h1>
+  <p class="text-gray-500 text-sm mt-1">View, filter, and manage users efficiently</p>
+</div>
+
+<div class="bg-white p-6 rounded-lg shadow-lg">
+  <!-- Search & Filters -->
+  <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
+    <!-- Filter Dropdown -->
+    <div class="flex items-center gap-2">
+      <label for="filter" class="text-gray-800 text-sm font-semibold">Filter By:</label>
+      <select
+        id="filter"
+        class="px-4 py-2 bg-gray-100 text-gray-800 text-sm border border-gray-300 rounded-lg hover:bg-gray-200 hover:border-gray-400 transition"
+      >
+        <option value="instructor">Instructor</option>
+        <option value="student">Student</option>
+        <option value="role-requests">Role Requests</option>
+      </select>
+    </div>
+    <!-- Search Input -->
+    <div class="flex items-center gap-2 w-full sm:w-auto bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 hover:border-gray-400 transition">
+      <i class="pi pi-search text-gray-500"></i>
+      <input
+        type="text"
+        placeholder="Search users..."
+        class="w-full bg-transparent text-gray-800 text-sm focus:outline-none"
+      />
+    </div>
+  </div>
+  <!-- User Table -->
+  <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+    <table class="min-w-full bg-white rounded-lg">
+      <thead class="bg-gray-900 text-white text-sm uppercase tracking-wide">
+      <tr>
+        <th class="text-left py-3 px-4">User Image</th>
+        <th class="text-left py-3 px-4">User Name</th>
+        <th class="text-left py-3 px-4">Email</th>
+        <th class="text-left py-3 px-4">Role</th>
+        <th class="text-left py-3 px-4">Actions</th>
+      </tr>
+      </thead>
+      <tbody class="text-gray-700">
+      <tr *ngFor="let user of users" class="hover:bg-gray-100 transition duration-200 even:bg-gray-50">
+        <td class="py-3 px-4 border-b border-gray-200">
+          <img
+            ngSrc="user.imageUrl"
+            alt="User Image"
+            class="w-14 h-14 object-cover rounded-lg shadow-sm border border-gray-300"
+          />
+        </td>
+        <td class="py-3 px-4 border-b border-gray-200 font-medium hover:text-red-500 hover:underline cursor-pointer">
+          {{ user.name }}
+        </td>
+        <td class="py-3 px-4 border-b border-gray-200">
+          {{ user.email }}
+        </td>
+        <td class="py-3 px-4 border-b border-gray-200">
+            <span class="px-3 py-1 text-xs font-semibold rounded-full"
+                  [ngClass]="{
+                'bg-blue-100 text-blue-700': user.role === 'Instructor',
+                'bg-yellow-100 text-yellow-700': user.role === 'Student'
+              }"
+            >
+              {{ user.role }}
+            </span>
+        </td>
+        <td class="py-3 px-4 border-b border-gray-200 space-x-2">
+          <div class="flex items-center gap-4">
+          <i
+            class="pi pi-pencil text-blue-500 cursor-pointer text-lg hover:scale-110 transition-transform"
+            title="Edit"
+          ></i>
+          <i
+            class="pi pi-ellipsis-v text-red-500 cursor-pointer text-lg hover:scale-110 transition-transform"
+            title="Actions"
+          ></i>
+        </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

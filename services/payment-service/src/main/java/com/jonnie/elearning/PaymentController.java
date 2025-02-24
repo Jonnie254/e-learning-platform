@@ -3,7 +3,8 @@ package com.jonnie.elearning;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.payment.PaymentRequest;
 import com.jonnie.elearning.payment.PaymentService;
-import com.jonnie.elearning.payment.responses.InstructorEarningResponse;
+import com.jonnie.elearning.payment.responses.CourseEarningResponse;
+import com.jonnie.elearning.payment.responses.TotalRevenueStatsResponse;
 import com.jonnie.elearning.utils.ROLE;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,6 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 public class PaymentController {
     private final PaymentService paymentService;
-
 
     private void validateUser(String userId, String userRole, ROLE requiredRole) {
         if (userId == null || userId.isEmpty() || userRole == null || userRole.isEmpty()) {
@@ -71,17 +71,68 @@ public class PaymentController {
     }
 
     // get the total earnings of an instructor
-    @GetMapping("/instructors-total-earnings")
-    public ResponseEntity<PageResponse<InstructorEarningResponse>> getInstructorTotalEarnings(
+    @GetMapping("/instructors-total-revenue")
+    public ResponseEntity<TotalRevenueStatsResponse> getInstructorTotalEarnings(
+            @RequestHeader(value = "X-User-Id", required = false) String userId,
+            @RequestHeader(value = "X-User-Role", required = false) String userRole) {
+
+        validateUser(userId, userRole, ROLE.INSTRUCTOR);
+
+        try {
+            TotalRevenueStatsResponse totalRevenue = paymentService.getInstructorTotalEarnings(userId);
+            return ResponseEntity.ok(totalRevenue);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new TotalRevenueStatsResponse(BigDecimal.ZERO));
+        }
+    }
+
+    //get the total earnings of the platform for the admin
+    @GetMapping("/admin-total-revenue")
+    public ResponseEntity<TotalRevenueStatsResponse> getAdminTotalEarnings(
+            @RequestHeader(value = "X-User-Id", required = false) String userId,
+            @RequestHeader(value = "X-User-Role", required = false) String userRole) {
+        validateUser(userId, userRole, ROLE.ADMIN);
+        try {
+            TotalRevenueStatsResponse totalRevenue = paymentService.getAdminTotalEarnings();
+            return ResponseEntity.ok(totalRevenue);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new TotalRevenueStatsResponse(BigDecimal.ZERO));
+        }
+    }
+
+    // get the total revenue summary for the instructor
+    @GetMapping("/instructor-revenue-summary")
+    public ResponseEntity<PageResponse<CourseEarningResponse>> getInstructorRevenueSummary(
             @RequestHeader(value = "X-User-Id", required = false) String userId,
             @RequestHeader(value = "X-User-Role", required = false) String userRole,
-            @RequestParam(name = "page",required = false, defaultValue = "0") int page,
-            @RequestParam(name="size",required = false, defaultValue = "10") int size
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
     ) {
         validateUser(userId, userRole, ROLE.INSTRUCTOR);
         try {
-            PageResponse<InstructorEarningResponse> response = paymentService.getInstructorTotalEarnings(userId, page, size);
-            return ResponseEntity.ok(response);
+            PageResponse<CourseEarningResponse> courseEarningResponsePage =
+                    paymentService.getInstructorRevenueSummary(userId, page, size);
+            return ResponseEntity.ok(courseEarningResponsePage);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new PageResponse<>(List.of(), page, size, 0, 0, true, true));
+        }
+    }
+    // get the total revenue summary for the admin
+    @GetMapping("/admin-revenue-summary")
+    public ResponseEntity<PageResponse<CourseEarningResponse>> getAdminRevenueSummary(
+            @RequestHeader(value = "X-User-Id", required = false) String userId,
+            @RequestHeader(value = "X-User-Role", required = false) String userRole,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "11") int size
+    ) {
+        validateUser(userId, userRole, ROLE.ADMIN);
+        try {
+            PageResponse<CourseEarningResponse> courseEarningResponsePage =
+                    paymentService.getAdminRevenueSummary(page, size);
+            return ResponseEntity.ok(courseEarningResponsePage);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new PageResponse<>(List.of(), page, size, 0, 0, true, true));

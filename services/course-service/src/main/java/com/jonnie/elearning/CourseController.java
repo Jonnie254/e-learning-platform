@@ -18,11 +18,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 @RestController
 @RequestMapping("/api/v1/courses")
@@ -42,6 +46,15 @@ public class CourseController {
                     .body(Map.of("message", "You are not authorized to perform this action"));
         }
         return null;
+    }
+
+    private void validateUser(String userId, String userRole, ROLE requiredRole) {
+        if (userId == null || userId.isEmpty() || userRole == null || userRole.isEmpty()) {
+            throw new ResponseStatusException(BAD_REQUEST, "User ID and role are required");
+        }
+        if (!requiredRole.name().equalsIgnoreCase(userRole)) {
+            throw new ResponseStatusException(FORBIDDEN, "You are not allowed to perform this operation");
+        }
     }
 
     //method to create a course
@@ -142,7 +155,6 @@ public class CourseController {
             return validationResponse;
         }
         try {
-            // Allow updating course details even without an image
             courseService.updateCourse(updateCourseRequest, courseId, instructorId, newCourseImage);
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Course updated successfully"));
         } catch (BusinessException ex) {
@@ -301,10 +313,42 @@ public class CourseController {
         return ResponseEntity.ok(courseService.findCoursesByIds(courseIds));
     }
 
+    //get the courses earnings
     @PostMapping("/courses-earnings")
     public ResponseEntity<List<CourseDetailsResponse>> getCoursesByIds(
             @RequestBody List<String> courseIds
     ) {
         return ResponseEntity.ok(courseService.getCoursesByIds(courseIds));
+    }
+
+    @PostMapping("/course-details-revenue")
+    public ResponseEntity<CourseDetailsResponse> getCourseDetails(
+            @RequestBody String key
+    ) {
+        return ResponseEntity.ok(courseService.getCourseDetails(key));
+    }
+
+    //get the instructors total courses
+    @GetMapping("/instructor-total-courses")
+    public ResponseEntity<TotalCoursesResponse> getInstructorTotalCourses(
+            @RequestHeader(value = "X-User-Id", required = false) String instructorId,
+            @RequestHeader(value = "X-User-Role", required = false) String userRole
+    ) {
+        validateUser(instructorId, userRole, ROLE.INSTRUCTOR);
+        return ResponseEntity.ok(courseService.getInstructorTotalCourses(instructorId));
+    }
+
+    //get the total courses for the admin
+    @GetMapping("/admin-total-courses")
+    public ResponseEntity<TotalCoursesResponse> getAdminTotalCourses(
+            @RequestHeader(value = "X-User-Role", required = false) String userRole
+    ) {
+        if (userRole == null || userRole.isEmpty()) {
+            throw new ResponseStatusException(BAD_REQUEST, "User role is required");
+        }
+        if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole)) {
+            throw new ResponseStatusException(FORBIDDEN, "You are not allowed to perform this operation");
+        }
+        return ResponseEntity.ok(courseService.getAdminTotalCourses());
     }
 }

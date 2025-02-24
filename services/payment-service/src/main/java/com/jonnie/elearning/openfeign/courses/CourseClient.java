@@ -13,4 +13,6 @@ public interface CourseClient {
     @PostMapping("/courses-earnings")
     List<CourseDetailsResponse> getCoursesByIds(List<String> courseIds);
 
+    @PostMapping("/course-details-revenue")
+    CourseDetailsResponse getCourseDetails(String key);
 }

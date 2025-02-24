@@ -105,7 +105,7 @@ public class UserController {
     }
 
     //get all users
-    @GetMapping("/all-active-users")
+    @GetMapping("/all-active-students")
     public ResponseEntity<PageResponse<UserResponse>> getAllUsers(
             @RequestHeader("X-User-Role") String userRole,
             @RequestHeader("X-User-Id") String userId,
@@ -115,7 +115,7 @@ public class UserController {
         if(!"ADMIN".equalsIgnoreCase(userRole)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return ResponseEntity.ok(userService.getAllActiveUsers(page, size, userId));
+        return ResponseEntity.ok(userService.getAllActiveStudents(page, size, userId));
     }
 
     //get all the role requests

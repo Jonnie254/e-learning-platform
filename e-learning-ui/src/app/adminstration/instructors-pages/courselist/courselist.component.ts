@@ -18,7 +18,7 @@ import {Router} from '@angular/router';
 })
 export class CourselistComponent {
   page: number = 0;
-  size: number = 4;
+  size: number = 5;
   courses: PageResponse<InstructorCoursesResponse> = {};
   constructor(
     private coursesService: CoursesService,

@@ -14,10 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,22 +68,33 @@ public class EnrollmentService {
 
     public PageResponse<CourseEnrollmentResponse> getInstructorsTotalCourseEnrollments(String userId, int page, int size) {
         List<Enrollment> enrollments = enrollmentRepository.findByInstructorIds(userId);
+        return getPaginatedCourseEnrollments(enrollments, page, size);
+    }
 
-        Map<String, Integer> enrollmentsPerCourse = enrollments.stream()
-                .flatMap(enrollment -> enrollment.getCourseIds().stream())
-                .collect(Collectors.groupingBy(courseId -> courseId, Collectors.summingInt(e -> 1)));
+    public PageResponse<CourseEnrollmentResponse> getAdminTotalCourseEnrollments(int page, int size) {
+        List<Enrollment> enrollments = enrollmentRepository.findAll();
+        return getPaginatedCourseEnrollments(enrollments, page, size);
+    }
 
+    private PageResponse<CourseEnrollmentResponse> getPaginatedCourseEnrollments(List<Enrollment> enrollments, int page, int size) {
+        Map<String, Integer> enrollmentsPerCourse = new HashMap<>();
+        for (Enrollment enrollment : enrollments) {
+            for (String courseId : enrollment.getCourseIds()) {
+                enrollmentsPerCourse.merge(courseId, 1, Integer::sum);
+            }
+        }
         List<String> courseIds = new ArrayList<>(enrollmentsPerCourse.keySet());
-
+        int totalCourses = courseIds.size();
+        int totalPages = (int) Math.ceil((double) totalCourses / size);
         int fromIndex = page * size;
-        int toIndex = Math.min(fromIndex + size, courseIds.size());
-
-        if (fromIndex >= courseIds.size()) {
-            return new PageResponse<>(Collections.emptyList(), page, size, courseIds.size(), (int) Math.ceil((double) courseIds.size() / size), true, page == 0);
+        int toIndex = Math.min(fromIndex + size, totalCourses);
+        if (fromIndex >= totalCourses) {
+            return new PageResponse<>(Collections.emptyList(), page, size, totalCourses, totalPages, true, page == 0);
         }
 
         List<String> paginatedCourseIds = courseIds.subList(fromIndex, toIndex);
-        List<CourseEnrollResponse> courses = courseClient.getCoursesByIds(paginatedCourseIds);
+        List<CourseEnrollResponse> courses = Optional.ofNullable(courseClient.getCoursesByIds(paginatedCourseIds))
+                .orElse(Collections.emptyList());
         List<CourseEnrollmentResponse> courseEnrollmentResponses = courses.stream()
                 .map(course -> new CourseEnrollmentResponse(
                         course.getCourseId(),
@@ -96,17 +104,15 @@ public class EnrollmentService {
                         enrollmentsPerCourse.getOrDefault(course.getCourseId(), 0)
                 ))
                 .toList();
-
         return new PageResponse<>(
                 courseEnrollmentResponses,
                 page,
                 size,
-                courseIds.size(),
-                (int) Math.ceil((double) courseIds.size() / size),
-                toIndex >= courseIds.size(),
+                totalCourses,
+                totalPages,
+                toIndex >= totalCourses,
                 page == 0
         );
     }
-
 
 }

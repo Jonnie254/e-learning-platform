@@ -9,20 +9,20 @@
         </div>
         <div class="mt-4">
           <p class="text-lg font-semibold text-gray-800">Total Courses</p>
-          <p class="text-4xl font-bold text-gray-800">10</p>
+          <p class="text-4xl font-bold text-gray-800">{{totalCoursesResponse.totalCourses}}</p>
         </div>
       </div>
-      <div class="bg-amber-50 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-2xl">
+      <div (click)="navigateToRevenueSummary()" class="bg-amber-50 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-2xl">
         <div class="flex items-center justify-center bg-gradient-to-r from-green-500 to-teal-500
         rounded-full p-3 w-16 h-16 ">
           <i class="pi pi-money-bill text-white text-2xl"></i>
          </div>
         <div class="mt-4">
           <p class="text-lg font-semibold text-gray-800">Total Revenue</p>
-          <p class="text-4xl font-bold text-gray-800">$1000</p>
+          <p class="text-4xl font-bold text-gray-800">{{totalRevenueStatsResponse.totalEarning | currency:  'USD'}}</p>
         </div>
       </div>
-      <div  *ngIf="(userRole$ | async) === 'INSTRUCTOR'" (click)="navigateToEnrollmentSummary()" class="bg-lime-50  rounded-lg shadow-sm p-6 cursor-pointer hover:shadow-2xl">
+      <div  (click)="navigateToEnrollmentSummary()" class="bg-lime-50  rounded-lg shadow-sm p-6 cursor-pointer hover:shadow-2xl">
         <div class="flex items-center justify-center bg-gradient-to-r from-green-400 to-green-500
         rounded-full p-3 w-16 h-16 ">
           <i class="pi pi-users text-white text-2xl"></i>
@@ -32,32 +32,26 @@
           <p class="text-4xl font-bold text-gray-800">{{enrollmentStatsResponse.totalEnrollments}}</p>
         </div>
       </div>
-      <div  *ngIf="(userRole$ | async) === 'ADMIN'" (click)="navigateToEnrollmentSummary()" class="bg-lime-50  rounded-lg shadow-sm p-6 cursor-pointer hover:shadow-2xl">
-        <div class="flex items-center justify-center bg-gradient-to-r from-green-400 to-green-500
-        rounded-full p-3 w-16 h-16 ">
-          <i class="pi pi-users text-white text-2xl"></i>
-        </div>
-        <div class="mt-4">
-          <p class="text-lg font-semibold text-gray-800">Total Enrollments</p>
-          <p class="text-4xl font-bold text-gray-800">{{enrollmentStatsResponse.totalEnrollments}}</p>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
-<div class="bg-slate-400 rounded-md shadow-lg">
-  <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  p-8">
-    <div class="bg-white m-2 rounded-lg shadow-md p-6">
-      <h3 class="text-lg font-semibold text-gray-800">Total Revenue</h3>
-      <p-chart type="line" [data]="data" [options]="options"></p-chart>
+  <div class="bg-slate-400 rounded-md shadow-lg">
+    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-8">
+      <!-- Total Revenue Chart -->
+      <div class="bg-white m-2 rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-semibold text-gray-800">Total Revenue</h3>
+        <p-chart type="bar" [data]="revenueChartData" [options]="chartOptions"></p-chart>
       </div>
-    <div class="bg-white m-2 rounded-lg shadow-md p-6">
-      <h3 class="text-lg font-semibold text-gray-800">Total Enrollments</h3>
-      <p-chart type="line" [data]="data" [options]="options"></p-chart>
-    </div>
-    <div class="bg-white m-2 rounded-lg shadow-md p-6">
-      <h3 class="text-lg font-semibold text-gray-800">Total Courses</h3>
-      <p-chart type="pie" [data]="data" [options]="options" class="w-full md:w-[30rem]" />
+      <!-- Total Enrollments Chart -->
+      <div class="bg-white m-2 rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-semibold text-gray-800">Total Enrollments</h3>
+        <p-chart type="bar" [data]="enrollmentChartData" [options]="chartOptions"></p-chart>
+      </div>
+      <!-- Total Courses Chart -->
+      <div class="bg-white m-2 rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-semibold text-gray-800">Total Courses</h3>
+        <p-chart type="pie" [data]="coursesChartData" [options]="chartOptions" class="w-full md:w-[30rem]"></p-chart>
+      </div>
+
     </div>
   </div>
 </div>

@@ -110,6 +110,12 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./adminstration/dashboard-page/enrollment-summary/enrollment-summary.component')
                 .then(m => m.EnrollmentSummaryComponent)
+          },
+          {
+            path: 'revenue-summary',
+            loadComponent:() =>
+              import('./adminstration/dashboard-page/total-revenue-summary/total-revenue-summary.component')
+                .then(m => m.TotalRevenueSummaryComponent)
           }
         ]
       },
@@ -175,10 +181,10 @@ export const routes: Routes = [
         path:'users', loadComponent:() =>
           import('./adminstration/admin-pages/manage-users/manage-users.component')
             .then(m => m.ManageUsersComponent),
-        canActivate: [roleGuard, authGuard],
-        data:{
-          allowedRoles:['ADMIN']
-        }
+        // canActivate: [roleGuard, authGuard],
+        // data:{
+        //   allowedRoles:['ADMIN']
+        // }
       },
       {
         path:'inbox', loadComponent:() =>

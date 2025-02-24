@@ -5,67 +5,46 @@
       <input
         type="text"
         placeholder="Search courses..."
-        class="w-full sm:w-72 px-4 py-2 bg-gray-100 text-gray-800 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+        class="w-full sm:w-72 px-4 py-2 bg-gray-100 text-gray-800 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-red-300"
       />
     </div>
     <div class="flex items-center gap-2">
       <label for="sort" class="text-gray-800 text-sm font-semibold">Sort By:</label>
       <select
         id="sort"
-        class="px-4 py-2 bg-gray-100 text-gray-800 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+        class="px-4 py-2 bg-gray-100 text-gray-800 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-red-300"
       >
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
       </select>
     </div>
   </div>
-
   <div class="overflow-x-auto rounded-lg">
     <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
       <thead class="bg-gray-800 text-white text-sm uppercase tracking-wide">
       <tr>
         <th class="text-left py-3 px-4">Course Image</th>
         <th class="text-left py-3 px-4">Course Name</th>
-        <th class="text-left py-3 px-4">Category</th>
-        <th class="text-left py-3 px-4">Price ($)</th>
-        <th class="text-left py-3 px-4">Actions</th>
+        <th class="text-left py-3 px-4">Total Earnings</th>
       </tr>
       </thead>
-
       <tbody class="text-gray-700">
       <tr
-        *ngFor="let course of courses.content"
+        *ngFor="let course of courseEarningSummary.content"
         class="hover:bg-gray-100 transition duration-200"
       >
         <td class="py-3 px-4 border-b border-gray-200">
           <img
-            [src]="course.courseImageUrl"
+            [src]="course.courseDetailsResponse.courseUrlImage"
             alt="Course Image"
             class="w-16 h-16 object-cover rounded-lg shadow-sm border border-gray-300"
           />
         </td>
-        <td class="py-3 px-4 border-b border-gray-200 font-medium hover:text-blue-500 hover:underline cursor-pointer">
-          {{ course.courseName }}
-        </td>
-        <td class="py-3 px-4 border-b border-gray-200">
-          {{ course.category }}
+        <td class="py-3 px-4 border-b border-gray-200 font-medium hover:text-red-500 hover:underline cursor-pointer">
+          {{ course.courseDetailsResponse.courseName }}
         </td>
         <td class="py-3 px-4 border-b border-gray-200 font-semibold">
-          {{ course.price | currency: 'USD' }}
-        </td>
-        <td class="py-3 px-4 border-b border-gray-200">
-          <div class="flex items-center gap-4">
-            <i
-              (click)="navigateToManageCourse(course)"
-              class="pi pi-pencil text-blue-500 cursor-pointer text-lg hover:scale-110 transition-transform"
-              title="Edit"
-            ></i>
-            <i
-              (click)="navigateToCourseSections(course)"
-              class="pi pi-ellipsis-v text-red-500 cursor-pointer text-lg hover:scale-110 transition-transform"
-              title="View Sections"
-            ></i>
-          </div>
+          {{ course.totalEarning | currency:  'USD'}}
         </td>
       </tr>
       </tbody>
