@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5442/chatdb
+    username: jonnie254
+    password: jonnie254
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+application:
+  config:
+    authentication-url: http://localhost:8222/api/v1/users
+    enrollment-url: http://localhost:8222/api/v1/enrollments
+
+  cloudinary:
+    cloud-name: ${APPLICATION_SECURITY_CLOUDINARY_CLOUD_NAME}
+    api-key: ${APPLICATION_SECURITY_CLOUDINARY_API_KEY}
+    api-secret: ${APPLICATION_SECURITY_CLOUDINARY_API_SECRET}
+    folder: ${APPLICATION_SECURITY_CLOUDINARY_FOLDER}
+
+server:
+  port: 8060

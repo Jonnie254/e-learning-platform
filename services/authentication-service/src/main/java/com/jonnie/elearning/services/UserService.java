@@ -120,9 +120,9 @@ public class UserService {
 
 
     // method to get all the active users
-    public PageResponse<UserResponse> getAllActiveStudents(int page, int size, String userId) {
+    public PageResponse<UserResponse> getAllActiveStudents(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<User> users = userRepository.findAllActiveStudentsExcludingUser(userId, pageable);
+        Page<User> users = userRepository.findAllActiveStudents(pageable);
         List<UserResponse> userResponse = users.stream()
                 .map(userMapper::toUserResponse)
                 .toList();
@@ -248,7 +248,7 @@ public class UserService {
     //method to get all the role requests
     public PageResponse<RoleResponse> getAllRoleRequests(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("requestedAt").descending());
-        Page<RoleRequest> roleRequests = roleRequestRepository.findAll(pageable);
+        Page<RoleRequest> roleRequests = roleRequestRepository.statusPending(pageable);
         List<RoleResponse> roleResponses = roleRequests.stream()
                 .map(userMapper::toRoleResponse)
                 .toList();
@@ -293,6 +293,40 @@ public class UserService {
         roleRequestRepository.save(roleRequest);
         user.setRole(ROLE.STUDENT);
         userRepository.save(user);
+    }
+
+    public PageResponse<UserResponse> getAllActiveInstructors(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<User> users = userRepository.findAllActiveInstructors(pageable);
+        List<UserResponse> userResponse = users.stream()
+                .map(userMapper::toUserResponse)
+                .toList();
+        return new PageResponse<>(
+                userResponse,
+                users.getNumber(),
+                users.getSize(),
+                users.getTotalElements(),
+                users.getTotalPages(),
+                users.isLast(),
+                users.isFirst()
+        );
+    }
+
+    public PageResponse<RoleResponse> getAllRejectedRoleRequests(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("requestedAt").descending());
+        Page<RoleRequest> roleRequests = roleRequestRepository.statusRejected(pageable);
+        List<RoleResponse> roleResponses = roleRequests.stream()
+                .map(userMapper::toRoleResponse)
+                .toList();
+        return new PageResponse<>(
+                roleResponses,
+                roleRequests.getNumber(),
+                roleRequests.getSize(),
+                roleRequests.getTotalElements(),
+                roleRequests.getTotalPages(),
+                roleRequests.isLast(),
+                roleRequests.isFirst()
+        );
     }
 }
 

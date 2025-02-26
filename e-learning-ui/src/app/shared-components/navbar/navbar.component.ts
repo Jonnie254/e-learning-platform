@@ -9,7 +9,6 @@ import {EnrollmentService} from '../../services/enrollment.service';
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    NgOptimizedImage,
     NgClass,
     RouterLink,
     NgIf

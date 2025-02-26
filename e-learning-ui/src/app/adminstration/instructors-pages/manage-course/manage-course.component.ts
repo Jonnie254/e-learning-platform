@@ -309,6 +309,11 @@ export class ManageCourseComponent {
 
   closeModal() {
     this.isConfirmationDialogVisible = false;
+    this.modalTitle = '';
+    this.modalMessage = '';
+    this.modalIconClass = '';
+    this.modalConfirmButtonText = '';
+    this.modalCancelButtonText = '';
   }
 
   closeNotification() {

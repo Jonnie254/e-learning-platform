@@ -7,11 +7,13 @@ import {
   EnrollmentStatsResponse, TotalCoursesResponse, TotalRevenueStatsResponse,
 } from '../interfaces/anayltics';
 import {PageResponse} from '../interfaces/responses';
+import {RoleResponse, UserDetailsResponse} from '../interfaces/users';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyticsService {
+  private usersUrl: string = 'http://localhost:8222/api/v1/users';
   private enrollmentsUrl = 'http://localhost:8222/api/v1/enrollments';
   private courseUrl: string = 'http://localhost:8222/api/v1/courses';
   private paymentUrl: string = 'http://localhost:8222/api/v1/payments';
@@ -123,6 +125,76 @@ export class AnalyticsService {
       },
       headers: {
         Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  getStudentUsers(param: { size: number; page: number }) {
+    const token = this.authService.getToken();
+    return this.http.get<PageResponse<UserDetailsResponse>>(`${this.usersUrl}/all-active-students`, {
+      params: {
+        page: param.page.toString(),
+        size: param.size.toString()
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+  }
+
+  getInstructorUsers(param: { size: number; page: number }) {
+    const token = this.authService.getToken();
+    return this.http.get<PageResponse<UserDetailsResponse>>(`${this.usersUrl}/all-active-instructors`, {
+      params: {
+        page: param.page.toString(),
+        size: param.size.toString()
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+  }
+
+  getRoleRequests(param: { size: number; page: number }) {
+    const token = this.authService.getToken();
+    return this.http.get<PageResponse<RoleResponse>>(`${this.usersUrl}/all-role-requests-pending`, {
+      params: {
+        page: param.page.toString(),
+        size: param.size.toString()
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+  }
+
+  getRejectedRoleRequests(param: { size: number; page: number }) {
+    const token = this.authService.getToken();
+    return this.http.get<PageResponse<RoleResponse>>(`${this.usersUrl}/all-role-requests-rejected`, {
+      params: {
+        page: param.page.toString(),
+        size: param.size.toString()
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+  }
+
+  processRoleRequest(requestId: string, userId: string, action: string) {
+    const token = this.authService.getToken();
+    return this.http.put(`${this.usersUrl}/process-role-request`, {} ,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: {
+      'request-id': requestId,
+      'user-id': userId,
+      'action': action
       }
     });
   }

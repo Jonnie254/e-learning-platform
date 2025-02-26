@@ -1,0 +1,99 @@
+<app-confirmation-dialog  [isVisible] = "isConfirmationDialogVisible"
+                          [title]="modalTitle"
+                          [message]="modalMessage"
+                          [iconClass]="modalIconClass"
+                          [confirmButtonText]="modalConfirmButtonText"
+                          [cancelButtonText]="modalCancelButtonText"
+                          (onConfirm)="onConfirmAction()"
+                          (onClose)="closeModal()"
+                          (onCancel)="closeModal()">
+</app-confirmation-dialog>
+<app-notifications  [show]="notification.show"
+                    [message]="notification.message"
+                    [type]="notification.type"
+                    (close)="closeNotification()">
+</app-notifications>
+<div class="flex flex-col items-center justify-center max-w-full mb-6">
+  <h1 class="text-3xl font-bold text-gray-800">Manage Users</h1>
+  <p class="text-gray-600 text-lg mt-2">View, filter, and manage users efficiently</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-lg">
+  <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
+    <div class="flex items-center gap-3">
+      <label for="filter" class="text-gray-800 text-lg font-semibold">Filter By:</label>
+      <select
+        (change)="onFilterChange($event)"
+        id="filter"
+        class="px-4 py-3 bg-gray-100 text-gray-800 text-base border border-gray-300 rounded-lg hover:bg-gray-200 hover:border-gray-400 transition"
+      >
+        <option value="PENDING">Pending</option>
+        <option value="REJECTED">Rejected</option>
+      </select>
+    </div>
+    <div class="flex items-center gap-3 w-full sm:w-auto bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 hover:border-gray-400 transition">
+      <i class="pi pi-search text-gray-500 text-lg"></i>
+      <input
+        type="text"
+        placeholder="Search users..."
+        class="w-full bg-transparent text-gray-800 text-base focus:outline-none"
+      />
+    </div>
+  </div>
+  <div *ngIf="roleRequests.content && roleRequests.content.length > 0; else noRequests">
+    <table class="min-w-full bg-white rounded-lg border border-gray-300 text-base">
+      <thead class="bg-gray-900 text-white uppercase tracking-wide">
+      <tr>
+        <th class="text-left py-4 px-5">User Email</th>
+        <th class="text-left py-4 px-5">Requested Role</th>
+        <th class="text-left py-4 px-5">Status</th>
+        <th class="text-left py-4 px-5">Actions</th>
+      </tr>
+      </thead>
+      <tbody class="text-gray-700">
+      <tr *ngFor="let request of roleRequests.content" class="hover:bg-gray-100 transition even:bg-gray-50">
+        <td class="py-4 px-5 border-b border-gray-200">{{ request.userEmail }}</td>
+        <td class="py-4 px-5 border-b border-gray-200">{{ request.role }}</td>
+        <td class="py-4 px-5 border-b border-gray-200">
+            <span class="px-4 py-2 text-sm font-semibold rounded-full"
+                  [ngClass]="{
+                    'bg-yellow-100 text-yellow-800': request.status === RoleRequestStatus.PENDING,
+                    'bg-green-100 text-green-800': request.status === RoleRequestStatus.APPROVED,
+                    'bg-red-100 text-red-800': request.status === RoleRequestStatus.REJECTED
+                  }">
+              {{ request.status }}
+            </span>
+        </td>
+        <td class="py-4 px-5 border-b border-gray-200 flex items-center gap-3">
+          <button
+            *ngIf="request.status === RoleRequestStatus.PENDING"
+            (click)="confirmAction('approve', request.userId, request.id)"
+            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-400 flex items-center gap-2 text-base">
+            <i class="pi pi-check-circle"></i>
+            Approve
+          </button>
+          <button
+            *ngIf="request.status === RoleRequestStatus.PENDING"
+            (click)= "confirmAction('reject', request.userId, request.id)"
+            class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-400 flex items-center gap-2 text-base">
+            <i class="pi pi-times-circle"></i>
+            Reject
+          </button>
+          <span *ngIf="request.status === RoleRequestStatus.REJECTED" class="text-red-500 flex items-center gap-2 text-base">
+              <i class="pi pi-ban"></i> Already Rejected
+            </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #noRequests>
+    <p class="text-gray-600 text-lg mt-4 text-center">No role requests available.</p>
+  </ng-template>
+  <div class="mt-6 flex justify-center">
+    <app-pagination
+      [currentPage]="page"
+      [totalPages]="totalPages()"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+  </div>
+</div>

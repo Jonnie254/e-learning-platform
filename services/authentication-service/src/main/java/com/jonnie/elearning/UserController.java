@@ -108,18 +108,30 @@ public class UserController {
     @GetMapping("/all-active-students")
     public ResponseEntity<PageResponse<UserResponse>> getAllUsers(
             @RequestHeader("X-User-Role") String userRole,
-            @RequestHeader("X-User-Id") String userId,
             @RequestParam(name="page", defaultValue = "0", required = false) int page,
             @RequestParam(name="size", defaultValue = "10", required = false) int size
     ) {
         if(!"ADMIN".equalsIgnoreCase(userRole)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        return ResponseEntity.ok(userService.getAllActiveStudents(page, size, userId));
+        return ResponseEntity.ok(userService.getAllActiveStudents(page, size));
+    }
+
+    //get all the instructors
+    @GetMapping("/all-active-instructors")
+    public ResponseEntity<PageResponse<UserResponse>> getAllInstructors(
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestParam(name="page", defaultValue = "0", required = false) int page,
+            @RequestParam(name="size", defaultValue = "10", required = false) int size
+    ) {
+        if(!"ADMIN".equalsIgnoreCase(userRole)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok(userService.getAllActiveInstructors(page, size));
     }
 
     //get all the role requests
-    @GetMapping("/all-role-requests")
+    @GetMapping("/all-role-requests-pending")
     public  ResponseEntity<PageResponse<RoleResponse>> getAllRoleRequests(
             @RequestHeader("X-User-Role") String userRole,
             @RequestParam(name="page", defaultValue = "0", required = false) int page,
@@ -129,6 +141,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.ok(userService.getAllRoleRequests(page, size));
+    }
+    @GetMapping("/all-role-requests-rejected")
+    public  ResponseEntity<PageResponse<RoleResponse>> getAllRejectedRoleRequests(
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestParam(name="page", defaultValue = "0", required = false) int page,
+            @RequestParam(name="size", defaultValue = "10", required = false) int size
+    ) {
+        if(!"ADMIN".equalsIgnoreCase(userRole)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok(userService.getAllRejectedRoleRequests(page, size));
     }
 
     @PutMapping("/process-role-request")

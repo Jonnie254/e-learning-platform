@@ -1,19 +1,13 @@
 <div class="bg-white p-4">
-  <!-- Header -->
   <div class="flex items-center justify-between my-1">
-    <!-- Search Input -->
     <div class="flex items-center gap-2">
       <i class="pi pi-search"></i>
       <input type="text" placeholder="Search"
              class="px-4 py-2 bg-gray-100 w-72 text-gray-800 text-sm border-2 border-solid border-gray-300 focus:bg-transparent rounded-lg" />
     </div>
-
-    <!-- Title -->
     <div>
       <h1 class="text-xl font-semibold flex items-center justify-center">Section List for {{courseName}} </h1>
     </div>
-
-    <!-- Sort & Add Section -->
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2">
         <label for="sort" class="text-gray-800 text-sm font-semibold">Sort By</label>
@@ -23,8 +17,6 @@
           <option value="oldest">Oldest</option>
         </select>
       </div>
-
-      <!-- Add Section Button -->
       <button (click)="navigateToAddSection()"
               class="bg-gray-800 flex items-center gap-2 text-white font-bold py-2 px-4 rounded hover:border-gray-500 cursor-pointer">
         <i class="pi pi-plus"></i>
@@ -32,8 +24,7 @@
       </button>
     </div>
   </div>
-
-  <!-- Sections Table or No Sections Message -->
+  <hr class="my-4 border-2 border-solid border-gray-200"/>
   <div class="font-serif overflow-x-auto">
       <table  *ngIf="section.content && section.content.length > 0; else noSectionsMessage" class="min-w-full bg-white">
         <thead class="bg-gray-800 whitespace-nowrap">

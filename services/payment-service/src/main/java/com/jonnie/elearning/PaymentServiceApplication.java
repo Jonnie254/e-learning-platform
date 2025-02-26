@@ -17,7 +17,8 @@ public class PaymentServiceApplication {
 		Dotenv dotenv = Dotenv.configure()
 				.filename(".env")
 				.load();
-		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(),
+				entry.getValue()));
 		SpringApplication.run(PaymentServiceApplication.class, args);
 	}
 }

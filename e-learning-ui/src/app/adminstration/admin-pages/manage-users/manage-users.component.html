@@ -4,21 +4,18 @@
 </div>
 
 <div class="bg-white p-6 rounded-lg shadow-lg">
-  <!-- Search & Filters -->
   <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-    <!-- Filter Dropdown -->
     <div class="flex items-center gap-2">
       <label for="filter" class="text-gray-800 text-sm font-semibold">Filter By:</label>
       <select
         id="filter"
+        (change)="onFilterChange($event)"
         class="px-4 py-2 bg-gray-100 text-gray-800 text-sm border border-gray-300 rounded-lg hover:bg-gray-200 hover:border-gray-400 transition"
       >
-        <option value="instructor">Instructor</option>
-        <option value="student">Student</option>
-        <option value="role-requests">Role Requests</option>
+        <option value="INSTRUCTOR">Instructor</option>
+        <option value="STUDENT">Student</option>
       </select>
     </div>
-    <!-- Search Input -->
     <div class="flex items-center gap-2 w-full sm:w-auto bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 hover:border-gray-400 transition">
       <i class="pi pi-search text-gray-500"></i>
       <input
@@ -41,16 +38,15 @@
       </tr>
       </thead>
       <tbody class="text-gray-700">
-      <tr *ngFor="let user of users" class="hover:bg-gray-100 transition duration-200 even:bg-gray-50">
+      <tr *ngFor="let user of userDetails.content" class="hover:bg-gray-100 transition duration-200 even:bg-gray-50">
         <td class="py-3 px-4 border-b border-gray-200">
-          <img
-            ngSrc="user.imageUrl"
+          <img [src]="user.profilePicUrl ? user.profilePicUrl : 'profilepic.svg'"
             alt="User Image"
             class="w-14 h-14 object-cover rounded-lg shadow-sm border border-gray-300"
           />
         </td>
         <td class="py-3 px-4 border-b border-gray-200 font-medium hover:text-red-500 hover:underline cursor-pointer">
-          {{ user.name }}
+          {{ user.firstName }} {{ user.lastName }}
         </td>
         <td class="py-3 px-4 border-b border-gray-200">
           {{ user.email }}
@@ -80,5 +76,12 @@
       </tr>
       </tbody>
     </table>
+  </div>
+  <div class="mt-4 flex justify-center">
+    <app-pagination
+      [currentPage]="page"
+      [totalPages]="totalPages()"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
   </div>
 </div>

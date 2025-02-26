@@ -29,6 +29,11 @@ export const routes: Routes = [
     path:'courses', component:CoursesComponent
   },
   {
+   path:'my-inbox', loadComponent:() =>
+      import('./student-pages/inbox-messages/inbox-messages.component')
+        .then(m => m.InboxMessagesComponent),
+  },
+  {
     path:'courses/:courseId', loadComponent: () =>
       import('./courses-pages/course-details/course-details.component')
         .then(m => m.CourseDetailsComponent)
@@ -185,6 +190,11 @@ export const routes: Routes = [
         // data:{
         //   allowedRoles:['ADMIN']
         // }
+      },
+      {
+        path:'role-requests', loadComponent:() =>
+          import('./adminstration/admin-pages/role-requests/role-requests.component')
+            .then(m => m.RoleRequestsComponent),
       },
       {
         path:'inbox', loadComponent:() =>
