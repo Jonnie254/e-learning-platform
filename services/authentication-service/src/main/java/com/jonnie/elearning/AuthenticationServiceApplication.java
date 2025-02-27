@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableMongoAuditing
 @EnableFeignClients
 public class AuthenticationServiceApplication {
-
 	public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.configure()
 				.filename(".env")

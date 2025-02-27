@@ -47,7 +47,6 @@ public class CourseController {
         }
         return null;
     }
-
     private void validateUser(String userId, String userRole, ROLE requiredRole) {
         if (userId == null || userId.isEmpty() || userRole == null || userRole.isEmpty()) {
             throw new ResponseStatusException(BAD_REQUEST, "User ID and role are required");
@@ -139,6 +138,15 @@ public class CourseController {
             @PathVariable("course-id") String courseId
     ) {
         return ResponseEntity.ok(courseService.findCourseById(courseId));
+    }
+
+    // get the instructor id using the course id
+    @PostMapping("/instructor/{courseId}")
+    public ResponseEntity<String> findInstructorIdByCourseId(
+            @PathVariable("courseId") String courseId
+    ) {
+        log.info("Finding instructor ID for course with ID: {}", courseId);
+        return ResponseEntity.ok(courseService.findInstructorIdByCourseId(courseId));
     }
 
     //update the course details using the course id
@@ -351,4 +359,6 @@ public class CourseController {
         }
         return ResponseEntity.ok(courseService.getAdminTotalCourses());
     }
+
+
 }

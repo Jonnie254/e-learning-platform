@@ -19,8 +19,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.security.Key;
 import java.util.List;
 
@@ -34,14 +36,13 @@ public class JwtAuthenticationFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-      log.info("Filtering request: {}", exchange.getRequest().getPath());
+        log.info("Filtering request: {}", exchange.getRequest().getPath());
         String token = extractToken(exchange);
         if (token == null) {
-            return chain.filter(exchange); // Proceed to the next filter if no token
+            return chain.filter(exchange); // Proceed if no token
         }
         log.info("Token found: {}", token);
 
-        // Proceed with token validation
         return validateToken(token)
                 .flatMap(authentication -> {
                     String userId = (String) authentication.getPrincipal();
@@ -50,8 +51,23 @@ public class JwtAuthenticationFilter implements WebFilter {
                             .map(GrantedAuthority::getAuthority)
                             .orElse("");
 
+                    // Check if the request is for WebSockets
+                    if (exchange.getRequest().getURI().getPath().contains("/ws")) {
+                        log.info("WebSocket request detected. Adding userId to query parameters.");
 
-                    // Add authentication info to the request
+                        URI newUri = UriComponentsBuilder.fromUri(exchange.getRequest().getURI())
+                                .replaceQueryParam("userId", userId)
+                                .build()
+                                .toUri();
+
+                        ServerWebExchange modifiedExchange = exchange.mutate()
+                                .request(exchange.getRequest().mutate().uri(newUri).build())
+                                .build();
+
+                        return chain.filter(modifiedExchange);
+                    }
+
+                    // Normal HTTP request (Attach headers instead)
                     ServerWebExchange modifiedExchange = exchange.mutate()
                             .request(exchange.getRequest().mutate()
                                     .header("Authorization", "Bearer " + token)
@@ -59,6 +75,7 @@ public class JwtAuthenticationFilter implements WebFilter {
                                     .header("X-User-Role", role)
                                     .build())
                             .build();
+
                     return chain.filter(modifiedExchange)
                             .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication));
                 })

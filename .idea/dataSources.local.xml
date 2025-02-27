@@ -12,9 +12,9 @@
         <introspection-scope>
           <node negative="1">
             <node kind="database">
+              <name qname="chatdb" />
               <name qname="coursedb" />
               <name qname="enrollmentdb" />
-              <name qname="chatdb" />
               <node kind="schema" qname="public" />
             </node>
             <node kind="database" qname="postgres" />

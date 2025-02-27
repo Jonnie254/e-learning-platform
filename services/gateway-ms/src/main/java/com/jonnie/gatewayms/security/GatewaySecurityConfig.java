@@ -44,7 +44,9 @@
                                     "/api/v1/payments/cancel",
                                     "/api/v1/courses/all-courses",
                                     "/api/v1/courses/{course-id}",
-                                    "/api/v1/users/authenticate")
+                                    "/api/v1/users/authenticate",
+                                    "/api/v1/courses/instructor/{courseId}",
+                                    "/ws/**")
                             .permitAll()
                             .anyExchange()
                             .authenticated()

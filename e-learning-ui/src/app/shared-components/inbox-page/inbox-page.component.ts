@@ -8,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './inbox-page.component.scss'
 })
 export class InboxPageComponent {
+  selectedChatRoom: any;
 
+  sendMessage() {
+    
+  }
 }

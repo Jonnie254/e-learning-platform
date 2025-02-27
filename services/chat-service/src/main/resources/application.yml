@@ -3,4 +3,14 @@ spring:
     import: optional:configserver:http://localhost:8888
   application:
     name: chat-service
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: chat-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: chatCreationRequest:com.jonnie.elearning.kafka.chat.ChatCreationRequest
+      auto-offset-reset: earliest
 

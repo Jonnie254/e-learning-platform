@@ -25,5 +25,13 @@ spring:
           uri: lb://NOTIFICATION-SERVICE
           predicates:
             - Path=/api/v1/notifications/**
+        - id: chat-service
+          uri: lb://CHAT-SERVICE
+          predicates:
+            - Path=/api/v1/chats/**
+        - id: chat-websocket
+          uri: lb://CHAT-SERVICE
+          predicates:
+            - Path=/ws/**
 server:
   port: 8222

@@ -15,6 +15,7 @@ application:
   config:
     authentication-url: http://localhost:8222/api/v1/users
     enrollment-url: http://localhost:8222/api/v1/enrollments
+    course-url: http://localhost:8222/api/v1/courses
 
   cloudinary:
     cloud-name: ${APPLICATION_SECURITY_CLOUDINARY_CLOUD_NAME}

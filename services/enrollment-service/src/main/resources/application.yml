@@ -9,7 +9,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-         spring.json.type.mapping: cartConfirmation:com.jonnie.elearning.kafka.cart.CartConfirmation
+         spring.json.type.mapping: cartConfirmation:com.jonnie.elearning.kafka.cart.CartConfirmation, chatCreationRequest:com.jonnie.elearning.kafka.chat.ChatCreationRequest
     consumer:
       bootstrap-servers: localhost:9092
       group-id: enrollment-group, cart-group

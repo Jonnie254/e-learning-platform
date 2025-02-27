@@ -1,6 +1,8 @@
 package com.jonnie.elearning.kafka.enrollment;
 
 import com.jonnie.elearning.enrollment.Enrollment;
+import com.jonnie.elearning.kafka.chat.ChatCreationProducer;
+import com.jonnie.elearning.kafka.chat.ChatCreationRequest;
 import com.jonnie.elearning.openfeign.course.CourseClient;
 import com.jonnie.elearning.progress.SectionProgress;
 import com.jonnie.elearning.progress.UserProgress;
@@ -21,9 +23,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EnrollmentConsumer {
     private final EnrollmentRepository enrollmentRepository;
+    private final ChatCreationProducer chatCreationProducer;
 
     @KafkaListener(topics = "enrollment-topic", groupId = "enrollment-group")
     public void consumeEnrollmentSuccess(EnrollmentConfirmation enrollmentConfirmation) {
+        List<String> newCourseIds = enrollmentConfirmation.courseIds();
         for (String courseId : enrollmentConfirmation.courseIds()) {
             // Check if the user is already enrolled in this course
             if (enrollmentRepository.existsByUserIdAndCourseId(enrollmentConfirmation.userId(), courseId)) {
@@ -41,7 +45,15 @@ public class EnrollmentConsumer {
                             .instructorIds(enrollmentConfirmation.instructorIds())
                             .build()
             );
-            log.info("Enrollment successful for user: {} in course: {}", enrollmentConfirmation.userId(), courseId);
+            log.info("Enrollment successful for user: {} in course: {}",
+                    enrollmentConfirmation.userId(), courseId);
+            newCourseIds.add(courseId);
+        }
+
+        // Create a new chat for the user
+        if (!newCourseIds.isEmpty()) {
+            chatCreationProducer.sendChatCreation(new
+                    ChatCreationRequest(enrollmentConfirmation.userId(), newCourseIds));
         }
     }
 }

@@ -284,4 +284,10 @@ public class CourseService {
                 .orElseThrow(() -> new BusinessException("Course not found for ID: " + key));
         return courseMapper.toCourseDetailResponse(course);
     }
+
+    public String findInstructorIdByCourseId(String courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
+        return course.getInstructorId();
+    }
 }

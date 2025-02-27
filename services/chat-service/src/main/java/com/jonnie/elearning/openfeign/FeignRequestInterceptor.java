@@ -1,4 +1,4 @@
-package openfeign;
+package com.jonnie.elearning.openfeign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
