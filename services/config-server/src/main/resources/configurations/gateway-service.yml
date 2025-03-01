@@ -30,8 +30,11 @@ spring:
           predicates:
             - Path=/api/v1/chats/**
         - id: chat-websocket
-          uri: lb://CHAT-SERVICE
+          uri: lb:ws://CHAT-SERVICE
           predicates:
             - Path=/ws/**
+          filters:
+            - RemoveRequestHeader=Sec-WebSocket-Extensions
+
 server:
   port: 8222

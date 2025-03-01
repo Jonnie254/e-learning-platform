@@ -290,4 +290,9 @@ public class CourseService {
                 .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
         return course.getInstructorId();
     }
+
+    public List<CourseChatResponse> getCoursesInfo(List<String> courseIds) {
+        List<Course> courses = courseRepository.findAllById(courseIds);
+        return courseMapper.toCourseChatResponse(courses);
+    }
 }

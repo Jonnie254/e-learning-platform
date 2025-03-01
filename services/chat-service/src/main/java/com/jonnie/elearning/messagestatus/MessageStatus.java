@@ -27,6 +27,7 @@ public class MessageStatus {
     @JoinColumn(name = "message_id", nullable = false)
     private Message message;
     private String recepientId;
+    @Enumerated(EnumType.STRING)
     private MessageStatusType status;
     @CreatedDate
     @Column(updatable = false, nullable = false)

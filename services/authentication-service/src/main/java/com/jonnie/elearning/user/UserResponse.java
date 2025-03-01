@@ -3,7 +3,6 @@ package com.jonnie.elearning.user;
 
 import com.jonnie.elearning.role.ROLE;
 import lombok.*;
-
 @Setter
 @Getter
 @AllArgsConstructor

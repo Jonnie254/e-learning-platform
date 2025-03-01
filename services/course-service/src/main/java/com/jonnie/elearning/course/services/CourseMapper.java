@@ -217,6 +217,17 @@ public class CourseMapper {
                 .courseUrlImage(course.getCourseUrlImage())
                 .build();
     }
+
+    public List<CourseChatResponse> toCourseChatResponse(List<Course> course) {
+        return course.stream()
+                .map(c -> CourseChatResponse.builder()
+                        .courseId(c.getCourseId())
+                        .courseName(c.getCourseName())
+                        .courseImageUrl(c.getCourseUrlImage())
+                        .InstructorName(c.getInstructorName())
+                        .build())
+                .toList();
+    }
 }
 
 

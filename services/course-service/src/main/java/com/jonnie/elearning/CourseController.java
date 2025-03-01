@@ -321,6 +321,14 @@ public class CourseController {
         return ResponseEntity.ok(courseService.findCoursesByIds(courseIds));
     }
 
+    //get the course chat room info
+    @PostMapping("/course-chat-info")
+    public ResponseEntity<List<CourseChatResponse>> getCourseChatInfo(
+            @RequestBody List<String> courseIds) {
+        List<CourseChatResponse> courseResponses = courseService.getCoursesInfo(courseIds);
+        return ResponseEntity.ok(courseResponses);
+    }
+
     //get the courses earnings
     @PostMapping("/courses-earnings")
     public ResponseEntity<List<CourseDetailsResponse>> getCoursesByIds(

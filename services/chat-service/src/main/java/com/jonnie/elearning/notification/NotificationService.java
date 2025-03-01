@@ -13,14 +13,14 @@ public class NotificationService {
     private final SimpMessagingTemplate messagingTemplate;
 
     public void sendNotification(Notification notification) {
-        log.info("Sending WS notification to  with payload {}",notification);
+        log.info("Sending WS notification with payload: {}", notification);
         notification.getReceiverIds().forEach(receiverId -> {
+            String destination = "/queue/chat";
+            log.info("Sending notification to user: {}", receiverId);
+
             messagingTemplate.convertAndSendToUser(
-                    receiverId,
-                    "/chat",
-                    notification
+                    receiverId, destination, notification
             );
         });
     }
-
 }

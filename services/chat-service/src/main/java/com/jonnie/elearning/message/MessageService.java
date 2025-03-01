@@ -9,6 +9,7 @@ import com.jonnie.elearning.messagestatus.MessageStatusType;
 import com.jonnie.elearning.notification.Notification;
 import com.jonnie.elearning.notification.NotificationService;
 import com.jonnie.elearning.notification.NotificationType;
+import com.jonnie.elearning.openfeign.course.CourseChatResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class MessageService {
     private final ChatRoomRepository chatRoomRepository;
     private final MessageStatusRespository messageStatusRespository;
     private final NotificationService notificationService;
+    private final MessageMapper messageMapper;
 
     public void saveMessage(MessageRequest messageRequest, String userId) {
         //find chat room
@@ -67,7 +69,13 @@ public class MessageService {
                 .build();
         notificationService.sendNotification(notification);
 
+    }
 
 
+    public List<MessageResponse> findChatMessages(String chatId) {
+        return messageRepository.findByChatRoom_ChatRoomId(chatId)
+                .stream()
+                .map(messageMapper::toMessageResponse)
+                .toList();
     }
 }

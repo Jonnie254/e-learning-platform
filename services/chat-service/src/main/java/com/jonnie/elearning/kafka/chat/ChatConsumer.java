@@ -2,7 +2,7 @@ package com.jonnie.elearning.kafka.chat;
 
 import com.jonnie.elearning.chat.ChatRoom;
 import com.jonnie.elearning.chat.ChatRoomRepository;
-import com.jonnie.elearning.openfeign.CourseClient;
+import com.jonnie.elearning.openfeign.course.CourseClient;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,6 @@ public class ChatConsumer {
                 log.error("🚨 Failed to get instructor id for course {}. Error: {}", courseId, e.getMessage(), e);
                 continue;
             }
-
             List<String> participants = new ArrayList<>();
             participants.add(chatCreationRequest.userId());
             participants.add(instructorId);
@@ -50,7 +49,5 @@ public class ChatConsumer {
             );
         }
     }
-
-
 }
 

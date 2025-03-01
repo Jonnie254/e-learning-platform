@@ -5,24 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75/storage_v2/_src_/database/chatdb.1inXrg/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3663c459-2d8b-449e-966f-343205e5dd75/storage_v2/_src_/database/chatdb.1inXrg/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/inbox-messages/inbox-messages.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/inbox-messages/inbox-messages.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/AuthenticationServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/AuthenticationServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/ChatServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/ChatServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/openfeign/FeignRequestInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/openfeign/FeignRequestInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/chat-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/chat-service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/tsconfig.app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/user/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/user/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/ChatRoomRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/ChatRoomRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/ChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/ChatService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/kafka/chat/ChatConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/kafka/chat/ChatConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/messagestatus/MessageStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/messagestatus/MessageStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/notification/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/notification/NotificationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/openfeign/CourseClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/openfeign/course/CourseClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/websocketconfig/WebSocketConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/websocketconfig/WebSocketConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/gateway-service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/config-server/src/main/resources/configurations/gateway-service.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/CourseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/CourseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/course-service/src/main/java/com/jonnie/elearning/course/services/CourseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/chat/ChatProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/chat/ChatCreationProducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/enrollment/EnrollmentConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/java/com/jonnie/elearning/kafka/enrollment/EnrollmentConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/enrollment-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/services/enrollment-service/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/GatewaySecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/GatewaySecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/gateway-ms/src/main/java/com/jonnie/gatewayms/security/JwtAuthenticationFilter.java" afterDir="false" />
     </list>
@@ -65,69 +70,69 @@
     <option name="showLibraryContents" value="true" />
     <option name="showScratchesAndConsoles" value="false" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ConfigServerApplication.executor": "Run",
-    "Application.DiscoveryServiceApplication.executor": "Run",
-    "Application.GatewayMsApplication.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Maven.config-server [clean].executor": "Run",
-    "Maven.gateway-ms [clean].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.AuthenticationServiceApplication.executor": "Run",
-    "Spring Boot.ChatServiceApplication.executor": "Run",
-    "Spring Boot.ConfigServerApplication.executor": "Run",
-    "Spring Boot.CourseServiceApplication.executor": "Run",
-    "Spring Boot.DiscoveryServiceApplication.executor": "Run",
-    "Spring Boot.EnrollmentServiceApplication.executor": "Run",
-    "Spring Boot.GatewayMsApplication.executor": "Run",
-    "Spring Boot.NotificationServiceApplication.executor": "Run",
-    "Spring Boot.PaymentServiceApplication.executor": "Run",
-    "dart.analysis.tool.window.visible": "false",
-    "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
-    "database.data.extractors.current.id": "Comma-separated (CSV)_id",
-    "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/jonnie/Desktop/e-learning-platform/services/chat-service/src/main/java/com/jonnie/elearning",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.0",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
-    "show.migrate.to.gradle.popup": "false",
-    "ts.external.directory.path": "C:\\Users\\jonnie\\Desktop\\e-learning-platform\\e-learning-ui\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ConfigServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.DiscoveryServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GatewayMsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Maven.config-server [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gateway-ms [clean].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AuthenticationServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ChatServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ConfigServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.CourseServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.DiscoveryServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EnrollmentServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayMsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.NotificationServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.PaymentServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
+    &quot;database.data.extractors.current.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jonnie/Desktop/e-learning-platform/services/chat-service/src/main/java/com/jonnie/elearning&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\jonnie\\Desktop\\e-learning-platform\\e-learning-ui\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql",
-      "mongo",
-      "mysql_aurora"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;,
+      &quot;mongo&quot;,
+      &quot;mysql_aurora&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.jonnie.elearning.notification" />
+      <recent name="com.jonnie.elearning.message" />
       <recent name="com.jonnie.elearning" />
+      <recent name="com.jonnie.elearning.notification" />
       <recent name="com.jonnie.elearning.kafka.chat" />
       <recent name="com.jonnie.elearning.messagestatus" />
-      <recent name="com.jonnie.elearning.message" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\jonnie\Desktop\e-learning-platform\services\chat-service\src\main\java\com\jonnie\elearning" />
@@ -137,21 +142,21 @@
       <recent name="C:\Users\jonnie\Desktop\e-learning-platform\services\enrollment-service\src\main\java\com\jonnie\elearning" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jonnie\Desktop\e-learning-platform\e-learning-ui\src" />
       <recent name="C:\Users\jonnie\Desktop\e-learning-platform\e-learning-ui\src\app\adminstration\dashboard-page" />
       <recent name="C:\Users\jonnie\Desktop\e-learning-platform\e-learning-ui\src\app\adminstration\dashboard-page\dash-page" />
       <recent name="C:\Users\jonnie\Desktop\e-learning-platform\e-learning-ui\src\app\adminstration\admin-pages" />
       <recent name="C:\Users\jonnie\Desktop\e-learning-platform\e-learning-ui\public" />
-      <recent name="C:\Users\jonnie\Desktop\e-learning-platform\resources" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.jonnie.elearning" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="openfeign" />
+      <recent name="com.jonnie.elearning.common" />
       <recent name="com.jonnie.elearning.course.responses" />
+      <recent name="openfeign" />
       <recent name="com.jonnie.elearning.payment" />
       <recent name="com.jonnie.elearning.kafka.cart" />
-      <recent name="com.jonnie.elearning.utils" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -419,7 +424,14 @@
       <workItem from="1740498337224" duration="9501000" />
       <workItem from="1740545180998" duration="11410000" />
       <workItem from="1740565123582" duration="926000" />
-      <workItem from="1740630764336" duration="35035000" />
+      <workItem from="1740630764336" duration="50103000" />
+      <workItem from="1740700361447" duration="323000" />
+      <workItem from="1740721799111" duration="4583000" />
+      <workItem from="1740822545396" duration="6747000" />
+      <workItem from="1740832016233" duration="7916000" />
+      <workItem from="1740840117606" duration="5651000" />
+      <workItem from="1740850688893" duration="2174000" />
+      <workItem from="1740853804534" duration="3358000" />
     </task>
     <servers />
   </component>

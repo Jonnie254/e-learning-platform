@@ -128,3 +128,12 @@ export interface InstructorCourseSectionResponse {
   videoUrl: string;
 }
 
+export interface NotificationResponse {
+  content?: string;
+  senderId?: string;
+  receiverIds?: string[];
+  chatRoomId?: string;
+  messageType?: 'TEXT' | 'IMAGE' | 'VIDEO' | 'AUDIO';
+  notificationType?: 'SEEN' | 'MESSAGE' | 'IMAGE' | 'VIDEO' | 'AUDIO';
+  mediaUrl?: string;
+}
