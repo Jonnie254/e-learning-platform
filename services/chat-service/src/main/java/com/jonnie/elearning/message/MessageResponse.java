@@ -18,6 +18,7 @@ public class MessageResponse {
     private MessageType type;
     private List<MessageStatusResponse> messageStatuses;
     private String senderId;
+    private String senderName;
     private String mediaFilePath;
     private LocalDateTime createdAt;
 }

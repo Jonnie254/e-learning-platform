@@ -1,6 +1,9 @@
 package com.jonnie.elearning.chat;
 
 import com.jonnie.elearning.common.PageResponse;
+import com.jonnie.elearning.message.MessageRepository;
+import com.jonnie.elearning.message.MessageType;
+import com.jonnie.elearning.messagestatus.MessageStatusRespository;
 import com.jonnie.elearning.openfeign.course.CourseChatResponse;
 import com.jonnie.elearning.openfeign.course.CourseClient;
 import lombok.RequiredArgsConstructor;
@@ -21,41 +24,56 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
+    private final MessageRepository messageRepository;
+    private final MessageStatusRespository messageStatusRespository;
     private final CourseClient courseClient;
 
     public PageResponse<CoursesChatRoomResponse> getChatRooms(String userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("updatedAt").descending());
-
         Page<ChatRoom> chatRoomPage = chatRoomRepository.findByParticipantsContaining(userId, pageable);
+        Map<String, CourseChatResponse> courseMap = fetchCourseDetails(chatRoomPage);
+        List<CoursesChatRoomResponse> chatRooms = chatRoomPage.stream()
+                .map(chatRoom -> mapToChatRoomResponse(chatRoom, userId, courseMap))
+                .toList();
 
+        return buildPageResponse(chatRooms, chatRoomPage);
+    }
+
+    private Map<String, CourseChatResponse> fetchCourseDetails(Page<ChatRoom> chatRoomPage) {
         List<String> courseIds = chatRoomPage.stream()
                 .map(ChatRoom::getCourseId)
                 .distinct()
                 .toList();
 
-        Map<String, CourseChatResponse> courseMap = new HashMap<>();
         try {
-            List<CourseChatResponse> courses = courseClient.getCoursesInfo(courseIds);
-            courseMap = courses.stream().collect(
-                    Collectors.toMap(CourseChatResponse::getCourseId,
-                            course -> course));
+            return courseClient.getCoursesInfo(courseIds).stream()
+                    .collect(Collectors.toMap(CourseChatResponse::getCourseId, course -> course));
         } catch (Exception e) {
-            log.error("Failed to fetch course details", e);
+            return new HashMap<>();
         }
+    }
 
-        Map<String, CourseChatResponse> finalCourseMap = courseMap;
-        List<CoursesChatRoomResponse> chatRooms = chatRoomPage.stream()
-                .map(chatRoom -> {
-                    CourseChatResponse course = finalCourseMap.getOrDefault(
-                            chatRoom.getCourseId(),
-                            new CourseChatResponse(chatRoom.getCourseId(), "Unknown Course", "No details available", "Unknown")
-                    );
-                    return CoursesChatRoomResponse.builder()
-                            .chatRoomId(chatRoom.getChatRoomId())
-                            .course(course)
-                            .build();
-                })
-                .toList();
+    private CoursesChatRoomResponse mapToChatRoomResponse(ChatRoom chatRoom, String userId, Map<String, CourseChatResponse> courseMap) {
+        CourseChatResponse course = courseMap.getOrDefault(
+                chatRoom.getCourseId(),
+                new CourseChatResponse(chatRoom.getCourseId(), "Unknown Course", "No details available", "Unknown")
+        );
+        LastMessageResponse lastMessageResponse = messageRepository.findLastMessageByChatRoomId(chatRoom.getChatRoomId())
+                .map(message -> new LastMessageResponse(
+                        message.getMessageType() == MessageType.TEXT ? message.getContent() : "Media",
+                        message.getCreatedAt()
+                )).orElse(null);
+
+        long unreadCount = messageStatusRespository.countUnreadMessages(chatRoom.getChatRoomId(), userId);
+        return CoursesChatRoomResponse.builder()
+                .chatRoomId(chatRoom.getChatRoomId())
+                .course(course)
+                .lastMessageResponse(lastMessageResponse)
+                .unreadCount(unreadCount)
+                .build();
+    }
+
+    private PageResponse<CoursesChatRoomResponse> buildPageResponse(List<CoursesChatRoomResponse> chatRooms, Page<ChatRoom> chatRoomPage) {
         return new PageResponse<>(
                 chatRooms,
                 (int) chatRoomPage.getTotalElements(),

@@ -14,13 +14,9 @@ public class NotificationService {
 
     public void sendNotification(Notification notification) {
         log.info("Sending WS notification with payload: {}", notification);
-        notification.getReceiverIds().forEach(receiverId -> {
-            String destination = "/queue/chat";
-            log.info("Sending notification to user: {}", receiverId);
+        String groupDestination = "/topic/chat." + notification.getChatRoomId();
+        log.info("Sending group notification to: {}", groupDestination);
 
-            messagingTemplate.convertAndSendToUser(
-                    receiverId, destination, notification
-            );
-        });
+        messagingTemplate.convertAndSend(groupDestination, notification);
     }
 }

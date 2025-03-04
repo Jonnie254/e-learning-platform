@@ -42,9 +42,7 @@ public class ChatController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size) {
         {
-            log.info("Getting chat room for user {}", userId);
             return ResponseEntity.ok(chatService.getChatRooms(userId, page, size));
-
         }
     }
 
@@ -56,5 +54,16 @@ public class ChatController {
         return ResponseEntity.ok(messageService.findChatMessages(chatId));
     }
 
+    //method to update the status of a message
+    @PutMapping("/update-message-status/{chatRoomId}")
+    public ResponseEntity<Map<String, String>> updateMessageStatus(
+            @PathVariable("chatRoomId") String chatRoomId,
+            @RequestHeader(value = "X-User-Id") String userId
 
+    ) {
+        messageService.updateMessageStatus(userId, chatRoomId);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Message status updated successfully");
+        return ResponseEntity.ok(response);
+    }
 }

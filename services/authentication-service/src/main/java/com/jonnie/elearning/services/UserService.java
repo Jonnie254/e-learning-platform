@@ -328,5 +328,11 @@ public class UserService {
                 roleRequests.isFirst()
         );
     }
+
+    public String getUserSenderNames(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"))
+                .getFullName();
+    }
 }
 

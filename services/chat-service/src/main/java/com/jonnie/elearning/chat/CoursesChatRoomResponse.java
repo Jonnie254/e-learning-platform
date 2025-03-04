@@ -12,4 +12,6 @@ import lombok.*;
 public class CoursesChatRoomResponse {
     private String chatRoomId;
     private CourseChatResponse course;
+    private LastMessageResponse lastMessageResponse;
+    private long unreadCount;
 }

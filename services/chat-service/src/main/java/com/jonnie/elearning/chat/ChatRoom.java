@@ -1,5 +1,7 @@
 package com.jonnie.elearning.chat;
 
+import com.jonnie.elearning.message.Message;
+import com.jonnie.elearning.message.MessageType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 import lombok.*;
@@ -27,10 +29,16 @@ public class ChatRoom {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "participants", joinColumns = @JoinColumn(name = "chat_room_id"))
     private List<String> participants;
+
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("createdAt DESC")
+    private List<Message> messages;
+
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime updatedAt;
+
 }

@@ -96,10 +96,6 @@ export interface CategoryResponse {
   categoryName: string;
 }
 
-export interface ProgressResponse {
-  progress: number;
-}
-
 export interface InstructorCoursesResponse {
   courseId: string;
   courseName: string;

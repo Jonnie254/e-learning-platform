@@ -3,148 +3,117 @@
   <aside class="w-70 bg-white border-r border-gray-200 shadow-lg">
     <div class="p-4">
       <div class="text-xl text-center font-bold text-gray-800 mb-6">Course Inbox</div>
+
+      <!-- Search Bar -->
       <div class="relative mb-4">
-        <input
-          placeholder="Search conversations..."
-          class="w-full p-2 pl-8 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 text-sm"
-        >
+        <input placeholder="Search conversations..." class="w-full p-2 pl-8 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 text-sm">
         <i class="pi pi-search absolute left-2.5 top-3 text-gray-400 text-sm"></i>
       </div>
+
+      <!-- Chat List (Scrollable) -->
       <ul class="space-y-2 mt-4 overflow-y-auto max-h-[calc(100vh-200px)]">
-        <li class="p-3 bg-blue-50 rounded-lg transition duration-150 ease-in-out cursor-pointer flex items-center space-x-3 border-l-4 border-blue-500">
-          <img src="profilepic.svg" alt="profile" class="h-10 w-10 rounded-full object-cover border border-gray-300 shadow-sm" />
+        <li *ngFor="let chatRoom of coursesChatRoomResponse.content"
+            (click)="selectChatRoom(chatRoom)"
+            class="p-3 bg-blue-50 rounded-lg transition duration-150 ease-in-out cursor-pointer flex items-center space-x-3 border-l-4 border-blue-500">
+          <img [src]="chatRoom.course.courseImageUrl" alt="profile" class="h-10 w-10 rounded-full object-cover border border-gray-300 shadow-sm" />
           <div class="flex-1">
-            <p class="font-semibold text-base text-gray-800">John Doe</p>
-            <p class="text-sm text-gray-600 truncate">Hello, how are you?</p>
+            <p class="font-semibold text-base text-gray-800">{{chatRoom.course.courseName}}</p>
+            <p class="text-sm text-gray-600 truncate">
+              {{ wrapMessage(chatRoom?.lastMessageResponse?.lastMessage || 'No messages yet') }}
+            </p>
           </div>
           <div class="flex flex-col items-end">
-            <span class="text-xs text-gray-500">3m ago</span>
-            <span class="bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center mt-1">2</span>
-          </div>
-        </li>
-        <li class="p-3 hover:bg-gray-100 rounded-lg transition duration-150 ease-in-out cursor-pointer flex items-center space-x-3">
-          <img src="profilepic.svg" alt="profile" class="h-10 w-10 rounded-full object-cover border border-gray-300 shadow-sm" />
-          <div class="flex-1">
-            <p class="font-semibold text-base text-gray-800">Jane Smith</p>
-            <p class="text-sm text-gray-600 truncate">Are you available for a call?</p>
-          </div>
-          <div class="flex flex-col items-end">
-            <span class="text-xs text-gray-500">1h ago</span>
-          </div>
-        </li>
-        <li class="p-3 hover:bg-gray-100 rounded-lg transition duration-150 ease-in-out cursor-pointer flex items-center space-x-3">
-          <img src="profilepic.svg" alt="profile" class="h-10 w-10 rounded-full object-cover border border-gray-300 shadow-sm" />
-          <div class="flex-1">
-            <p class="font-semibold text-base text-gray-800">Michael Brown</p>
-            <p class="text-sm text-gray-600 truncate">Let's discuss the project.</p>
-          </div>
-          <div class="flex flex-col items-end">
-            <span class="text-xs text-gray-500">Yesterday</span>
+            <span class="text-xs text-gray-500" *ngIf="chatRoom.lastMessageResponse">
+              {{ chatRoom.lastMessageResponse.lastMessageTime | date: 'h:mm a' }}
+            </span>
+            <span *ngIf="chatRoom.unreadCount > 0"
+                  class="bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center mt-1">
+              {{ chatRoom.unreadCount }}
+            </span>
           </div>
         </li>
       </ul>
     </div>
   </aside>
 
-  <!-- Main Content -->
+  <!-- Main Chat Content -->
   <div class="flex-1 flex flex-col">
-    <!-- Header -->
+    <!-- Chat Header -->
     <div class="p-4 bg-white border-b border-gray-200 flex items-center justify-between shadow-sm">
       <div class="flex items-center space-x-3">
-        <div class="h-12 w-12 flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full font-bold text-lg shadow-md">
-          JD
-        </div>
+        <img [src]="selectedChatRoom?.course?.courseImageUrl || 'profilepic.svg'" alt="profile" class="h-12 w-12 rounded-full object-cover border border-gray-300 shadow-sm" />
         <div>
-          <p class="font-semibold text-lg text-gray-800">John Doe</p>
+          <p class="font-semibold text-lg text-gray-800">
+            {{ selectedChatRoom?.course?.courseName || 'Welcome to Course Inbox' }}
+          </p>
+          <p class="font-semibold text-sm text-gray-600">
+            {{ selectedChatRoom?.course?.instructorName || 'Select a course to start chatting' }}
+          </p>
         </div>
       </div>
       <div class="flex space-x-4 text-gray-600">
-        <button class="p-2 rounded-full hover:bg-gray-100 transition">
-          <i class="pi pi-phone"></i>
-        </button>
-        <button class="p-2 rounded-full hover:bg-gray-100 transition">
-          <i class="pi pi-video"></i>
-        </button>
-        <button class="p-2 rounded-full hover:bg-gray-100 transition">
-          <i class="pi pi-ellipsis-h"></i>
-        </button>
+        <button class="p-2 rounded-full hover:bg-gray-100 transition"><i class="pi pi-phone"></i></button>
+        <button class="p-2 rounded-full hover:bg-gray-100 transition"><i class="pi pi-video"></i></button>
+        <button class="p-2 rounded-full hover:bg-gray-100 transition"><i class="pi pi-ellipsis-h"></i></button>
       </div>
     </div>
 
-    <!-- Chat Content - This is the scrollable area -->
-    <div class="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-gray-50 to-white" id="messageContainer">
-      <!-- Example Messages -->
-      <div class="flex flex-col space-y-4">
-        <div class="flex justify-start">
-          <div class="bg-white rounded-lg rounded-tl-none p-3 shadow-sm max-w-xs sm:max-w-md border border-gray-200">
-            <p class="text-gray-800">Hi there! How are you doing today?</p>
-            <p class="text-xs text-gray-500 text-right mt-1">10:30 AM</p>
+    <!-- Chat Messages (Scrollable Area) -->
+    <div class="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-gray-50 to-white" #scrollableDiv>
+      <div class="flex flex-col space-y-2">
+        <div *ngFor="let message of chatRoomMessages; let i = index">
+          <!-- Sent Messages (Right) -->
+          <!-- Sent Messages (Right) -->
+          <div *ngIf="isSelfMessage(message)"
+               class="flex justify-end"
+               [ngClass]="{'mt-2': i === 0 || chatRoomMessages[i-1].senderId !== message.senderId}">
+            <div class="bg-blue-500 text-white rounded-lg p-3 shadow-sm max-w-xs sm:max-w-md"
+                 [ngClass]="{ 'rounded-tr-none': i === 0 || chatRoomMessages[i - 1].senderId !== message.senderId }">
+              <p *ngIf="i === 0 || chatRoomMessages[i-1].senderId !== message.senderId"
+                 class="text-xs font-semibold mb-1">You</p>
+              <p>{{ message.content }}</p>
+              <div *ngIf="message.messageType === 'IMAGE'">
+                <img [src]="message.content" alt="Sent image" width="200">
+              </div>
+              <p class="text-xs text-blue-100 text-right mt-1">{{ message.createdAt | date: 'h:mm a' }}</p>
+            </div>
           </div>
-        </div>
 
-        <div class="flex justify-end">
-          <div class="bg-blue-500 text-white rounded-lg rounded-tr-none p-3 shadow-sm max-w-xs sm:max-w-md">
-            <p>I'm doing great! Just working on our course project. How about you?</p>
-            <p class="text-xs text-blue-100 text-right mt-1">10:32 AM</p>
-          </div>
-        </div>
-
-        <div class="flex justify-start">
-          <div class="bg-white rounded-lg rounded-tl-none p-3 shadow-sm max-w-xs sm:max-w-md border border-gray-200">
-            <p class="text-gray-800">I'm good too. Do you have time to discuss the project requirements?</p>
-            <p class="text-xs text-gray-500 text-right mt-1">10:33 AM</p>
-          </div>
-        </div>
-
-        <div class="flex justify-end">
-          <div class="bg-blue-500 text-white rounded-lg rounded-tr-none p-3 shadow-sm max-w-xs sm:max-w-md">
-            <p>Sure! I have some ideas I'd like to share with you. Let's set up a call.</p>
-            <p class="text-xs text-blue-100 text-right mt-1">10:35 AM</p>
-          </div>
-        </div>
-
-        <!-- Add more messages to demonstrate scrolling -->
-        <div class="flex justify-start">
-          <div class="bg-white rounded-lg rounded-tl-none p-3 shadow-sm max-w-xs sm:max-w-md border border-gray-200">
-            <p class="text-gray-800">Great! When would be a good time for you?</p>
-            <p class="text-xs text-gray-500 text-right mt-1">10:36 AM</p>
-          </div>
-        </div>
-
-        <div class="flex justify-end">
-          <div class="bg-blue-500 text-white rounded-lg rounded-tr-none p-3 shadow-sm max-w-xs sm:max-w-md">
-            <p>How about tomorrow at 3 PM? I'll be free then.</p>
-            <p class="text-xs text-blue-100 text-right mt-1">10:38 AM</p>
-          </div>
-        </div>
-
-        <div class="flex justify-start">
-          <div class="bg-white rounded-lg rounded-tl-none p-3 shadow-sm max-w-xs sm:max-w-md border border-gray-200">
-            <p class="text-gray-800">That works for me. I'll send a calendar invite.</p>
-            <p class="text-xs text-gray-500 text-right mt-1">10:40 AM</p>
+          <!-- Received Messages (Left) -->
+          <div *ngIf="!isSelfMessage(message)"
+               class="flex justify-start"
+               [ngClass]="{'mt-2': i === 0 || chatRoomMessages[i-1].senderId !== message.senderId}">
+            <div class="bg-white text-gray-800 border border-gray-200 rounded-lg p-3 shadow-sm max-w-xs sm:max-w-md"
+                 [ngClass]="{'rounded-tl-none': i === 0 || chatRoomMessages[i-1].senderId !== message.senderId}">
+              <p *ngIf="i === 0 || chatRoomMessages[i-1].senderId !== message.senderId"
+                 class="text-xs font-semibold text-gray-600 mb-1">{{ message.senderName }}</p>
+              <p>{{ message.content }}</p>
+              <div *ngIf="message.messageType === 'IMAGE'">
+                <img [src]="message.content" alt="Sent image" width="200">
+              </div>
+              <p class="text-xs text-gray-500 text-right mt-1">{{ message.createdAt | date:'h:mm a' }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Chat Input -->
-    <div class="border-t border-gray-200 p-4 bg-white shadow-md">
+    <!-- Chat Input (Fixed at Bottom) -->
+    <div class="border-t border-gray-200 p-4 bg-white shadow-md flex-none">
       <div class="flex items-center space-x-2">
-        <button class="p-2 text-gray-500 hover:text-blue-500 transition">
-          <i class="pi pi-paperclip"></i>
-        </button>
+        <button class="p-2 text-gray-500 hover:text-blue-500 transition"><i class="pi pi-paperclip"></i></button>
         <div class="flex-1 relative">
           <input
             placeholder="Type a message..."
-            class="w-full p-3 pr-24 rounded-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition shadow-sm"
-          >
+            [(ngModel)]="messageContent"
+            (keydown.enter)="sendMessage()"
+            class="w-full p-3 pr-24 rounded-full border border-gray-300
+             focus:border-blue-500 focus:ring focus:ring-blue-200
+              focus:ring-opacity-50 transition shadow-sm">
           <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-            <button class="p-2 text-gray-500 hover:text-blue-500 transition">
-              <i class="pi pi-smile"></i>
-            </button>
+            <button class="p-2 text-gray-500 hover:text-blue-500 transition"><i class="pi pi-smile"></i></button>
             <button
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition flex items-center space-x-1 shadow-sm"
-            >
+              (click)="sendMessage()"
+              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition flex items-center space-x-1 shadow-sm">
               <span>Send</span>
               <i class="pi pi-send"></i>
             </button>

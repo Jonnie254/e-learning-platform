@@ -22,7 +22,6 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Message {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String messageId;
@@ -35,11 +34,8 @@ public class Message {
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
     private String mediaFilePath;
-
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MessageStatus> messageStatuses = new ArrayList<>();
-
-
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;

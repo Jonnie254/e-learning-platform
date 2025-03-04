@@ -9,11 +9,9 @@ import com.jonnie.elearning.messagestatus.MessageStatusType;
 import com.jonnie.elearning.notification.Notification;
 import com.jonnie.elearning.notification.NotificationService;
 import com.jonnie.elearning.notification.NotificationType;
-import com.jonnie.elearning.openfeign.course.CourseChatResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import software.amazon.eventstream.MessageBuilder;
 
 import java.util.List;
 
@@ -61,21 +59,36 @@ public class MessageService {
         //send notification to all participants
         Notification notification = Notification.builder()
                 .chatRoomId(chatRoom.getChatRoomId())
-                .notificationType(NotificationType.SEEN)
+                .notificationType(NotificationType.MESSAGE)
+                .content(messageRequest.content())
+                .messageType(messageRequest.type())
                 .receiverIds(participants.stream()
                         .filter(participantId -> !participantId.equals(newSenderId))
                         .toList())
                 .senderId(userId)
                 .build();
         notificationService.sendNotification(notification);
-
+        log.info("Notification sent: {}", notification);
     }
-
 
     public List<MessageResponse> findChatMessages(String chatId) {
         return messageRepository.findByChatRoom_ChatRoomId(chatId)
                 .stream()
                 .map(messageMapper::toMessageResponse)
                 .toList();
+    }
+
+
+    public void updateMessageStatus(String userId, String chatRoomId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new BusinessException("Chat room not found"));
+        List<String> messageIds = chatRoom.getMessages().stream()
+                .map(Message::getMessageId)
+                .toList();
+        if(messageIds.isEmpty()) {
+            return;
+        }
+        messageStatusRespository.updateStatusForMessages(messageIds, userId, MessageStatusType.READ);
+
     }
 }

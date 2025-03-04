@@ -69,7 +69,6 @@ public class UserController {
         return ResponseEntity.accepted().body(response);
     }
 
-
     // method to request to become an instructor
     @PostMapping("/request-instructor")
     public ResponseEntity<Map<String, String>> requestInstructor(
@@ -116,7 +115,11 @@ public class UserController {
         }
         return ResponseEntity.ok(userService.getAllActiveStudents(page, size));
     }
-
+    //get the user name
+    @PostMapping("/username/{userId}")
+    public String getUserSenderName(@PathVariable("userId") String userId) {
+        return userService.getUserSenderNames(userId);
+    }
     //get all the instructors
     @GetMapping("/all-active-instructors")
     public ResponseEntity<PageResponse<UserResponse>> getAllInstructors(
