@@ -8,9 +8,7 @@
     <div class="flex justify-center mb-4">
       <img src="skillverse.png" alt="Logo" class="h-16">
     </div>
-
     <h2 class="text-center text-2xl font-semibold mb-6">Login</h2>
-
     <form #loginForm="ngForm" (ngSubmit)="onLogin()" class="space-y-6">
       <div class="relative flex items-center mb-3">
         <i class="pi pi-envelope absolute right-3 text-gray-400"></i>
@@ -21,7 +19,6 @@
         <div *ngIf="loginForm.submitted && loginForm.controls['email']?.errors?.['required']"
              class="text-red-500 text-xs ml-2">Email is required
         </div>
-
       <div class="relative flex items-center mb-3">
         <i class="pi pi-lock absolute right-3 text-gray-400 cursor-pointer"></i>
         <input type="password" placeholder="Password" name="password" [(ngModel)]="loginData.password" required
@@ -29,16 +26,12 @@
                aria-label="Password" />
       </div>
         <div *ngIf="loginForm.submitted && loginForm.controls['password']?.errors?.['required']" class="text-red-500 text-xs ml-2">Password is required</div>
-
-      <!-- Submit button with loading spinner -->
       <button type="submit" [disabled]="loading || !loginForm.valid"
               class="mt-6 px-6 py-2.5 w-full text-sm bg-[#6f42c1] text-white hover:bg-[#5a3794] rounded-md">
         <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Login
       </button>
     </form>
-
-    <!-- Registration and courses links -->
     <div class="mt-4 text-center">
       <p class="text-sm">
         Don't have an account?
