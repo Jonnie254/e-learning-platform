@@ -33,6 +33,7 @@ export class InboxPageComponent implements AfterViewChecked {
   coursesChatRoomResponse: PageResponse<CoursesChatRoomResponse> = {} as PageResponse<CoursesChatRoomResponse>;
   chatRoomMessages: MessageResponse[] = [];
   @ViewChild('scrollableDiv') scrollableDiv!: ElementRef<HTMLDivElement>;
+  isUserScrollingUp: boolean = false;
 
 
   constructor(private chatService: ChatService, private authService: AuthService) {
@@ -183,9 +184,16 @@ export class InboxPageComponent implements AfterViewChecked {
       }
     });
   }
+
+  onScroll() {
+    if (this.scrollableDiv) {
+      const div = this.scrollableDiv.nativeElement;
+      this.isUserScrollingUp = div.scrollTop + div.clientHeight < div.scrollHeight - 10;
+    }
+  }
   scrollToBottom() {
     setTimeout(() => {
-      if (this.scrollableDiv) {
+      if (this.scrollableDiv && !this.isUserScrollingUp) {
         const div = this.scrollableDiv.nativeElement;
         div.scrollTop = div.scrollHeight;
       }

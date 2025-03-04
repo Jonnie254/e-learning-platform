@@ -67,7 +67,7 @@
       <li *ngIf="(userRole$ | async) === 'ADMIN'">
         <a routerLink="admin-courses" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
            class="flex items-center p-2 text-gray-100 font-semibold rounded-lg dark:text-white hover:bg-gray-100
-           hover:text-red-500 dark:hover:bg-gray-700 group">
+           hover:text-red-500">
           <i
             class="pi pi-calendar  w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400
             group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -77,7 +77,7 @@
       <li *ngIf="(userRole$ | async) === 'INSTRUCTOR'">
         <a routerLink="instructor-courses" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
            class="flex items-center p-2 text-gray-100 font-semibold rounded-lg
-           dark:text-white hover:bg-gray-100 hover:text-red-500 dark:hover:bg-gray-700 group">
+           dark:text-white hover:bg-gray-100 hover:text-red-500">
           <i
             class="pi pi-calendar  w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400
             group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -92,9 +92,6 @@
             class="pi pi-inbox w-5 text-2xl  text-gray-100 transition duration-75 dark:text-gray-400
             group-hover:text-gray-900 dark:group-hover:text-white"></i>
           <span class="flex-1 ms-3 whitespace-nowrap">Inbox</span>
-          <span
-            class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800
-             bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
         </a>
       </li>
       <li *ngIf="(userRole$ | async) === 'ADMIN'">

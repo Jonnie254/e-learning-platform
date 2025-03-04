@@ -14,7 +14,7 @@
       <ul class="space-y-2 mt-4 overflow-y-auto max-h-[calc(100vh-200px)]">
         <li *ngFor="let chatRoom of coursesChatRoomResponse.content"
             (click)="selectChatRoom(chatRoom)"
-            class="p-3 bg-blue-50 rounded-lg transition duration-150 ease-in-out cursor-pointer flex items-center space-x-3 border-l-4 border-blue-500">
+            class="p-3 bg-blue-50 rounded-lg transition duration-150 ease-in-out cursor-pointer flex items-center space-x-3 border-l-4 border-gray-400">
           <img [src]="chatRoom.course.courseImageUrl" alt="profile" class="h-10 w-10 rounded-full object-cover border border-gray-300 shadow-sm" />
           <div class="flex-1">
             <p class="font-semibold text-base text-gray-800">{{chatRoom.course.courseName}}</p>
@@ -59,18 +59,16 @@
     </div>
 
     <!-- Chat Messages (Scrollable Area) -->
-    <div class="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-gray-50 to-white" #scrollableDiv>
+    <div class="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-gray-50 to-white" (scroll)="onScroll()" #scrollableDiv>
       <div class="flex flex-col space-y-2">
         <div *ngFor="let message of chatRoomMessages; let i = index">
-          <!-- Sent Messages (Right) -->
-          <!-- Sent Messages (Right) -->
           <div *ngIf="isSelfMessage(message)"
                class="flex justify-end"
                [ngClass]="{'mt-2': i === 0 || chatRoomMessages[i-1].senderId !== message.senderId}">
-            <div class="bg-blue-500 text-white rounded-lg p-3 shadow-sm max-w-xs sm:max-w-md"
+            <div class="bg-gray-500 text-white rounded-lg p-3 shadow-sm max-w-xs sm:max-w-md"
                  [ngClass]="{ 'rounded-tr-none': i === 0 || chatRoomMessages[i - 1].senderId !== message.senderId }">
               <p *ngIf="i === 0 || chatRoomMessages[i-1].senderId !== message.senderId"
-                 class="text-xs font-semibold mb-1">You</p>
+                 class="text-xs font-semibold text-white mb-1">You</p>
               <p>{{ message.content }}</p>
               <div *ngIf="message.messageType === 'IMAGE'">
                 <img [src]="message.content" alt="Sent image" width="200">
@@ -78,8 +76,6 @@
               <p class="text-xs text-blue-100 text-right mt-1">{{ message.createdAt | date: 'h:mm a' }}</p>
             </div>
           </div>
-
-          <!-- Received Messages (Left) -->
           <div *ngIf="!isSelfMessage(message)"
                class="flex justify-start"
                [ngClass]="{'mt-2': i === 0 || chatRoomMessages[i-1].senderId !== message.senderId}">

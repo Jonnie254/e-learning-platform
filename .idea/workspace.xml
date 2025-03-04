@@ -5,31 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/requests.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/responses.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/interfaces/users.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/services/chat.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/services/chat.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/dashboard-page/dash-page/dashboard-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/dashboard-page/dash-page/dashboard-page.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/authentication-service/src/main/java/com/jonnie/elearning/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/ChatServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/ChatServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/ChatRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/ChatRoom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/ChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/ChatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/CoursesChatRoomResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/chat/CoursesChatRoomResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/message/MessageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/messagestatus/MessageStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/messagestatus/MessageStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/messagestatus/MessageStatusRespository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/messagestatus/MessageStatusRespository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/messagestatus/MessageStatusType.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/messagestatus/MessageStatusType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/notification/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/notification/NotificationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/websocketconfig/WebSocketConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/chat-service/src/main/java/com/jonnie/elearning/websocketconfig/WebSocketConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -440,7 +419,9 @@
       <workItem from="1740989617138" duration="4698000" />
       <workItem from="1741022258207" duration="1665000" />
       <workItem from="1741066199600" duration="2790000" />
-      <workItem from="1741069129148" duration="5502000" />
+      <workItem from="1741069129148" duration="7191000" />
+      <workItem from="1741078475894" duration="221000" />
+      <workItem from="1741079471306" duration="792000" />
     </task>
     <servers />
   </component>
