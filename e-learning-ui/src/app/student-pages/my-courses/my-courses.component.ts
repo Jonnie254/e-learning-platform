@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {NavbarComponent} from '../../shared-components/navbar/navbar.component';
 import {EnrollmentService} from '../../services/enrollment.service';
 import {enrollmentResponse} from '../../interfaces/responses';
@@ -19,8 +19,8 @@ import {NgForOf, NgIf} from '@angular/common';
 })
 export class MyCoursesComponent {
   userEnrollments: enrollmentResponse = {} as enrollmentResponse;
-
-
+  isRatingVisible: boolean = false;
+  @Output() public ratingChange: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private enrollmentService: EnrollmentService,
@@ -36,9 +36,6 @@ export class MyCoursesComponent {
         this.userEnrollments.content.forEach((enrollment) => {
           this.getCourseProgress(enrollment.course.courseId);
         });
-      },
-      error: (error) => {
-        console.error('Error fetching user enrollments:', error);
       }
     })
   }
@@ -50,17 +47,16 @@ export class MyCoursesComponent {
         find((enrollment) => enrollment.course.courseId === courseId);
         if(course){
           course.course.progress = response.progress;
+          if(response.progress === 100){
+            this.isRatingVisible = true;
+          }
         }
-      },
-      error: (error) => {
-        console.error('Error fetching course progress:', error);
       }
     });
   }
 
   redirectToCourse(courseId: string) {
     this.router.navigate(['/enrolled-course', courseId]);
-
   }
 
   progressCircleDashArray(progress: number): string {
@@ -70,7 +66,6 @@ export class MyCoursesComponent {
   progressCircleDashOffset(progress: number): string {
     return `${94.2 - (progress * 0.628)}`;
   }
-
 
 
 }

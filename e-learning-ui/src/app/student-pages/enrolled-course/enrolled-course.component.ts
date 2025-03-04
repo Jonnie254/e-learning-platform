@@ -75,11 +75,9 @@ export class EnrolledCourseComponent {
         const section = this.courseSection.content?.find(s => s.sectionId === sectionId);
         if (section) {
           section.isCompleted = response.isCompleted;
-          console.log(`Section ${sectionId} completed status:`, section.isCompleted);
         }
       },
       error: (error) => {
-        console.error('Error fetching section status:', error);
       }
     });
   }
@@ -98,7 +96,6 @@ export class EnrolledCourseComponent {
         setTimeout(() => this.closeNotification(), 5000);
       },
       error: (error) => {
-        console.error('Error completing section:', error);
         this.notification = {
           show: true,
           message: 'Error completing section',
@@ -118,8 +115,6 @@ export class EnrolledCourseComponent {
     this.itemSectionId = sectionId;
     this.actionType = 'complete';
   }
-
-
 
   totalPages() {
     return this.courseSection.totalPages as number;

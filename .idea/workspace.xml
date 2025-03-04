@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="494d1243-c287-4970-9e45-a79341aa8c35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/dashboard-page/dash-page/dashboard-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/adminstration/dashboard-page/dash-page/dashboard-page.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/shared-components/inbox-page/inbox-page.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/enrolled-course/enrolled-course.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/e-learning-ui/src/app/student-pages/my-courses/my-courses.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -422,6 +423,7 @@
       <workItem from="1741069129148" duration="7191000" />
       <workItem from="1741078475894" duration="221000" />
       <workItem from="1741079471306" duration="792000" />
+      <workItem from="1741116460630" duration="5734000" />
     </task>
     <servers />
   </component>
