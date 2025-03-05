@@ -1,47 +1,20 @@
 import { Component } from '@angular/core';
-import {
-  ConfirmationDialogComponent
-} from '../../../shared-components/confirmation-dialog/confirmation-dialog.component';
-import {NotificationsComponent} from '../../../shared-components/notifications/notifications.component';
+import {RouterOutlet} from '@angular/router';
+import {ModalService} from '../../../services/modal.service';
 
 @Component({
   selector: 'app-manage-courses',
   standalone: true,
   imports: [
-    ConfirmationDialogComponent,
-    NotificationsComponent
+    RouterOutlet
   ],
   templateUrl: './manage-courses.component.html',
   styleUrl: './manage-courses.component.scss'
 })
 export class ManageCoursesComponent {
-  isConfirmationDialogVisible: boolean = false;
-  modalTitle: string = '';
-  modalMessage: string = '';
-  modalIconClass: string = '';
-  modalConfirmButtonText: string = '';
-  modalCancelButtonText: string = '';
+  constructor(private modalService: ModalService) {}
 
-  notification = {
-    show: false,
-    message: '',
-    type: '' as 'success' | 'error'
-  }
-
-
-  confirmAction() {
-
-  }
-
-  closeModal() {
-
-  }
-
-  closeNotification() {
-    this.notification = {
-      show: false,
-      message: '',
-      type: 'success'
-    }
+  openModal() {
+    this.modalService.showModal();
   }
 }

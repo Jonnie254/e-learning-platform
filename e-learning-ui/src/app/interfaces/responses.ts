@@ -19,7 +19,6 @@ export interface CourseResponse {
   isInCart?: boolean;
 }
 
-
 export interface CourseDetailsResponse {
   courseId: string,
   courseName: string,
@@ -29,7 +28,6 @@ export interface CourseDetailsResponse {
   description: string,
   whatYouWillLearn: string[],
 }
-
 
 export interface Cart{
   cartId: string;
@@ -132,4 +130,9 @@ export interface NotificationResponse {
   messageType?: 'TEXT' | 'IMAGE' | 'VIDEO' | 'AUDIO';
   notificationType?: 'SEEN' | 'MESSAGE' | 'IMAGE' | 'VIDEO' | 'AUDIO';
   mediaUrl?: string;
+}
+
+export interface CategoryResponse{
+  categoryId: string;
+  categoryName: string;
 }

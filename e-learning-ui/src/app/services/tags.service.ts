@@ -10,5 +10,6 @@ export class TagsService {
   constructor(
     private httpClient: HttpClient,
     private authService: AuthService
-  ) { }
+  ) {
+  }
 }

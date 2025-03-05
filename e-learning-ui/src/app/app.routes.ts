@@ -128,10 +128,22 @@ export const routes: Routes = [
         path:'admin-courses',loadComponent:() =>
           import('./adminstration/admin-pages/manage-courses/manage-courses.component')
               .then(m => m.ManageCoursesComponent),
-        canActivate: [roleGuard, authGuard],
-        data:{
-              allowedRoles:['ADMIN']
-            }
+        children:[
+          {
+            path: '', loadComponent:() =>
+              import('./adminstration/admin-pages/categories-tags/categories-tags.component')
+                .then(m => m.CategoriesTagsComponent),
+          },
+          {
+            path: 'tag-category-list', loadComponent:() =>
+              import('./adminstration/admin-pages/categories-tags/categories-tags.component')
+                .then(m => m.CategoriesTagsComponent),
+          }
+        ]
+        // canActivate: [roleGuard, authGuard],
+        // data:{
+        //       allowedRoles:['ADMIN']
+        //     }
       },
       {
         path:'instructor-courses',loadComponent:() =>
