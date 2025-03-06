@@ -33,3 +33,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore application config
+src/main/resources/application.yml
+src/main/resources/application.properties
