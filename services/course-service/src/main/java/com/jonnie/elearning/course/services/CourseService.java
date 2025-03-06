@@ -189,7 +189,6 @@ public class CourseService {
     }
 
     public PageResponse<CourseResponse> findCoursesAvailableForUser(String userId, int page, int size) {
-        log.info("Getting enrolled courses for user: {}", userId);
         List<String> courseIds = enrollmentClient.getEnrolledCourses(userId);
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<Course> courses = courseRepository.findAllAvailableCourses(courseIds, pageable);

@@ -29,6 +29,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.util.Arrays.stream;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -333,6 +335,11 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"))
                 .getFullName();
+    }
+
+
+    public Boolean hasRequestedToBeInstructor(String userId) {
+        return roleRequestRepository.existsByUserIdAndStatus(userId, RoleRequestStatus.PENDING);
     }
 }
 

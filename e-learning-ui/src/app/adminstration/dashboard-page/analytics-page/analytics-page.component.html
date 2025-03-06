@@ -36,22 +36,18 @@
 </div>
   <div class="bg-slate-400 rounded-md shadow-lg">
     <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-8">
-      <!-- Total Revenue Chart -->
       <div class="bg-white m-2 rounded-lg shadow-md p-6">
         <h3 class="text-lg font-semibold text-gray-800">Total Revenue</h3>
-        <p-chart type="bar" [data]="revenueChartData" [options]="chartOptions"></p-chart>
+        <p-chart type="bar" [data]="revenueChartData" [options]="chartOptions" class="w-full md:w-[30rem]"></p-chart>
       </div>
-      <!-- Total Enrollments Chart -->
       <div class="bg-white m-2 rounded-lg shadow-md p-6">
         <h3 class="text-lg font-semibold text-gray-800">Total Enrollments</h3>
-        <p-chart type="bar" [data]="enrollmentChartData" [options]="chartOptions"></p-chart>
+        <p-chart type="bar" [data]="enrollmentChartData" [options]="chartOptions" class="w-full md:w-[30rem]"></p-chart>
       </div>
-      <!-- Total Courses Chart -->
       <div class="bg-white m-2 rounded-lg shadow-md p-6">
         <h3 class="text-lg font-semibold text-gray-800">Total Courses</h3>
         <p-chart type="pie" [data]="coursesChartData" [options]="chartOptions" class="w-full md:w-[30rem]"></p-chart>
       </div>
-
     </div>
   </div>
 </div>

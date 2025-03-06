@@ -5,6 +5,7 @@ import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.openfeign.course.CourseClient;
 import com.jonnie.elearning.openfeign.course.CourseResponse;
+import com.jonnie.elearning.openfeign.user.UserClient;
 import com.jonnie.elearning.repositories.CartItemRepository;
 import com.jonnie.elearning.repositories.CartRepository;
 import com.jonnie.elearning.repositories.EnrollmentRepository;
@@ -33,12 +34,17 @@ public class CartItemService {
     private final CartRepository cartRepository;
     private final CartItemMapper cartItemMapper;
     private final EnrollmentRepository enrollmentRepository;
+    private final UserClient userClient;
 
     // method to add a course to the cart
     public void addCartItem(String userId, String courseId) {
         // check whether the user has any existing course
         if (enrollmentRepository.existsByUserIdAndCourseId(userId, courseId)) {
             throw new BusinessException("User is already enrolled in the course");
+        }
+        //check if the user has requested to be an instructor
+        if (userClient.hasRequestedToBeInstructor(userId).orElse(false)) {
+            throw new BusinessException("You have already requested to be an instructor, you can't enroll in a course");
         }
         // Get the course details
         CourseResponse courseResponse = courseClient.getCourseById(courseId)

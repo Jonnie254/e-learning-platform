@@ -31,6 +31,7 @@ public class UserController {
     private final UserService userService;
     private final EnrollmentClient enrollmentClient;
 
+
     // method to register a new user
     @PostMapping("/register")
     public ResponseEntity<?> registerNewUser(
@@ -133,6 +134,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllActiveInstructors(page, size));
     }
 
+    //check if the user has requested to be an instructor
+    @GetMapping("/has-requested-role/{userId}")
+    public ResponseEntity<Boolean> hasRequestedToBeInstructor(
+            @PathVariable String userId) {
+        return ResponseEntity.ok(userService.hasRequestedToBeInstructor(userId));
+    }
     //get all the role requests
     @GetMapping("/all-role-requests-pending")
     public  ResponseEntity<PageResponse<RoleResponse>> getAllRoleRequests(

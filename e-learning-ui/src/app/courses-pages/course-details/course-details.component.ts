@@ -97,13 +97,14 @@ export class CourseDetailsComponent {
         }, 3000);
       },
       error: (err: any) => {
-        this.errorMessage = err.error?.errors?.error || 'An unexpected error occurred';
+        this.errorMessage = err.error?.error || 'An unexpected error occurred';
         this.addToSuccess = false;
         this.addCourseError = true;
         setTimeout(() => {
           this.resetAddToCartStatus();
         }, 3000);
       }
+
     });
   }
 
