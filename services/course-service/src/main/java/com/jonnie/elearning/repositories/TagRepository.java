@@ -1,4 +1,4 @@
-package com.jonnie.elearning.Repositories;
+package com.jonnie.elearning.repositories;
 
 import com.jonnie.elearning.tag.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;

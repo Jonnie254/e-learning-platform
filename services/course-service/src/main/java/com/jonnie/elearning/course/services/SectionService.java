@@ -1,7 +1,7 @@
 package com.jonnie.elearning.course.services;
 
-import com.jonnie.elearning.Repositories.CourseRepository;
-import com.jonnie.elearning.Repositories.SectionRepository;
+import com.jonnie.elearning.repositories.CourseRepository;
+import com.jonnie.elearning.repositories.SectionRepository;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.course.Section;
 import com.jonnie.elearning.course.Course;

@@ -1,6 +1,6 @@
 package com.jonnie.elearning.category;
 
-import com.jonnie.elearning.Repositories.CategoryRepository;
+import com.jonnie.elearning.repositories.CategoryRepository;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.exceptions.CategoryNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.jonnie.elearning.category.CategoryRequest;
 
 import java.util.List;
 

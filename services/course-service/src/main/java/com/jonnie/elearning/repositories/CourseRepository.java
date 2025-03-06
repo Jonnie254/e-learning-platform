@@ -1,4 +1,4 @@
-package com.jonnie.elearning.Repositories;
+package com.jonnie.elearning.repositories;
 
 import com.jonnie.elearning.course.Course;
 import org.springframework.data.domain.Page;

@@ -1,9 +1,8 @@
 package com.jonnie.elearning.tag;
 
-import com.jonnie.elearning.Repositories.TagRepository;
+import com.jonnie.elearning.repositories.TagRepository;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.exceptions.TagNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

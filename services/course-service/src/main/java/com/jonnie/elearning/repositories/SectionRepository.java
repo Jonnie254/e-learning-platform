@@ -1,8 +1,7 @@
-package com.jonnie.elearning.Repositories;
+package com.jonnie.elearning.repositories;
 
 import com.jonnie.elearning.course.Course;
 import com.jonnie.elearning.course.Section;
-import com.jonnie.elearning.course.responses.AllSectionId;
 import feign.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
