@@ -125,9 +125,9 @@ export const routes: Routes = [
         ]
       },
       {
-        path:'admin-courses',loadComponent:() =>
-          import('./adminstration/admin-pages/manage-courses/manage-courses.component')
-              .then(m => m.ManageCoursesComponent),
+        path:'manage-tags',loadComponent:() =>
+          import('./adminstration/admin-pages/manage-tags/manage-tags.component')
+              .then(m => m.ManageTagsComponent),
         children:[
           {
             path: '', loadComponent:() =>

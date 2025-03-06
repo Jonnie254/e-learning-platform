@@ -65,7 +65,7 @@
         </a>
       </li>
       <li *ngIf="(userRole$ | async) === 'ADMIN'">
-        <a routerLink="admin-courses" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+        <a routerLink="manage-tags" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
            class="flex items-center p-2 text-gray-100 font-semibold rounded-lg dark:text-white hover:bg-gray-100
            hover:text-red-500">
           <i

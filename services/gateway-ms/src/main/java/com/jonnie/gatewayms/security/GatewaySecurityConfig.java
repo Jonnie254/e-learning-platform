@@ -63,19 +63,4 @@
                     .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                     .build();
         }
-
-        @Bean
-        public WebFilter logHeadersFilter() {
-            return (exchange, chain) -> {
-                ServerHttpRequest request = exchange.getRequest();
-                ServerHttpResponse response = exchange.getResponse();
-                System.out.println("🔹 Request Headers: " + request.getHeaders());
-
-                return chain.filter(exchange)
-                        .doOnSuccess(aVoid -> {
-                            System.out.println("Response Headers: " + response.getHeaders());
-                        });
-            };
-        }
-
     }

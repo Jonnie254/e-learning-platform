@@ -136,3 +136,13 @@ export interface CategoryResponse{
   categoryId: string;
   categoryName: string;
 }
+
+export interface CategoryRequest{
+  categoryId?: string;
+  categoryName: string;
+}
+
+export interface TagRequest{
+  tagId?: string;
+  tagName: string;
+}
