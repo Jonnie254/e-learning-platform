@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,6 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CourseRepositoryTest {
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private TagRepository tagRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
     Course course;
     Tag tag;
 
@@ -30,16 +35,14 @@ public class CourseRepositoryTest {
         Category category = Category.builder()
                 .categoryName("AI")
                 .build();
+        category = categoryRepository.save(category);
 
-        Tag tag1 = Tag.builder()
-                .tagName("Java")
-                .build();
+        Tag tag1 = Tag.builder().tagName("Java").build();
+        Tag tag2 = Tag.builder().tagName("Spring Boot").build();
 
-        Tag tag2 = Tag.builder()
-                .tagName("Spring Boot")
-                .build();
-
-        List<Tag> tags = List.of(tag1, tag2);
+        List<Tag> tags = new ArrayList<>();
+        tags.add(tagRepository.save(tag1));
+        tags.add(tagRepository.save(tag2));
 
         course = Course.builder()
                 .courseName("Java")
@@ -59,6 +62,7 @@ public class CourseRepositoryTest {
         courseRepository.save(course);
     }
 
+
     @AfterEach
     void tearDown() {
         courseRepository.deleteAll();
@@ -68,10 +72,31 @@ public class CourseRepositoryTest {
     void testFindAllPublishedCourses() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Course> publishedCourses = courseRepository.findAllPublishedCourses(pageable);
-
         assertThat(publishedCourses).isNotEmpty();
         assertThat(publishedCourses.getContent()).allMatch(Course::isPublished);
         assertThat(publishedCourses.getContent()).anyMatch(course -> course.getCourseName().equals("Java"));
         assertThat(publishedCourses.getContent()).anyMatch(course -> !course.getTags().isEmpty());
     }
+
+    @Test
+    void testFindAllByInstructorId() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Course> courses = courseRepository.findAllByInstructorId("1", pageable);
+        assertThat(courses).isNotEmpty();
+        assertThat(courses.getContent()).allMatch(course -> course.getInstructorId().equals("1"));
+    }
+
+    @Test
+    void testFindAllAvailableCourses() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Course> availableCourses = courseRepository.findAllAvailableCourses(List.of(course.getCourseId()), pageable);
+        assertThat(availableCourses).isEmpty();
+    }
+
+    @Test
+    void testCountByInstructorId() {
+        Long count = courseRepository.countByInstructorId("1");
+        assertThat(count).isEqualTo(1);
+    }
+
 }
