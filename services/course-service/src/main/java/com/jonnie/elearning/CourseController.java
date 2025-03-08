@@ -73,7 +73,6 @@ public class CourseController {
                     .body(Map.of("message", "Course image is required"));
         }
         try {
-            log.info("Creating course with name: {}", courseRequest);
             String courseId = courseService.createCourse(courseRequest, instructorId, courseImage);
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("courseId", courseId));
         } catch (Exception ex) {

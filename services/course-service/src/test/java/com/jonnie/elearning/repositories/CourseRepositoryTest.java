@@ -58,7 +58,6 @@ public class CourseRepositoryTest {
                 .tags(tags)
                 .category(category)
                 .build();
-
         courseRepository.save(course);
     }
 

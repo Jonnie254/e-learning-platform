@@ -46,7 +46,6 @@ public class CourseService {
     private final Cloudinary cloudinary;
     private final EnrollmentClient enrollmentClient;
 
-
     @Value("${application.cloudinary.folder}")
     private String folder;
 
