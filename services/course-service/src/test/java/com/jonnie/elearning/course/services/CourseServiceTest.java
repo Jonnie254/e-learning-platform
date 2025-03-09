@@ -6,6 +6,7 @@ import com.jonnie.elearning.category.Category;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.course.Course;
 import com.jonnie.elearning.course.requests.CourseRequest;
+import com.jonnie.elearning.course.responses.CourseEnrollResponse;
 import com.jonnie.elearning.course.responses.CourseResponse;
 import com.jonnie.elearning.course.responses.InstructorCourseResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
@@ -28,11 +29,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -274,14 +276,13 @@ public class  CourseServiceTest {
     }
 
     @Test
-    void testFindCoursesBy_Instructor() {
+    void testFindCoursesBy_InstructorSuccess() {
         // Given
         int page = 0;
         int size = 10;
         String instructorId = "inst123";
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
-        // Create sample Course objects for the instructor
         Course course1 = new Course();
         course1.setCourseId("course1");
         course1.setCourseName("Course One");
@@ -295,11 +296,9 @@ public class  CourseServiceTest {
         List<Course> courseList = List.of(course1, course2);
         Page<Course> coursePage = new PageImpl<>(courseList, pageable, courseList.size());
 
-        // Stub the repository to return the sample Page of courses
         when(courseRepository.findAllByInstructorId(eq(instructorId), any(Pageable.class)))
                 .thenReturn(coursePage);
 
-        // Stub the mapper to convert Course objects to InstructorCourseResponse
         InstructorCourseResponse response1 = new InstructorCourseResponse();
         response1.setCourseId("course1");
         response1.setCourseName("Course One");
@@ -316,7 +315,7 @@ public class  CourseServiceTest {
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getContent());
+        assertThat(result.getContent()).hasSize(2);
         assertThat(result.getContent().get(0).getCourseId()).isEqualTo("course1");
         assertThat(result.getContent().get(1).getCourseId()).isEqualTo("course2");
         assertThat(result.getTotalElements()).isEqualTo(coursePage.getTotalElements());
@@ -324,6 +323,92 @@ public class  CourseServiceTest {
         assertThat(result.isLast()).isEqualTo(coursePage.isLast());
         assertThat(result.isFirst()).isEqualTo(coursePage.isFirst());
         verify(courseRepository).findAllByInstructorId(eq(instructorId), any(Pageable.class));
+    }
+
+    @Test
+    void testFindCoursesBy_InstructorNotFound() {
+        // Given
+        int page = 0;
+        int size = 10;
+        String instructorId = "inst123";
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        when(courseRepository.findAllByInstructorId(eq(instructorId), any(Pageable.class))
+        ).thenReturn(Page.empty(pageable));
+
+        // When
+        PageResponse<InstructorCourseResponse> result = courseService.findCoursesByInstructor(instructorId, page, size);
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(result.getContent());
+        assertThat(result.getTotalElements()).isEqualTo(0);
+        assertThat(result.getTotalPages()).isEqualTo(0);
+        assertThat(result.isLast()).isTrue();
+        assertThat(result.isFirst()).isTrue();
+        verify(courseRepository).findAllByInstructorId(eq(instructorId), any(Pageable.class));
+    }
+
+    @Test
+    void testFindCoursesByIds_Success() {
+        // Given
+        List<String> courseIds = List.of("course1", "course2");
+
+        Course course1 = new Course();
+        course1.setCourseId("course1");
+        course1.setCourseName("Java Basics");
+        course1.setCourseUrlImage("https://example.com/java.jpg");
+
+        Course course2 = new Course();
+        course2.setCourseId("course2");
+        course2.setCourseName("Spring Boot");
+        course2.setCourseUrlImage("https://example.com/springboot.jpg");
+
+        List<Course> courses = List.of(course1, course2);
+
+        CourseEnrollResponse response1 = new CourseEnrollResponse();
+        response1.setCourseId("course1");
+        response1.setCourseName("Java Basics");
+        response1.setCourseUrlImage("https://example.com/java.jpg");
+        response1.setInstructorName("John Doe");
+
+        CourseEnrollResponse response2 = new CourseEnrollResponse();
+        response2.setCourseId("course2");
+        response2.setCourseName("Spring Boot");
+        response2.setCourseUrlImage("https://example.com/springboot.jpg");
+        response2.setInstructorName("Jane Smith");
+
+        List<CourseEnrollResponse> expectedResponses = List.of(response1, response2);
+
+        when(courseRepository.findAllById(courseIds)).thenReturn(courses);
+        when(courseMapper.toCoursesResponse(courses)).thenReturn(expectedResponses);
+
+        // When
+        List<CourseEnrollResponse> actualResponses = courseService.findCoursesByIds(courseIds);
+
+        // Then
+        assertThat(actualResponses).isNotNull();
+        assertThat(actualResponses.get(0).getCourseId()).isEqualTo("course1");
+        assertThat(actualResponses.get(1).getCourseId()).isEqualTo("course2");
+        verify(courseRepository).findAllById(courseIds);
+        verify(courseMapper).toCoursesResponse(courses);
+    }
+
+    @Test
+    void testFindCoursesByIds_EmptyList() {
+        // Given
+        List<String> courseIds = List.of();
+        when(courseRepository.findAllById(courseIds)).thenReturn(Collections.emptyList());
+        when(courseMapper.toCoursesResponse(Collections.emptyList())).thenReturn(Collections.emptyList());
+
+        // When
+        List<CourseEnrollResponse> actualResponses = courseService.findCoursesByIds(courseIds);
+
+        // Then
+        assertThat(actualResponses).isNotNull();
+        assertThat(actualResponses).isNotNull().hasSize(0);
+        verify(courseRepository).findAllById(courseIds);
+        verify(courseMapper).toCoursesResponse(Collections.emptyList());
     }
 
 
