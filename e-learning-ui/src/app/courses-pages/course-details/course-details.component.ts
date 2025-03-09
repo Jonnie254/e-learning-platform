@@ -19,7 +19,6 @@ import {take} from 'rxjs';
     NgForOf,
     CoursesCardComponent,
     NotificationsComponent,
-    NgOptimizedImage
   ],
   templateUrl: './course-details.component.html',
   styleUrl: './course-details.component.scss'

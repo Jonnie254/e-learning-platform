@@ -44,7 +44,6 @@ export class CoursesComponent {
   }
 
 
-  //get all courses
   getCourses() {
     this.courseService.getFilteredCourses({ size: this.size, page: this.page }, this.size)
       .subscribe(response => {

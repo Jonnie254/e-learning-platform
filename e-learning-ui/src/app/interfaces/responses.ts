@@ -46,7 +46,7 @@ export interface cartItem {
 
 }
 
-export interface enrollmentResponse {
+export interface EnrollmentResponse {
   content: courseEnrollment[];
   number: number;
   size: number;
@@ -145,4 +145,14 @@ export interface CategoryRequest{
 export interface TagRequest{
   tagId?: string;
   tagName: string;
+}
+
+export interface RatingResponse {
+ progress: number;
+ rated: boolean;
+}
+
+export interface FeedbackRequest{
+  comment: string;
+  rating: number;
 }

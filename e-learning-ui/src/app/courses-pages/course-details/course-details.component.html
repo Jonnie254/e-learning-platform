@@ -6,7 +6,6 @@
 <main class="container mx-auto px-4 py-8">
   <h1 class="text-4xl font-semibold mb-6">Course Details</h1>
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <!-- Left Column - Course Image and Basic Info -->
     <div class="lg:col-span-2">
       <div class="bg-white rounded-lg shadow-sm mb-4">
         <div class="p-4">
@@ -22,8 +21,6 @@
           <p class="text-gray-600 mt-2">{{course.description}}</p>
         </div>
       </div>
-
-      <!-- What You Will Learn Section -->
       <div class="bg-white rounded-lg shadow-sm mb-8">
         <div class="p-6">
           <h3 class="text-xl font-semibold mb-4">What You Will Learn</h3>
@@ -37,7 +34,6 @@
       </div>
     </div>
 
-    <!-- Right Column - Price and Enrollment -->
     <div class="lg:col-span-1">
       <div class="bg-white rounded-xl shadow-lg p-6 top-20 border border-gray-200">
         <!-- Course Price -->
@@ -45,15 +41,12 @@
           {{ course.price | currency:'USD' }}
         </div>
 
-        <!-- Enroll Now Button -->
         <button (click)="addToCart(course.courseId)"
           class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg
       hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-md"
         >
           Add to Cart
         </button>
-
-        <!-- Course Details Box -->
         <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
           <p class="text-gray-600 text-sm"><span class="font-semibold">Lifetime Access:</span> Yes</p>
           <p class="text-gray-600 text-sm"><span class="font-semibold">Certificate:</span> Included</p>
@@ -62,7 +55,6 @@
       </div>
     </div>
   </div>
-    <!-- Other Courses Section -->
   <div class="bg-white rounded-lg shadow-sm mt-4">
     <div>
       <p class="text-2xl font-semibold p-4">Other Courses You May Like</p>

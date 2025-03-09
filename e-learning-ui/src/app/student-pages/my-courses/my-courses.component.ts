@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {NavbarComponent} from '../../shared-components/navbar/navbar.component';
 import {EnrollmentService} from '../../services/enrollment.service';
-import {enrollmentResponse} from '../../interfaces/responses';
 import {Router, RouterLink} from '@angular/router';
 import {NgForOf, NgIf} from '@angular/common';
+import {EnrollmentResponse} from '../../interfaces/responses';
+
 
 @Component({
   selector: 'app-my-courses',
@@ -18,10 +19,7 @@ import {NgForOf, NgIf} from '@angular/common';
   styleUrl: './my-courses.component.scss'
 })
 export class MyCoursesComponent {
-  userEnrollments: enrollmentResponse = {} as enrollmentResponse;
-  isRatingVisible: boolean = false;
-  @Output() public ratingChange: EventEmitter<any> = new EventEmitter();
-
+  userEnrollments: EnrollmentResponse = {} as EnrollmentResponse;
   constructor(
     private enrollmentService: EnrollmentService,
     private router: Router
@@ -47,9 +45,6 @@ export class MyCoursesComponent {
         find((enrollment) => enrollment.course.courseId === courseId);
         if(course){
           course.course.progress = response.progress;
-          if(response.progress === 100){
-            this.isRatingVisible = true;
-          }
         }
       }
     });
@@ -66,6 +61,4 @@ export class MyCoursesComponent {
   progressCircleDashOffset(progress: number): string {
     return `${94.2 - (progress * 0.628)}`;
   }
-
-
 }

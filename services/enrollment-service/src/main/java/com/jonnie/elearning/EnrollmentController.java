@@ -10,10 +10,15 @@ import com.jonnie.elearning.enrollment.EnrollmentService;
 import com.jonnie.elearning.enrollment.responses.CourseEnrollmentResponse;
 import com.jonnie.elearning.enrollment.responses.EnrollmentStatsResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
+import com.jonnie.elearning.feedback.Feedback;
+import com.jonnie.elearning.feedback.FeedbackRequest;
+import com.jonnie.elearning.feedback.FeedbackService;
+import com.jonnie.elearning.feedback.RatingResponse;
 import com.jonnie.elearning.progress.ProgressResponse;
 import com.jonnie.elearning.progress.ProgressService;
 import com.jonnie.elearning.progress.SectionStatusResponse;
 import com.jonnie.elearning.utils.ROLE;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +41,7 @@ public class EnrollmentController {
     private final CartService cartService;
     private final ProgressService progressService;
     private final EnrollmentService enrollmentService;
+    private final FeedbackService feedbackService;
 
 
     private void validateUser(String userId, String userRole, ROLE requiredRole) {
@@ -66,6 +72,59 @@ public class EnrollmentController {
                     .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
         }
     }
+
+    //method to check out from the cart
+    @PostMapping("/checkout-cart")
+    public ResponseEntity<Map<String, String>> checkoutCart(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole
+    ) {
+        validateUser(userId, userRole, ROLE.STUDENT);
+        try {
+            String approvalUrl = cartService.checkoutCart(userId);
+            Map<String, String> response = new HashMap<>();
+            response.put("approvalUrl", approvalUrl);
+            return ResponseEntity.ok(response);
+        } catch (BusinessException e) {
+            return ResponseEntity.status(BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
+        }
+    }
+
+    //method to get the courses user has enrolled in
+    @PostMapping("/get-enrolled-courses-ids")
+    public ResponseEntity<List<String>> getEnrolledCourses(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole
+    ){
+        validateUser(userId, userRole, ROLE.STUDENT);
+        return ResponseEntity.ok(enrollmentService.getEnrolledCourses(userId));
+    }
+
+    //method to initialize progress
+    @PostMapping("/initialize-progress/{courseId}")
+    public ResponseEntity<Map<String, String>> initializeProgress(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String userRole,
+            @PathVariable("courseId") String courseId
+    ) {
+        validateUser(userId, userRole, ROLE.STUDENT);
+        try {
+            progressService.initializeUserProgress(userId, courseId);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Progress initialized successfully");
+            return ResponseEntity.ok(response);
+        } catch (BusinessException e) {
+            return ResponseEntity.status(BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
+        } catch (Exception e) {
+            log.error("An unexpected error occurred", e);
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
+        }
+    }
+
 
     @GetMapping("/get-all-items")
     public ResponseEntity<PageResponse<CartItemResponse>> getAllCartItems(
@@ -108,37 +167,6 @@ public class EnrollmentController {
         return ResponseEntity.ok(cartService.getCart(userId));
     }
 
-    //method to check out from the cart
-    @PostMapping("/checkout-cart")
-    public ResponseEntity<Map<String, String>> checkoutCart(
-            @RequestHeader("X-User-Id") String userId,
-            @RequestHeader("X-User-Role") String userRole
-    ) {
-        validateUser(userId, userRole, ROLE.STUDENT);
-        try {
-            String approvalUrl = cartService.checkoutCart(userId);
-            Map<String, String> response = new HashMap<>();
-            response.put("approvalUrl", approvalUrl);
-            return ResponseEntity.ok(response);
-        } catch (BusinessException e) {
-            return ResponseEntity.status(BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
-        } catch (Exception e) {
-            log.error("An unexpected error occurred", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
-        }
-    }
-
-    //method to get the courses user has enrolled in
-    @PostMapping("/get-enrolled-courses-ids")
-    public ResponseEntity<List<String>> getEnrolledCourses(
-            @RequestHeader("X-User-Id") String userId,
-            @RequestHeader("X-User-Role") String userRole
-    ){
-        validateUser(userId, userRole, ROLE.STUDENT);
-        return ResponseEntity.ok(enrollmentService.getEnrolledCourses(userId));
-    }
-
     //method to get the details of the enrolled in
     @GetMapping("/enrolled-courses-details")
     public ResponseEntity<PageResponse<EnrollmentResponse>> getEnrolledCoursesDetails(
@@ -151,26 +179,17 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getEnrolledCoursesDetails(userId, page, size));
     }
 
-    //method to initialize progress
-    @PostMapping("/initialize-progress/{courseId}")
-    public ResponseEntity<Map<String, String>> initializeProgress(
+
+
+    //check whether the course has been rated by the user
+    @GetMapping("/check-course-rating/{courseId}")
+    public ResponseEntity<RatingResponse> checkCourseRating(
             @RequestHeader("X-User-Id") String userId,
             @RequestHeader("X-User-Role") String userRole,
             @PathVariable("courseId") String courseId
     ) {
         validateUser(userId, userRole, ROLE.STUDENT);
-        try {
-            progressService.initializeUserProgress(userId, courseId);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Progress initialized successfully");
-            return ResponseEntity.ok(response);
-        } catch (BusinessException e) {
-            return ResponseEntity.status(BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
-        } catch (Exception e) {
-            log.error("An unexpected error occurred", e);
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
-        }
+        return ResponseEntity.ok(feedbackService.isCourseRated(userId, courseId));
     }
 
     //get the status of the section
@@ -265,6 +284,28 @@ public class EnrollmentController {
     ) {
         validateUser(userId, userRole, ROLE.ADMIN);
         return ResponseEntity.ok(enrollmentService.getAdminTotalCourseEnrollments(page, size));
+    }
+
+    //create a feedback for an enrollment
+    @PostMapping("/create-feedback/{courseId}")
+    public ResponseEntity<Map<String, String>> createFeedback(
+            @RequestHeader("X-User-Id") String userId,
+            @PathVariable String courseId,
+            @RequestHeader("X-User-Role") String userRole,
+            @RequestBody @Valid FeedbackRequest feedbackRequest
+    ) {
+        validateUser(userId, userRole, ROLE.STUDENT);
+        try {
+            feedbackService.createFeedback(userId, courseId, feedbackRequest);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Feedback created successfully");
+            return ResponseEntity.ok(response);
+        } catch (BusinessException e) {
+            return ResponseEntity.status(BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
+        }
     }
 
 }

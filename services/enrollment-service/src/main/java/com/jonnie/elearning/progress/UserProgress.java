@@ -33,9 +33,7 @@ public class UserProgress {
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
-
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime updatedAt;
-
 }

@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import {NavbarComponent} from '../../shared-components/navbar/navbar.component';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {PaginationComponent} from '../../shared-components/pagination/pagination.component';
-import {CourseSection, PageResponse} from '../../interfaces/responses';
+import {CourseSection, PageResponse, RatingResponse} from '../../interfaces/responses';
 import {CoursesService} from '../../services/courses-service.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EnrollmentService} from '../../services/enrollment.service';
 import {ConfirmationDialogComponent} from '../../shared-components/confirmation-dialog/confirmation-dialog.component';
 import {NotificationsComponent} from '../../shared-components/notifications/notifications.component';
+import {RatingComponent} from '../../courses-pages/rating/rating.component';
+import {ModalService} from '../../services/modal.service';
 
 @Component({
   selector: 'app-enrolled-course',
@@ -19,7 +21,8 @@ import {NotificationsComponent} from '../../shared-components/notifications/noti
     NgClass,
     PaginationComponent,
     ConfirmationDialogComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    RatingComponent
   ],
   templateUrl: './enrolled-course.component.html',
   styleUrl: './enrolled-course.component.scss'
@@ -28,6 +31,7 @@ export class EnrolledCourseComponent {
   page: number = 0;
   size: number = 5;
   courseId!: string;
+  ratingResponse: RatingResponse = {} as RatingResponse;
   courseSection: PageResponse<CourseSection> = {};
   isConfirmationDialogVisible: boolean = false;
   modalTitle: string = '';
@@ -37,6 +41,7 @@ export class EnrolledCourseComponent {
   modalCancelButtonText: string = '';
   itemSectionId: string = '';
   actionType: 'complete' | 'checkout' = 'complete';
+  isRatingVisible: boolean = false;
 
   notification = {
     show: false,
@@ -44,18 +49,34 @@ export class EnrolledCourseComponent {
     type: '' as 'success' | 'error'
   };
 
-
   constructor(
     private courseService: CoursesService,
     private activatedRoute: ActivatedRoute,
-    private enrollmentService: EnrollmentService
+    private enrollmentService: EnrollmentService,
+    private modalService: ModalService
   ) {
+    this.modalService.isRatingVisible$.subscribe(visible => {
+      this.isRatingVisible = visible;
+    });
     this.activatedRoute.params.subscribe({
       next: params =>{
         this.courseId = params['courseId'];
         this.getCourseSections();
       }
-    })
+    });
+    this.getCourseRatingStatus();
+  }
+
+  getCourseRatingStatus() {
+    this.enrollmentService.getRatingStatus(this.courseId).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.ratingResponse = response;
+        if (this.ratingResponse.progress === 100 && !this.ratingResponse.rated) {
+          this.modalService.showRatingModal(this.courseId);
+        }
+      }
+    });
   }
 
    getCourseSections() {

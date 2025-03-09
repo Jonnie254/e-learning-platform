@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from './auth-service.service';
-import {Cart, enrollmentResponse, SectionStatus} from '../interfaces/responses';
+import {Cart, EnrollmentResponse, FeedbackRequest, RatingResponse, SectionStatus} from '../interfaces/responses';
 import {BehaviorSubject, of} from 'rxjs';
 import {catchError, switchMap, tap} from 'rxjs/operators';
 
@@ -33,14 +33,14 @@ export class EnrollmentService {
     }).pipe(
       tap((cart: Cart) => {
         if (!cart.cartId) {
-       console.log('No cart found');
+          console.log('No cart found');
         } else {
           console.log('Cart fetched successfully:', cart);
         }
         this.cartSubject.next(cart);
       }),
       catchError((error) => {
-        return of({ cartId: '', totalAmount: 0, reference: '', status: 'ACTIVE', cartItems: [] }); // Return empty cart
+        return of({ cartId: '', totalAmount: 0, reference: '', status: 'ACTIVE', cartItems: [] });
       })
     );
   }
@@ -87,7 +87,7 @@ export class EnrollmentService {
   //method to get users enrollment
   getEnrollments() {
     const token = this.authService.getToken();
-    return this.http.get<enrollmentResponse>(`${this.baseUrl}/enrolled-courses-details`, {
+    return this.http.get<EnrollmentResponse>(`${this.baseUrl}/enrolled-courses-details`, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
@@ -113,6 +113,22 @@ export class EnrollmentService {
   getCourseProgess(courseId:string){
     const token = this.authService.getToken();
     return this.http.get<{progress: number}>(`${this.baseUrl}/get-progress-by-course/${courseId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  //method to get the progress and check whether course is rated
+  getRatingStatus(courseId: string) {
+    const token = this.authService.getToken();
+    return this.http.get<RatingResponse>(`${this.baseUrl}/check-course-rating/${courseId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  //method to submit the rating
+  submitRating(courseId: String, feedbackRequest:FeedbackRequest){
+    const token = this.authService.getToken();
+    return this.http.post(`${this.baseUrl}/create-feedback/${courseId}`, feedbackRequest, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }

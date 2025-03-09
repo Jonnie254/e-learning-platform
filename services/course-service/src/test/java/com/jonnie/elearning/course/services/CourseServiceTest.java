@@ -341,7 +341,7 @@ public class  CourseServiceTest {
 
         // Then
         assertThat(result).isNotNull();
-        assertThat(result.getContent());
+        assertThat(result.getContent()).hasSize(0);
         assertThat(result.getTotalElements()).isEqualTo(0);
         assertThat(result.getTotalPages()).isEqualTo(0);
         assertThat(result.isLast()).isTrue();
@@ -410,7 +410,5 @@ public class  CourseServiceTest {
         verify(courseRepository).findAllById(courseIds);
         verify(courseMapper).toCoursesResponse(Collections.emptyList());
     }
-
-
 
 }

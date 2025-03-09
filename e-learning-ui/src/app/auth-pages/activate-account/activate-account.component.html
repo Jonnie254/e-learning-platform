@@ -4,11 +4,13 @@
     <!-- Success Message -->
     <div class="text-center" *ngIf="isOkay else activationError">
       <h2 class="text-2xl font-bold text-green-600">Activation Successful!</h2>
-      <p class="text-gray-600 mt-2">Your account has been activated successfully.</p>
+      <p class="text-gray-600 mt-2">
+        Your account has been activated successfully. You can now log in and access all features.
+      </p>
       <button class="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition"
               (click)="redirectToLogin()"
               type="button">
-        Login
+        Proceed to Login
       </button>
     </div>
 
@@ -17,11 +19,16 @@
       <div class="text-center">
         <h2 class="text-2xl font-bold text-red-600">Activation Failed</h2>
         <p class="text-gray-600 mt-2">{{ message }}</p>
+        <p class="text-sm text-gray-500 mt-1">
+          Please make sure the activation code is correct. If the issue persists, you can request a new code or contact support.
+        </p>
         <button class="mt-4 w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition"
-                (click)="submitted = false"
                 type="button">
           Try Again
         </button>
+        <p class="text-sm text-gray-500 mt-3">
+          Need help? <a href="/support" class="text-blue-500 hover:underline">Contact Support</a>
+        </p>
       </div>
     </ng-template>
 
@@ -33,12 +40,18 @@
   <div class="flex items-center justify-center min-h-screen bg-gray-100 p-6">
     <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-6 text-center">
       <h2 class="text-xl font-semibold text-gray-700 mb-4">Enter Your Activation Code</h2>
+      <p class="text-gray-600 text-sm mb-2">
+        A 6-digit activation code was sent to your email. Please enter it below to activate your account.
+      </p>
       <code-input [isCodeHidden]="false"
                   [codeLength]="6"
                   [isCharsCode]="true"
                   class="flex justify-center"
                   (codeCompleted)="onCodeCompleted($event)">
       </code-input>
+      <p class="text-sm text-gray-500 mt-3">
+        Didn't receive the code? <a href="#"  class="text-blue-500 hover:underline">Resend Code</a>
+      </p>
     </div>
   </div>
 </ng-template>

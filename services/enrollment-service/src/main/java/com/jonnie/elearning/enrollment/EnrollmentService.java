@@ -4,9 +4,11 @@ package com.jonnie.elearning.enrollment;
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.enrollment.responses.CourseEnrollmentResponse;
 import com.jonnie.elearning.enrollment.responses.EnrollmentStatsResponse;
+import com.jonnie.elearning.feedback.Feedback;
 import com.jonnie.elearning.openfeign.course.CourseClient;
 import com.jonnie.elearning.openfeign.course.CourseEnrollResponse;
 import com.jonnie.elearning.repositories.EnrollmentRepository;
+import com.jonnie.elearning.repositories.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ public class EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
     private final CourseClient courseClient;
     private final EnrollmentMapper enrollmentMapper;
+    private final FeedbackRepository feedbackRepository;
 
     public List<String> getEnrolledCourses(String userId) {
         List<Enrollment> enrollments = enrollmentRepository.findByUserId(userId);

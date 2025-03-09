@@ -1,10 +1,11 @@
 package com.jonnie.elearning.enrollment;
 
+import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.openfeign.course.CourseEnrollResponse;
-import com.jonnie.elearning.openfeign.course.CourseResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,15 +28,12 @@ public class EnrollmentMapper {
                             CourseEnrollResponse courseEnrollResponse = courses.stream()
                                     .filter(course -> course.getCourseId().equals(courseId))
                                     .findFirst()
-                                    .orElseThrow(() -> new RuntimeException("Course not found"));
-
+                                    .orElseThrow(() -> new BusinessException("Course not found"));
                             return new EnrollmentResponse(
                                     enrollment.getEnrollmentId(),
                                     courseEnrollResponse
                             );
-
                         }))
                 .collect(Collectors.toList());
-
     }
 }

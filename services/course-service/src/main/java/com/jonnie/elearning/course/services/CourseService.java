@@ -117,13 +117,11 @@ public class CourseService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));
 
-        // Instructor check
         if (ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
             if (!course.getInstructorId().equals(instructorId)) {
                 throw new BusinessException("You are not authorized to deactivate this course");
             }
         }
-
         // Admin check (no further checks needed)
         else if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole)) {
             throw new BusinessException("You are not authorized to deactivate this course");
