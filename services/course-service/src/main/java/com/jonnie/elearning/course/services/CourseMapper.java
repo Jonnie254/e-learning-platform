@@ -33,7 +33,6 @@ public class CourseMapper {
                 .instructorId(instructor.getId())
                 .instructorName(instructor.getFullName())
                 .isPublished(true)
-                .isPaid(false)
                 .whatYouWillLearn(courseRequest.whatYouWillLearn())
                 .build();
     }

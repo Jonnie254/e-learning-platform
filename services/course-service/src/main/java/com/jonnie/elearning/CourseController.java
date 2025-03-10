@@ -10,10 +10,12 @@ import com.jonnie.elearning.course.responses.*;
 import com.jonnie.elearning.course.services.SectionService;
 import com.jonnie.elearning.course.services.CourseService;
 import com.jonnie.elearning.exceptions.BusinessException;
+import com.jonnie.elearning.recommendation.RecommendationService;
 import com.jonnie.elearning.utils.ROLE;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 public class CourseController {
     private final CourseService courseService;
     private final SectionService sectionService;
+    private final RecommendationService recommendationService;
 
     private ResponseEntity<Map<String, String>> validateInstructorHeaders(String userRole, String instructorId) {
         if (userRole == null || instructorId == null) {
@@ -367,5 +370,14 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getAdminTotalCourses());
     }
 
+    //get the recommendations for the user
+    @GetMapping("/recommend-user-courses")
+    public ResponseEntity<PageResponse<CourseResponse>> getRecommendations(
+            @RequestHeader(value = "X-User-Id", required = false) String userId,
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size
+    ){
+        return ResponseEntity.ok(recommendationService.getRecommendations(userId, page, size));
+    }
 
 }

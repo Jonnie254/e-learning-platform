@@ -32,6 +32,4 @@ public class Feedback {
     @Column(insertable = false)
     private LocalDateTime updatedAt;
 
-
-
 }

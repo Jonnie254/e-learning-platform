@@ -1,6 +1,7 @@
 package com.jonnie.elearning.course.responses;
 
 
+import com.jonnie.elearning.course.Course;
 import lombok.*;
 
 
@@ -13,4 +14,5 @@ public class CourseDetailsResponse {
     private String courseId;
     private String courseName;
     private String courseUrlImage;
+
 }

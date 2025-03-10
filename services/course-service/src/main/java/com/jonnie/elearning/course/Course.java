@@ -29,7 +29,6 @@ public class Course {
     private String instructorName;
     private BigDecimal price;
     private boolean isPublished;
-    private boolean isPaid;
 
     @ElementCollection
     private List<String> whatYouWillLearn;
