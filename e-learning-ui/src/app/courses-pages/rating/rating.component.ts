@@ -47,8 +47,9 @@ export class RatingComponent {
   }
 
   get stars(): number[] {
-    return Array(this.maxRating).fill(0);
+    return Array.from({ length: this.maxRating }, (_, i) => i + 1);
   }
+
 
   setHoveredRating(value: number) {
     this.hoveredRating = value;
@@ -81,6 +82,9 @@ export class RatingComponent {
           setTimeout(() => {
             this.hideNotification()
           }, 3000);
+          setTimeout(() => {
+            this.modalService.hideRatingModal();
+          }, 1000);
         },
         error: (error) => {
           this.notification = {
@@ -91,11 +95,13 @@ export class RatingComponent {
           setTimeout(() => {
             this.hideNotification()
           }, 3000);
+          setTimeout(() => {
+            this.modalService.hideRatingModal();
+          }, 1000);
         }
       }
     )
     setTimeout(() => {
-      alert('Rating submitted successfully!');
       this.modalService.hideRatingModal();
     }, 1000);
   }
@@ -110,6 +116,10 @@ export class RatingComponent {
       message: '',
       type: 'success'
     }
+  }
+
+  closeNotification() {
+    this.hideNotification();
   }
 }
 
