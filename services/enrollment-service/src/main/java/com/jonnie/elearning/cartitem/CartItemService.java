@@ -36,21 +36,15 @@ public class CartItemService {
     private final EnrollmentRepository enrollmentRepository;
     private final UserClient userClient;
 
-    // method to add a course to the cart
     public void addCartItem(String userId, String courseId) {
-        // check whether the user has any existing course
         if (enrollmentRepository.existsByUserIdAndCourseId(userId, courseId)) {
             throw new BusinessException("User is already enrolled in the course");
         }
-        //check if the user has requested to be an instructor
         if (userClient.hasRequestedToBeInstructor(userId).orElse(false)) {
             throw new BusinessException("You have already requested to be an instructor, you can't enroll in a course");
         }
-        // Get the course details
         CourseResponse courseResponse = courseClient.getCourseById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found"));
-
-        // Retrieve user's active cart OR create a new one
         Cart cart = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE)
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
@@ -62,14 +56,11 @@ public class CartItemService {
                     return cartRepository.save(newCart);
                 });
 
-        // Check if the course is already in the cart
-        Optional<CartItem> existingCartItem = cartItemRepository.findByCartAndCourseId(cart, courseId);
-        if (existingCartItem.isPresent()) {
+        if (cartItemRepository.findByCartAndCourseId(cart, courseId).isPresent()) {
             throw new BusinessException("Course is already in the cart");
         }
         cart.setTotalAmount(cart.getTotalAmount().add(courseResponse.getPrice()));
         cartRepository.save(cart);
-        // Create and save the new cart item
         CartItem cartItem = cartItemMapper.mapToCartItem(courseResponse, cart, userId);
         cartItemRepository.save(cartItem);
     }
@@ -78,16 +69,15 @@ public class CartItemService {
     public PageResponse<CartItemResponse> getAllCartItems(String userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
-        // Find the user's active cart
+        // Find the user's active
         Cart cart = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE)
-                .orElseThrow(() -> new BusinessException("No active cart found"));
+                .orElseThrow(() -> new BusinessException("No active or pending cart found"));
 
         // Fetch cart items for the active cart
         Page<CartItem> cartItems = cartItemRepository.findAllByCart(cart, pageable);
         List<CartItemResponse> cartItemResponses = cartItems.stream()
                 .map(cartItemMapper::fromCartItem)
                 .toList();
-
         return new PageResponse<>(
                 cartItemResponses,
                 cartItems.getNumber(),
@@ -99,20 +89,21 @@ public class CartItemService {
         );
     }
 
-    //method to remove a course from the cart
+
     public void removeCartItem(String userId, String courseId) {
         Cart cart = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE)
                 .orElseThrow(() -> new BusinessException("Cart not found"));
+
         CartItem cartItem = cartItemRepository.findByCartAndCourseId(cart, courseId)
                 .orElseThrow(() -> new BusinessException("Course not found in the cart"));
+
         cartItemRepository.delete(cartItem);
         cart.setTotalAmount(cart.getTotalAmount().subtract(cartItem.getPrice()));
-
         boolean cartIsEmpty = cartItemRepository.countByCart(cart) == 0;
-        log.info("Cart is empty: {}", cartIsEmpty);
+
         if (cartIsEmpty) {
-         cartRepository.delete(cart);
-        } else{
+            cartRepository.delete(cart);
+        } else {
             cartRepository.save(cart);
         }
     }

@@ -62,13 +62,23 @@ public class PaymentController {
                         .build();
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Payment verification failed");
+                        .header(HttpHeaders.LOCATION, "http://localhost:4200/courses")
+                        .build();
             }
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
-                    .body("An error occurred while processing the payment");
+                    .header(HttpHeaders.LOCATION, "http://localhost:4200/courses")
+                    .build();
         }
     }
+
+    @GetMapping("/cancel")
+    public ResponseEntity<Void> handlePaymentCancel() {
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header(HttpHeaders.LOCATION, "http://localhost:4200/courses")
+                .build();
+    }
+
 
     // get the total earnings of an instructor
     @GetMapping("/instructors-total-revenue")

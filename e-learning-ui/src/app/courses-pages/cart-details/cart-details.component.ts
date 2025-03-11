@@ -6,6 +6,8 @@ import {Cart} from '../../interfaces/responses';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {ConfirmationDialogComponent} from '../../shared-components/confirmation-dialog/confirmation-dialog.component';
 import {NotificationsComponent} from '../../shared-components/notifications/notifications.component';
+import {ModalService} from '../../services/modal.service';
+import {LoadingSpinnerComponent} from '../../shared-components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-cart-details',
@@ -17,7 +19,8 @@ import {NotificationsComponent} from '../../shared-components/notifications/noti
     NgIf,
     CurrencyPipe,
     ConfirmationDialogComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    LoadingSpinnerComponent
   ],
   templateUrl: './cart-details.component.html',
   styleUrl: './cart-details.component.scss'
@@ -42,7 +45,8 @@ export class CartDetailsComponent {
 
   constructor(
     private router: Router,
-    private enrollmentService: EnrollmentService
+    private enrollmentService: EnrollmentService,
+    private modalService: ModalService
   ) {
     this.enrollmentService.cart$.subscribe((cart =>{
       this.cart = cart;
@@ -115,6 +119,7 @@ export class CartDetailsComponent {
   }
 
   checkoutFromCart() {
+    this.modalService.showLoadingSpinner();
     this.enrollmentService.checkout().subscribe({
       next: (response) => {
         const approvalUrl = response.approvalUrl;
@@ -122,19 +127,25 @@ export class CartDetailsComponent {
           window.location.href = approvalUrl;
         } else {
           console.error("Invalid PayPal approval URL:", response);
+          this.notification = {
+            show: true,
+            message: "Invalid payment link received. Please try again.",
+            type: "error"
+          };
+          this.modalService.hideLoadingSpinner();
         }
       },
       error: (error) => {
         console.error("Error checking out:", error);
         this.notification = {
           show: true,
-          message: "Error checking out",
+          message: "Error checking out. Please try again.",
           type: "error"
         };
+        this.modalService.hideLoadingSpinner();
       }
     });
   }
-
 
   closeNotification() {
     this.notification = {

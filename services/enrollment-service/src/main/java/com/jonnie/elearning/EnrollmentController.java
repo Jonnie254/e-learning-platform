@@ -88,6 +88,7 @@ public class EnrollmentController {
         } catch (BusinessException e) {
             return ResponseEntity.status(BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
         } catch (Exception e) {
+            log.info("An unexpected error occurred", e);
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
         }

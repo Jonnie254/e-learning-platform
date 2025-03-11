@@ -34,8 +34,6 @@ public class CartService {
 
     // Checkout the cart
     public String checkoutCart(String userId) {
-        log.info("Starting checkout process for userId: {}", userId);
-
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new BusinessException("Cart not found for userId: " + userId));
 
@@ -58,9 +56,7 @@ public class CartService {
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 String approvalUrl = response.getBody().get("approvalUrl");
-                log.info("Payment successful for userId: {}. Redirecting to: {}", userId, approvalUrl);
-
-                cart.setStatus(CartStatus.PENDING);
+                cart.setStatus(CartStatus.ACTIVE);
                 cartRepository.save(cart);
 
                 // Notify via Kafka
@@ -86,17 +82,13 @@ public class CartService {
                 );
                 return approvalUrl;
             } else {
-                log.error("Unexpected response from payment service for userId {}: {}", userId, response);
                 throw new BusinessException("Payment processing failed");
             }
         } catch (FeignException.BadRequest e) {
-            log.error("Bad Request from payment service for userId {}: {}", userId, e.getMessage(), e);
             throw new BusinessException("Invalid payment request: " + e.getMessage());
         } catch (FeignException.NotFound e) {
-            log.error("Payment service not found for userId {}: {}", userId, e.getMessage(), e);
             throw new BusinessException("Payment service unavailable: " + e.getMessage());
         } catch (FeignException e) {
-            log.error("Error calling payment service for userId {}: {}", userId, e.getMessage(), e);
             throw new BusinessException("Payment request failed: " + e.getMessage());
         }
     }
@@ -105,7 +97,6 @@ public class CartService {
     public void handlePaymentSuccess(String cartReference) {
         Cart cart = cartRepository.findByReference(cartReference)
                 .orElseThrow(() -> new BusinessException("Cart not found with reference: " + cartReference));
-
         cart.setStatus(CartStatus.CHECKED_OUT);
         cartRepository.save(cart);
         log.info("Cart successfully checked out. CartReference: {}", cartReference);
@@ -143,10 +134,9 @@ public class CartService {
 
     // Retrieve active cart
     public CartResponse getCart(String userId) {
-        Optional<Cart> cartOptional = cartRepository.findByUserIdAndStatus(userId, CartStatus.ACTIVE);
-
+        Optional<Cart> cartOptional = cartRepository.findByUserIdAndStatus(
+                userId, CartStatus.ACTIVE );
         if (cartOptional.isEmpty()) {
-            log.info("No active cart found for userId: {}", userId);
             return new CartResponse(
                     "",
                     BigDecimal.ZERO,
@@ -157,8 +147,6 @@ public class CartService {
         }
 
         Cart cart = cartOptional.get();
-        log.info("Returning active cart for userId: {}", userId);
-
         return new CartResponse(
                 cart.getCartId(),
                 cart.getTotalAmount(),

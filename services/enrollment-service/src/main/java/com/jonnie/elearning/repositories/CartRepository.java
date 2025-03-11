@@ -5,6 +5,7 @@ import com.jonnie.elearning.utils.CartStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CartRepository extends JpaRepository<Cart, String> {
@@ -14,5 +15,8 @@ public interface CartRepository extends JpaRepository<Cart, String> {
 
      Optional<Cart> findByReference(String cartReference);
 
-    Optional<Cart> findByUserIdAndStatus(String userId, CartStatus cartStatus);
+    Optional<Cart> findByUserIdAndStatusIn(String userId, List<CartStatus> statuses);
+
+    Optional <Cart> findByUserIdAndStatus(String userId, CartStatus status);
+
 }

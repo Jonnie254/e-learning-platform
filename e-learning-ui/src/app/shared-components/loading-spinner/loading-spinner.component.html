@@ -1,0 +1,10 @@
+<div class="fixed inset-0 p-4 flex justify-center items-center w-full h-full z-[1000]"
+     *ngIf="modalService.loading$ | async">
+  <div class="fixed inset-0 w-full h-full bg-[rgba(0,0,0,0.6)] animate-fade-in"></div>
+  <div class="w-full max-w-sm bg-white shadow-2xl rounded-xl p-6 relative z-[1001] animate-scale-up">
+    <div class="flex flex-col items-center">
+      <img src="loading.gif" alt="Loading..." class="w-20 h-20 mx-auto">
+      <p class="mt-4 text-lg font-semibold text-gray-700">Please wait...</p>
+    </div>
+  </div>
+</div>

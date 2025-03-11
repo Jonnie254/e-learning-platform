@@ -10,6 +10,9 @@ export class ModalService {
   private isRatingVisibleSource = new BehaviorSubject<boolean>(false);
   isRatingVisible$ = this.isRatingVisibleSource.asObservable();
 
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  loading$ = this.loadingSubject.asObservable();
+
   private courseIdSubject = new BehaviorSubject<string | null>(null);
   courseId$ = this.courseIdSubject.asObservable();
 
@@ -31,5 +34,12 @@ export class ModalService {
 
   hideRatingModal() {
     this.isRatingVisibleSource.next(false);
+  }
+
+  showLoadingSpinner() {
+    this.loadingSubject.next(true);
+  }
+  hideLoadingSpinner() {
+    this.loadingSubject.next(false);
   }
 }

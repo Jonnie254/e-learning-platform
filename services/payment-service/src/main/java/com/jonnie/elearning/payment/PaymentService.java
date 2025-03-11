@@ -73,7 +73,6 @@ public class PaymentService {
                     .coursePaymentDetails(paymentRequest.coursePaymentDetails())
                     .build();
             paymentRepository.save(paymentRecord);
-            log.info("PaymentRecord saved successfully for Payment ID: {}", paymentRecord.getPaymentId());
 
             // Get PayPal approval URL
             return createdPayment.getLinks().stream()
@@ -83,10 +82,8 @@ public class PaymentService {
                     .orElseThrow(() -> new BusinessException("No approval_url found for PayPal Payment ID: " + createdPayment.getId()));
 
         } catch (PayPalRESTException e) {
-            log.error("PayPalRESTException while creating payment. Error: {}", e.getMessage(), e);
             throw new BusinessException("Error creating PayPal payment: " + e.getMessage());
         } catch (Exception e) {
-            log.error("Unexpected error while creating PayPal payment. Error: {}", e.getMessage(), e);
             throw new BusinessException("Unexpected error occurred: " + e.getMessage());
         }
     }
@@ -121,26 +118,19 @@ public class PaymentService {
 
         try {
             Payment executedPayment = payPalClient.executePayment(paymentId, payerId);
-
             if ("approved".equals(executedPayment.getState())) {
                 PaymentRecord paymentRecord = paymentRepository.findById(paymentId)
                         .orElseThrow(() -> new BusinessException("Payment record not found for Payment ID: " + paymentId));
-
                 paymentRecord.setPaid(true);
                 paymentRepository.save(paymentRecord);
-                log.info("Payment completed successfully. Payment ID: {}", paymentId);
-
                 eventPublisher.publishEvent(new PaymentCompletedEvent(this, paymentRecord));
                 return true;
             } else {
-                log.warn("Payment not approved. Payment ID: {}", paymentId);
                 return false;
             }
         } catch (PayPalRESTException e) {
-            log.error("PayPalRESTException while executing payment. Payment ID: {}. Error: {}", paymentId, e.getMessage(), e);
             throw new BusinessException("Error executing PayPal payment: " + e.getMessage());
         } catch (Exception e) {
-            log.error("Unexpected error while executing payment. Payment ID: {}. Error: {}", paymentId, e.getMessage(), e);
             throw new BusinessException("Unexpected error executing payment: " + e.getMessage());
         }
     }

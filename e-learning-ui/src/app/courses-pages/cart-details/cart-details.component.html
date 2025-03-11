@@ -14,7 +14,7 @@
                      [type]="notification.type"
                      (close)="closeNotification()">
 </app-notifications>
-
+<app-loading-spinner></app-loading-spinner>
 <div class="container font-sans w-full px-8 py-4 min-h-screen">
   <div *ngIf="cart && cart.cartItems.length > 0; else emptyCart " class="grid md:grid-cols-3 gap-4">
     <div class="md:col-span-2 bg-gray-100 p-4 rounded-md">
@@ -51,8 +51,8 @@
         <li class="flex flex-wrap gap-4 text-base">Total <span class="ml-auto font-bold">{{cart.totalAmount.toFixed(2) | currency: 'USD'}}</span></li>
       </ul>
       <div class="mt-8 space-y-2">
-        <button (click)="showCheckoutDialog()" class="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg
-        hover:bg-blue-700  duration-300 ease-in-out shadow-md">
+        <button (click)="showCheckoutDialog()" class="w-full bg-gray-500 text-white py-4 px-6 rounded-lg font-semibold text-lg
+        hover:bg-gray-700  duration-300 ease-in-out shadow-md">
           Proceed to Checkout
         </button>
         <button routerLink="/courses" class="w-full bg-gray-600 text-white py-4 px-6 rounded-lg font-semibold text-lg
