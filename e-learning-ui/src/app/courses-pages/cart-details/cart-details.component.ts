@@ -126,7 +126,6 @@ export class CartDetailsComponent {
         if (approvalUrl) {
           window.location.href = approvalUrl;
         } else {
-          console.error("Invalid PayPal approval URL:", response);
           this.notification = {
             show: true,
             message: "Invalid payment link received. Please try again.",
@@ -136,7 +135,6 @@ export class CartDetailsComponent {
         }
       },
       error: (error) => {
-        console.error("Error checking out:", error);
         this.notification = {
           show: true,
           message: "Error checking out. Please try again.",
@@ -155,8 +153,19 @@ export class CartDetailsComponent {
     }
   }
 
-  closeModal() {
+  resetConfirmationDialog() {
     this.isConfirmationDialogVisible = false;
+    this.modalTitle = '';
+    this.modalMessage = '';
+    this.modalIconClass = '';
+    this.modalConfirmButtonText = '';
+    this.modalCancelButtonText = '';
+    this.itemToRemoveId = '';
+    this.actionType = 'remove';
+  }
+
+  closeModal() {
+    this.resetConfirmationDialog();
   }
 
 }

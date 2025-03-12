@@ -8,6 +8,7 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {CoursesService} from '../../../services/courses-service.service';
 import {CategoryResponse, PageResponse, TagResponse} from '../../../interfaces/responses';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ModalService} from '../../../services/modal.service';
 
 @Component({
   selector: 'app-manage-course',
@@ -76,7 +77,8 @@ export class ManageCourseComponent {
   constructor(
     private coursesService: CoursesService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: ModalService
     ) {
     this.getAvailableTags();
     this.getAllCategories();
@@ -221,7 +223,6 @@ export class ManageCourseComponent {
     formData.append('price', this.addCourseForm.value.coursePrice);
     formData.append('categoryId', this.addCourseForm.value.courseSelectedCategory);
     formData.append('whatYouWillLearn', JSON.stringify(this.addCourseForm.value.whatYouWillLearn));
-
     const selectedTags = Array.isArray(this.addCourseForm.value.courseSelectedTags)
       ? this.addCourseForm.value.courseSelectedTags
       : [this.addCourseForm.value.courseSelectedTags];
@@ -260,11 +261,14 @@ export class ManageCourseComponent {
       setTimeout(() => this.closeNotification(), 3000);
       return;
     }
-
+    this.modalService.showLoadingSpinner();
     const formData = this.prepareFormData();
-
     this.coursesService.addCourse(formData).subscribe({
-      next: () => this.handleCourseResponse('Course added successfully'),
+      next: () => {
+        this.handleCourseResponse('Course added successfully');
+        setTimeout(() => this.navigateToCourses(), 3000);
+        this.modalService.hideLoadingSpinner();
+      },
       error: (error) => this.handleCourseError(error)
     });
   }
@@ -275,15 +279,20 @@ export class ManageCourseComponent {
       setTimeout(() => this.closeNotification(), 3000);
       return;
     }
-
+    this.modalService.showLoadingSpinner();
     const formData = this.prepareFormData();
-
     this.coursesService.updateCourse(this.courseId, formData).subscribe({
       next: () => {
         this.handleCourseResponse('Course updated successfully');
+        this.modalService.hideLoadingSpinner();
         setTimeout(() => this.navigateToCourses(), 3000);
       },
-      error: (error) => this.handleCourseError(error)
+      error: (error) => {
+        this.handleCourseError(error);
+        this.modalService.hideLoadingSpinner();
+      }
+
+
     });
   }
 

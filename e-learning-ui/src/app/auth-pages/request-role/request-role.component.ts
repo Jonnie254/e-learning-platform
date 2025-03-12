@@ -36,16 +36,19 @@ export class RequestRoleComponent {
 
   }
   closeNotification() {
-    this.notification.show = false;
+    this.notification = {
+      show: false,
+      message: '',
+      type: 'success'
+    }
   }
 
   confirmAction() {
-    this.isConfirmationDialogVisible = false;
+    this.resetValues();
     this.sendRequestToBecomeInstructor();
   }
 
   closeModal() {
-    this.isConfirmationDialogVisible = false;
     this.resetValues();
   }
 
@@ -88,6 +91,7 @@ export class RequestRoleComponent {
   }
 
   resetValues() {
+    this.isConfirmationDialogVisible = false;
     this.modalTitle = '';
     this.modalMessage = '';
     this.modalIconClass = '';

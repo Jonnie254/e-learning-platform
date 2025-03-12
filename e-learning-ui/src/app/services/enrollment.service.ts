@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from './auth-service.service';
 import {Cart, EnrollmentResponse, FeedbackRequest, RatingResponse, SectionStatus} from '../interfaces/responses';
-import {BehaviorSubject, of} from 'rxjs';
+import {BehaviorSubject, of, take} from 'rxjs';
 import {catchError, switchMap, tap} from 'rxjs/operators';
 
 @Injectable({
@@ -25,26 +25,30 @@ export class EnrollmentService {
   getCart() {
     const token = this.authService.getToken();
     if (!token) {
-      console.error('No token found');
-      return;
+      return of(null);
     }
-    return this.http.get<Cart>(`${this.baseUrl}/get-cart`, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).pipe(
-      tap((cart: Cart) => {
-        if (!cart.cartId) {
-          console.log('No cart found');
-        } else {
-          console.log('Cart fetched successfully:', cart);
+    return this.authService.userRole$.pipe(
+      take(1),
+      switchMap(role => {
+        if (role !== 'STUDENT') {
+          return of(null);
         }
-        this.cartSubject.next(cart);
-      }),
-      catchError((error) => {
-        return of({ cartId: '', totalAmount: 0, reference: '', status: 'ACTIVE', cartItems: [] });
+        return this.http.get<Cart>(`${this.baseUrl}/get-cart`, {
+          headers: { Authorization: `Bearer ${token}` }
+        }).pipe(
+          tap((cart: Cart) => {
+            if (!cart.cartId) {
+            } else {
+            }
+            this.cartSubject.next(cart);
+          }),
+          catchError(() => {
+            return of({ cartId: '', totalAmount: 0, reference: '', status: 'ACTIVE', cartItems: [] });
+          })
+        );
       })
     );
   }
-
 
   addCartItem(courseId: string) {
     const token = this.authService.getToken();
