@@ -32,7 +32,7 @@ export class NavbarComponent {
       this.isLoggedIn = isLoggedIn;
       if (isLoggedIn) {
         this.loadUserDetails();
-        //this.getCart();
+        this.getCart();
       }
     });
     this.enrollmentService.cart$.subscribe((cart) => {

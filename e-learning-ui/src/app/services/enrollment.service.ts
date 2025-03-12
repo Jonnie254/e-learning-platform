@@ -37,13 +37,12 @@ export class EnrollmentService {
           headers: { Authorization: `Bearer ${token}` }
         }).pipe(
           tap((cart: Cart) => {
-            if (!cart.cartId) {
-            } else {
-            }
             this.cartSubject.next(cart);
           }),
           catchError(() => {
-            return of({ cartId: '', totalAmount: 0, reference: '', status: 'ACTIVE', cartItems: [] });
+            const emptyCart = { cartId: '', totalAmount: 0, reference: '', status: 'ACTIVE', cartItems: [] };
+            this.cartSubject.next(emptyCart);
+            return of(emptyCart);
           })
         );
       })
