@@ -14,6 +14,7 @@ module.exports = {
         light: "#f7f7f7",
         darkone: "#333333",
         darktwo: "#999999",
+        formOutline: "#6f42c1",
       },
       container: {
         center: true,

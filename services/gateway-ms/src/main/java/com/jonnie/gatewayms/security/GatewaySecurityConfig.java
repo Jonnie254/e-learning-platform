@@ -54,6 +54,7 @@
                                     "/api/v1/courses/{course-id}",
                                     "/api/v1/users/authenticate",
                                     "/api/v1/courses/instructor/{courseId}",
+                                    "/api/v1/courses/all-categories",
                                     "/ws/info/**",
                                     "/ws/**")
                             .permitAll()

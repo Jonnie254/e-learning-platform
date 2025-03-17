@@ -3,7 +3,7 @@ import {NavbarComponent} from '../../shared-components/navbar/navbar.component';
 import {NgForOf, NgIf} from '@angular/common';
 import {CoursesCardComponent} from '../../courses-pages/courses-card/courses-card.component';
 import {PaginationComponent} from '../../shared-components/pagination/pagination.component';
-import {cartItem, CourseResponse, PageResponse} from '../../interfaces/responses';
+import {cartItem, CategoryResponse, CourseResponse, PageResponse} from '../../interfaces/responses';
 import {CoursesService} from '../../services/courses-service.service';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -26,6 +26,7 @@ export class CoursesComponent {
   page: number = 0;
   size: number = 8;
   coursesResponse: PageResponse<CourseResponse> = {};
+  categoryResponse: PageResponse<CategoryResponse> = {} as PageResponse<CategoryResponse>;
   isDropdownOpen = false;
   cartItems: CourseResponse[] = [];
   cartSubcription: Subscription = new Subscription();
@@ -41,8 +42,21 @@ export class CoursesComponent {
       this.getCourses();
     });
     this.getCourses();
+    this.getCategories();
   }
 
+
+  getCategories() {
+    this.courseService.getCategories({size: this.size, page: this.page})
+      .subscribe({
+        next: (response) => {
+          this.categoryResponse = response;
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+  }
 
   getCourses() {
     this.courseService.getFilteredCourses({ size: this.size, page: this.page }, this.size)

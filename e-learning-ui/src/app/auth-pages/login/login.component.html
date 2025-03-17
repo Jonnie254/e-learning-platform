@@ -2,27 +2,26 @@
                    (close)="loginSuccess = false"></app-notifications>
 <app-notifications [show]="loginError" [message]="loginMessage" [type]="'error'"
                    (close)="loginError = false"></app-notifications>
-
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
-  <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-lg sm:max-w-md">
+<div class="flex justify-center items-center min-h-screen bg-gray-300 p-4 sm:p-6">
+  <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-lg sm:max-w-md m-6 sm:m-10">
     <div class="flex justify-center mb-4">
       <img src="skillverse.png" alt="Logo" class="h-16">
     </div>
     <h2 class="text-center text-2xl font-semibold mb-6">Login</h2>
     <form #loginForm="ngForm" (ngSubmit)="onLogin()" class="space-y-6">
       <div class="relative flex items-center mb-3">
-        <i class="pi pi-envelope absolute right-3 text-gray-400"></i>
+        <i class="pi pi-envelope absolute right-3 text-gray-800"></i>
         <input type="email" placeholder="Email" name="email" [(ngModel)]="loginData.email" required
-               class="px-3 py-3 bg-white text-black w-full text-sm border rounded focus:border-[#6f42c1] outline-none"
+               class="px-3 py-3 bg-gray-300 text-black w-full text-sm border rounded focus:border-[#6f42c1] outline-none"
                aria-label="Email" />
       </div>
         <div *ngIf="loginForm.submitted && loginForm.controls['email']?.errors?.['required']"
              class="text-red-500 text-xs ml-2">Email is required
         </div>
       <div class="relative flex items-center mb-3">
-        <i class="pi pi-lock absolute right-3 text-gray-400 cursor-pointer"></i>
+        <i class="pi pi-lock absolute right-3 text-gray-700 cursor-pointer"></i>
         <input type="password" placeholder="Password" name="password" [(ngModel)]="loginData.password" required
-               class="px-3 py-3 bg-white text-black w-full text-sm border rounded focus:border-[#6f42c1] outline-none"
+               class="px-3 py-3 bg-gray-300 text-black w-full text-sm border rounded focus:border-[#6f42c1] outline-none"
                aria-label="Password" />
       </div>
         <div *ngIf="loginForm.submitted && loginForm.controls['password']?.errors?.['required']" class="text-red-500 text-xs ml-2">Password is required</div>
