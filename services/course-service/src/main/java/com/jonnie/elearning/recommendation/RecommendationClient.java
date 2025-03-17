@@ -8,9 +8,9 @@ import java.util.Map;
 
 @FeignClient(
         name = "recommendationClient",
-        url = "${application.config.recommendation-url}")
+        url = "${application.config.recommendation-url}"
+)
 public interface RecommendationClient {
-    @GetMapping("/recommend")
-    Map<String, Object> getRecommendations(@RequestParam("user_id") String userId);
-
+    @GetMapping(value = "/recommend", consumes = "application/json")
+    Map<String, Object> getRecommendations(@RequestParam(name = "user_id") String userId);
 }

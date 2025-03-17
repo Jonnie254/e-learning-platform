@@ -27,6 +27,7 @@ public class RecommendationService {
     private final CourseMapper courseMapper;
 
     public PageResponse<CourseResponse> getRecommendations(String userId, int page, int size) {
+        log.info("User id: {}", userId);
         Map<String, Object> response = recommendationClient.getRecommendations(userId);
         log.info("getRecommendations response: {}", response);
 
