@@ -93,15 +93,11 @@ export class CoursesService {
   }
   //get all the categories
   getCategories(page: { size: number; page: number }) {
-    const token = this.authService.getToken();
     return this.httpClient.get<PageResponse<CategoryResponse>>(`${this.baseUrl}/all-categories`, {
       params: {
         page: page.page.toString(),
         size: page.size.toString()
       },
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
     })
   }
   //add a course
