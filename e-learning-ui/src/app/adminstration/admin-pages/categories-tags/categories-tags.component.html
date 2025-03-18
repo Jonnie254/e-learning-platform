@@ -120,13 +120,13 @@
       </tbody>
     </table>
   </div>
-
-  <!-- Pagination -->
   <div class="mt-6 flex justify-center">
-    <app-pagination
-      [currentPage]="page"
-      [totalPages]="totalPages()"
-      (pageChange)="onPageChange($event)">
-    </app-pagination>
+      <app-pagination
+        *ngIf="(selectedType === 'categories' && categoryResponse.content && categoryResponse.content.length > 0) ||
+           (selectedType === 'tags' && tagResponse.content && tagResponse.content.length > 0)"
+        [currentPage]="page"
+        [totalPages]="totalPages()"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
   </div>
 </div>

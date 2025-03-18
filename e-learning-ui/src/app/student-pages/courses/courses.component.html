@@ -39,7 +39,7 @@
         (courseClick)="onCourseClick($event)"
       ></app-courses-card>
     </div>
-    <app-pagination
+    <app-pagination *ngIf="coursesResponse.content && coursesResponse.content.length > 0"
       [currentPage]="page"
       [totalPages]="totalPages()"
       (pageChange)="onPageChange($event)"

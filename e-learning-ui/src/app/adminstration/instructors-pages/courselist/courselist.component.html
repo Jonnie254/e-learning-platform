@@ -73,7 +73,7 @@
   </div>
 
   <div class="mt-4 flex justify-center">
-    <app-pagination
+    <app-pagination *ngIf="courses.content && courses.content.length > 0"
       [currentPage]="page"
       [totalPages]="totalPages()"
       (pageChange)="onPageChange($event)">

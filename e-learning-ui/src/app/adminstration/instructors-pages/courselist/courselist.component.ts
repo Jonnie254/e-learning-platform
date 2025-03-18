@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {PaginationComponent} from '../../../shared-components/pagination/pagination.component';
 import {InstructorCoursesResponse, PageResponse} from '../../../interfaces/responses';
 import {CoursesService} from '../../../services/courses-service.service';
-import {CurrencyPipe, NgForOf} from '@angular/common';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {Router} from '@angular/router';
 
 @Component({
@@ -11,7 +11,8 @@ import {Router} from '@angular/router';
   imports: [
     PaginationComponent,
     NgForOf,
-    CurrencyPipe
+    CurrencyPipe,
+    NgIf
   ],
   templateUrl: './courselist.component.html',
   styleUrl: './courselist.component.scss'

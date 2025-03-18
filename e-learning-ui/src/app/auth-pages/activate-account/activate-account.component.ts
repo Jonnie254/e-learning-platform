@@ -36,7 +36,6 @@ export class ActivateAccountComponent {
   confirmAccount(token: string) {
     this.authService.activateAccount(token).subscribe({
       next: () => {
-        console.log(token);
         this.message = 'Your account has been activated successfully. You can proceed to the login page';
         this.isOkay = true;
         this.submitted = true;

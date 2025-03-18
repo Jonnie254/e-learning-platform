@@ -59,7 +59,7 @@ export class ManageCourseComponent {
     courseName: new FormControl('', [Validators.required]),
     courseDescription: new FormControl('', [Validators.required]),
     coursePrice: new FormControl('', [Validators.required]),
-    whatYouWillLearn: new FormControl([''], [Validators.required]),
+    whatYouWillLearn: new FormControl([], [Validators.required]),
     courseSelectedTags: new FormControl([], { nonNullable: true }),
     courseSelectedCategory: new FormControl('', [Validators.required])
   });
@@ -106,7 +106,9 @@ export class ManageCourseComponent {
           name: response.courseName,
           description: response.courseDescription,
           price: response.price.toString(),
-          whatYouWillLearn: response.whatYouWillLearn,
+          whatYouWillLearn: Array.isArray(response.whatYouWillLearn)
+            ? response.whatYouWillLearn
+            : (response.whatYouWillLearn ? JSON.parse(response.whatYouWillLearn) : []),
           selectedTags: response.tags,
           selectedCategory: response.category.categoryId,
           imageUrl: response.courseUrlImage
@@ -222,7 +224,12 @@ export class ManageCourseComponent {
     formData.append('courseDescription', this.addCourseForm.value.courseDescription);
     formData.append('price', this.addCourseForm.value.coursePrice);
     formData.append('categoryId', this.addCourseForm.value.courseSelectedCategory);
-    formData.append('whatYouWillLearn', JSON.stringify(this.addCourseForm.value.whatYouWillLearn));
+    const learningPoints = Array.isArray(this.addCourseForm.value.whatYouWillLearn)
+      ? this.addCourseForm.value.whatYouWillLearn
+      : (this.addCourseForm.value.whatYouWillLearn ? [this.addCourseForm.value.whatYouWillLearn] : []);
+    learningPoints.forEach((point: string) => {
+      formData.append('whatYouWillLearn', point);
+    });
     const selectedTags = Array.isArray(this.addCourseForm.value.courseSelectedTags)
       ? this.addCourseForm.value.courseSelectedTags
       : [this.addCourseForm.value.courseSelectedTags];
