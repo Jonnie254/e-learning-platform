@@ -3,12 +3,13 @@ import { NavbarComponent } from '../../shared-components/navbar/navbar.component
 import { CourseDetailsResponse, CourseResponse, PageResponse } from '../../interfaces/responses';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '../../services/courses-service.service';
-import {CurrencyPipe, NgForOf, NgOptimizedImage} from '@angular/common';
+import {CurrencyPipe, NgForOf} from '@angular/common';
 import { CoursesCardComponent } from '../courses-card/courses-card.component';
 import {AuthService} from '../../services/auth-service.service';
 import {EnrollmentService} from '../../services/enrollment.service';
 import {NotificationsComponent} from '../../shared-components/notifications/notifications.component';
 import {take} from 'rxjs';
+import {CourseCommentSectionComponent } from '../../shared-components/course-comment-section/course-comment-section.component';
 
 @Component({
   selector: 'app-course-details',
@@ -19,12 +20,14 @@ import {take} from 'rxjs';
     NgForOf,
     CoursesCardComponent,
     NotificationsComponent,
+    CourseCommentSectionComponent,
   ],
   templateUrl: './course-details.component.html',
   styleUrl: './course-details.component.scss'
 })
 export class CourseDetailsComponent {
   courseId!: string;
+  comments: any[] = [];
   course: CourseDetailsResponse = {
     courseId: '',
     courseName: '',

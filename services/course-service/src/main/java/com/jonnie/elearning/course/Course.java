@@ -23,7 +23,9 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String courseId;
+    @Column(columnDefinition = "TEXT")
     private String courseName;
+    @Column(columnDefinition = "TEXT")
     private String courseUrlImage;
     private String instructorId;
     private String instructorName;
@@ -32,9 +34,8 @@ public class Course {
 
     @ElementCollection
     private List<String> whatYouWillLearn;
-
+    @Column(columnDefinition = "TEXT")
     private String description;
-
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Section> sections;
 

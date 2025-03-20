@@ -10,7 +10,6 @@ import java.util.List;
 
 public record CourseRequest(
         String courseId,
-
         @NotNull(message = "Course name is required")
         @NotEmpty(message = "Course name is required")
         String courseName,

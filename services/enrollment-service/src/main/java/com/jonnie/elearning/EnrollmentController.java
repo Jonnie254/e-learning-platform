@@ -10,10 +10,7 @@ import com.jonnie.elearning.enrollment.EnrollmentService;
 import com.jonnie.elearning.enrollment.responses.CourseEnrollmentResponse;
 import com.jonnie.elearning.enrollment.responses.EnrollmentStatsResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
-import com.jonnie.elearning.feedback.Feedback;
-import com.jonnie.elearning.feedback.FeedbackRequest;
-import com.jonnie.elearning.feedback.FeedbackService;
-import com.jonnie.elearning.feedback.RatingResponse;
+import com.jonnie.elearning.feedback.*;
 import com.jonnie.elearning.progress.ProgressResponse;
 import com.jonnie.elearning.progress.ProgressService;
 import com.jonnie.elearning.progress.SectionStatusResponse;
@@ -308,5 +305,17 @@ public class EnrollmentController {
                     .body(Collections.singletonMap("error", "An unexpected error occurred. Please try again later."));
         }
     }
+
+    //method to get the feedback for a course
+    @GetMapping("/get-course-feedback/{courseId}")
+    public ResponseEntity<PageResponse<FeedBackResponse>> getCourseFeedback(
+            @PathVariable String courseId,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(feedbackService.getCourseFeedbacks(courseId, page, size));
+    }
+
+
 
 }

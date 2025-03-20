@@ -20,4 +20,14 @@ public class FeedbackMapper {
                 .rating(feedbackRequest.rating())
                 .build();
     }
+
+    public FeedBackResponse toFeedBackResponse(Feedback feedback) {
+        return FeedBackResponse.builder()
+                .comment(feedback.getComment())
+                .courseId(feedback.getCourseId())
+                .feedbackId(feedback.getFeedbackId())
+                .rating(feedback.getRating())
+                .userId(feedback.getUserId())
+                .build();
+    }
 }
