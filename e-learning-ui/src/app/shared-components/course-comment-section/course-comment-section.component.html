@@ -1,15 +1,37 @@
-<div class="comment-section">
-  <h3>User Reviews ({{ comments.length }})</h3>
-
-  <div *ngIf="comments.length === 0" class="no-comments">
+<div class="comment-section bg-white p-6 rounded-lg shadow-md mt-2">
+  <h3 class="text-xl font-semibold mb-4">User Reviews ({{ comments.length }})</h3>
+  <div *ngIf="comments.length === 0" class="text-center text-gray-500">
     <p>No comments yet. Be the first to leave a review!</p>
   </div>
-
-  <div *ngFor="let comment of comments" class="comment">
-    <div class="comment-header">
-      <span class="user-id">User: {{ comment.userId }}</span>
-      <span class="rating">⭐ {{ comment.rating }}</span>
+  <div *ngFor="let comment of comments" class="border-b py-4">
+    <div class="flex items-center gap-4">
+      <img
+        [src]="comment.userProfileResponse.profileImageUrl || 'profilepic.svg'"
+        alt="User Avatar"
+        class="w-12 h-12 rounded-full object-cover border border-gray-300"
+      />
+      <div>
+        <p class="font-medium text-gray-800">
+          {{ comment.userProfileResponse.firstName }} {{ comment.userProfileResponse.lastName }}
+        </p>
+        <p class="text-sm text-gray-500">{{ comment.createdAt | date:'medium' }}</p>
+      </div>
     </div>
-    <p class="comment-text">"{{ comment.comment }}"</p>
+    <p class="mt-2 text-gray-700 italic">"{{ comment.comment }}"</p>
+    <div class="flex items-center gap-1 mt-2">
+      <ng-container *ngFor="let star of getStars(comment.rating); let i = index">
+        <i
+          class="pi"
+          [ngClass]="{
+            'pi-star-fill text-yellow-500': star === 1,
+            'pi-star text-gray-300': star === 0
+          }"
+          [style.fontSize]="'1.2rem'">
+        </i>
+      </ng-container>
+      <span [ngClass]="getRatingColor(comment.rating)" class="ml-2 font-semibold">
+        {{ comment.rating }}/5
+      </span>
+    </div>
   </div>
 </div>

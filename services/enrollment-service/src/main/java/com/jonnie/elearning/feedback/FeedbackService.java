@@ -3,6 +3,8 @@ package com.jonnie.elearning.feedback;
 
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
+import com.jonnie.elearning.openfeign.user.UserClient;
+import com.jonnie.elearning.openfeign.user.UserProfileResponse;
 import com.jonnie.elearning.repositories.FeedbackRepository;
 import com.jonnie.elearning.repositories.UserProgressRepository;
 import jakarta.validation.Valid;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -24,6 +28,7 @@ public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
     private final UserProgressRepository userProgressRepository;
     private final FeedbackMapper feedbackMapper;
+    private final UserClient userClient;
 
     public RatingResponse isCourseRated(String userId, String courseId) {
         //check whether the user has rated the course
@@ -47,9 +52,22 @@ public class FeedbackService {
     public PageResponse<FeedBackResponse> getCourseFeedbacks(String courseId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("CreatedAt").descending());
         Page<Feedback> feedbacks = feedbackRepository.findByCourseId(courseId, pageable);
-        List<FeedBackResponse> feedBackResponses= feedbacks.stream()
-                .map(feedbackMapper::toFeedBackResponse)
+
+        List<String> userIds = feedbacks.stream()
+                .map(Feedback::getUserId)
+                .distinct()
                 .toList();
+
+        List<UserProfileResponse> userProfiles = userClient.getUserProfileDetails(userIds);
+
+        Map<String, UserProfileResponse> userProfileMap = userProfiles.stream()
+                .collect(Collectors.toMap(UserProfileResponse::getId, user -> user));
+
+        List<FeedBackResponse> feedBackResponses = feedbacks.stream()
+                .map(feedback -> feedbackMapper.toFeedBackResponse(feedback,
+                        userProfileMap.get(feedback.getUserId())))
+                .toList();
+
         return new PageResponse<>(
                 feedBackResponses,
                 feedbacks.getNumber(),

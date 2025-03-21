@@ -133,4 +133,16 @@ export class CourseDetailsComponent {
         }
       });
   }
+
+  getStars(rating: number): number[] {
+    const fullStars = Math.floor(rating);
+    const emptyStars = 5 - fullStars;
+    return [...Array(fullStars).fill(1), ...Array(emptyStars).fill(0)];
+  }
+
+  getRatingColor(rating: number): string {
+    if (rating >= 4.5) return "text-green-600"; // High rating (Green)
+    if (rating >= 3) return "text-yellow-500"; // Medium rating (Yellow)
+    return "text-red-500"; // Low rating (Red)
+  }
 }

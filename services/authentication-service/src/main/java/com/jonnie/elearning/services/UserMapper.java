@@ -36,7 +36,7 @@ public class UserMapper {
                         .lastName(user.getLastName())
                         .profileImageUrl(user.getProfilePicUrl())
                         .build()
-                ).toList()
+                ).toList();
     }
     public User toUpdate(User existingUser, UserUpdateRequest userUpdateRequest, String profileImageUrl) {
         if (userUpdateRequest.firstName() != null) {

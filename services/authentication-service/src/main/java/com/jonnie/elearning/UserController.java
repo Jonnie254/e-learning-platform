@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -225,6 +226,6 @@ public class UserController {
     public ResponseEntity<List<UserProfileResponse>> getUsersDetails(
             @RequestBody List<String> userIds
     ){
-        return ResponseEntity.ok(userService.findUsers(userIds))
+        return ResponseEntity.ok(userService.findUsers(userIds));
     }
 }

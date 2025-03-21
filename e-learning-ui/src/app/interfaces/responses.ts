@@ -158,9 +158,18 @@ export interface FeedbackRequest{
 }
 
 export interface FeedbackResponse{
-  feedbackId:String;
-  userId:String;
-  courseId:String;
-  comment:String;
+  feedbackId:string;
+  userProfileResponse: UserProfileResponse;
+  courseId:string;
+  comment:string;
   rating: number;
+  createdAt: Date;
+}
+
+export interface UserProfileResponse{
+  id:string;
+  firstName:string;
+  lastName: string;
+  profileImageUrl: string;
+
 }
