@@ -156,3 +156,11 @@ export interface FeedbackRequest{
   comment: string;
   rating: number;
 }
+
+export interface FeedbackResponse{
+  feedbackId:String;
+  userId:String;
+  courseId:String;
+  comment:String;
+  rating: number;
+}

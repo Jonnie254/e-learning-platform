@@ -7,10 +7,7 @@ import com.jonnie.elearning.role.RoleResponse;
 import com.jonnie.elearning.role.UserRoleRequest;
 import com.jonnie.elearning.services.AuthenticationResponse;
 import com.jonnie.elearning.services.UserService;
-import com.jonnie.elearning.user.UserAuthenticationRequest;
-import com.jonnie.elearning.user.UserRegistrationRequest;
-import com.jonnie.elearning.user.UserResponse;
-import com.jonnie.elearning.user.UserUpdateRequest;
+import com.jonnie.elearning.user.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -96,6 +93,7 @@ public class UserController {
     ) {
         return ResponseEntity.ok(userService.getUserDetails(userId));
     }
+
     //get the user details
     @GetMapping("/user-details")
     public ResponseEntity<UserResponse> getUserDetails(
@@ -221,5 +219,12 @@ public class UserController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @PostMapping("/users-profile-details")
+    public ResponseEntity<List<UserProfileResponse>> getUsersDetails(
+            @RequestBody List<String> userIds
+    ){
+        return ResponseEntity.ok(userService.findUsers(userIds))
     }
 }

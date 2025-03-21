@@ -1,1 +1,15 @@
-<p>course-comment-section works!</p>
+<div class="comment-section">
+  <h3>User Reviews ({{ comments.length }})</h3>
+
+  <div *ngIf="comments.length === 0" class="no-comments">
+    <p>No comments yet. Be the first to leave a review!</p>
+  </div>
+
+  <div *ngFor="let comment of comments" class="comment">
+    <div class="comment-header">
+      <span class="user-id">User: {{ comment.userId }}</span>
+      <span class="rating">⭐ {{ comment.rating }}</span>
+    </div>
+    <p class="comment-text">"{{ comment.comment }}"</p>
+  </div>
+</div>

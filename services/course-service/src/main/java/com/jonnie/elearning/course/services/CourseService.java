@@ -207,6 +207,7 @@ public class CourseService {
         List<Course> courses = courseRepository.findAllById(courseIds);
         return courseMapper.toCoursesResponse(courses);
     }
+
     public InstructorFullCourseDetailsResponse findCourseByIdForInstructor(String courseId, String instructorId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new BusinessException("Course not found for ID: " + courseId));

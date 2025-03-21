@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../../shared-components/navbar/navbar.component';
-import { CourseDetailsResponse, CourseResponse, PageResponse } from '../../interfaces/responses';
+import {CourseDetailsResponse, CourseResponse, FeedbackResponse, PageResponse} from '../../interfaces/responses';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '../../services/courses-service.service';
 import {CurrencyPipe, NgForOf} from '@angular/common';
@@ -27,7 +27,7 @@ import {CourseCommentSectionComponent } from '../../shared-components/course-com
 })
 export class CourseDetailsComponent {
   courseId!: string;
-  comments: any[] = [];
+  comments: FeedbackResponse[] = [];
   course: CourseDetailsResponse = {
     courseId: '',
     courseName: '',
@@ -38,7 +38,7 @@ export class CourseDetailsComponent {
     whatYouWillLearn: [],
   };
 
-  coursesResponse: PageResponse<CourseResponse> = { content: [], totalPages: 0 };
+  coursesResponse: PageResponse<CourseResponse> = {content: [], totalPages: 0};
   page: number = 0;
   size: number = 8;
   addToSuccess: boolean = false;
@@ -57,6 +57,7 @@ export class CourseDetailsComponent {
       this.courseId = params['courseId'];
       this.loadCourseDetails();
       this.getCourses();
+      this.getCourseFeedback();
     });
 
   }
@@ -70,7 +71,7 @@ export class CourseDetailsComponent {
   }
 
   getCourses() {
-    this.courseService.getFilteredCourses({ size: this.size, page: this.page }, this.size)
+    this.courseService.getFilteredCourses({size: this.size, page: this.page}, this.size)
       .subscribe((response) => {
         console.log("The course data", response)
         this.coursesResponse.content = response.content?.filter(course => course.courseId !== this.courseId);
@@ -117,5 +118,19 @@ export class CourseDetailsComponent {
     this.addCourseError = false;
     this.addMessage = '';
     this.errorMessage = '';
+  }
+
+  getCourseFeedback() {
+    this.enrollmentService.getCourseFeedback(this.courseId, {size: this.size, page: this.page})
+      .subscribe({
+        next: (response) => {
+          console.log("The course feedback", response);
+          this.comments = response.content || [];
+        },
+        error: (error) => {
+          console.error("Error fetching course feedback:", error);
+          this.comments = [];
+        }
+      });
   }
 }
