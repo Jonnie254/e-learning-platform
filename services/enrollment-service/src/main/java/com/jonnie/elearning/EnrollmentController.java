@@ -316,6 +316,4 @@ public class EnrollmentController {
         return ResponseEntity.ok(feedbackService.getCourseFeedbacks(courseId, page, size));
     }
 
-
-
 }

@@ -156,3 +156,20 @@ export interface FeedbackRequest{
   comment: string;
   rating: number;
 }
+
+export interface FeedbackResponse{
+  feedbackId:string;
+  userProfileResponse: UserProfileResponse;
+  courseId:string;
+  comment:string;
+  rating: number;
+  createdAt: Date;
+}
+
+export interface UserProfileResponse{
+  id:string;
+  firstName:string;
+  lastName: string;
+  profileImageUrl: string;
+
+}

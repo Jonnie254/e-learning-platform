@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {AsyncPipe, NgIf} from '@angular/common';
+import {AsyncPipe, NgClass, NgIf} from '@angular/common';
 import {AuthService} from '../../../services/auth-service.service';
 import {Observable} from 'rxjs';
 import {User} from '../../../interfaces/users';
@@ -13,13 +13,15 @@ import {User} from '../../../interfaces/users';
     NgIf,
     RouterOutlet,
     AsyncPipe,
-    RouterLinkActive
+    RouterLinkActive,
+    NgClass
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrl: './dashboard-page.component.scss'
 })
 export class DashboardPageComponent {
   isLoggedIn: boolean = false;
+  isSidebarCollapsed: boolean = true;
   user: User = {} as User;
   isDropdownOpen = false;
   userRole$: Observable<string | null>;
@@ -47,5 +49,9 @@ export class DashboardPageComponent {
   }
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  toggleSidebar() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
 }

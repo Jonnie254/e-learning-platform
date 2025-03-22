@@ -21,27 +21,23 @@
           <p class="text-gray-600 mt-2">{{course.description}}</p>
         </div>
       </div>
-      <div class="bg-white rounded-lg shadow-sm mb-8">
-        <div class="p-6">
-          <h3 class="text-xl font-semibold mb-4">What You Will Learn</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div *ngFor="let item of course.whatYouWillLearn" class="flex items-center space-x-2">
-              <i class="pi pi-check text-green-500"></i>
-              <p>{{item}}</p>
-            </div>
+      <div class="bg-gray-100 p-4 rounded-lg">
+        <h3 class="text-xl font-semibold mb-4">What You Will Learn</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div *ngFor="let item of course.whatYouWillLearn" class="flex items-center space-x-2">
+            <i class="pi pi-check text-green-500"></i>
+            <p class="font-medium">{{item}}</p>
           </div>
         </div>
       </div>
     </div>
-
     <div class="lg:col-span-1">
       <div class="bg-white rounded-xl shadow-lg p-6 top-20 border border-gray-200">
         <div class="text-4xl font-bold text-green-600 mb-6 text-center">
           {{ course.price | currency:'USD' }}
         </div>
         <button (click)="addToCart(course.courseId)"
-          class="w-full bg-purple-600  hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-300 text-white py-4 px-6 rounded-lg font-semibold text-lg
-       transition-transform transform hover:scale-105 shadow-md">
+                class="w-full bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-purple-300  text-white py-4 px-6 rounded-lg font-semibold text-lg transition-shadow shadow-md hover:shadow-lg">
           Add to Cart
         </button>
         <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">

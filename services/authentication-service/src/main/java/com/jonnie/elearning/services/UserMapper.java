@@ -3,15 +3,14 @@ package com.jonnie.elearning.services;
 import com.jonnie.elearning.role.ROLE;
 import com.jonnie.elearning.role.RoleRequest;
 import com.jonnie.elearning.role.RoleResponse;
-import com.jonnie.elearning.user.User;
-import com.jonnie.elearning.user.UserRegistrationRequest;
-import com.jonnie.elearning.user.UserResponse;
-import com.jonnie.elearning.user.UserUpdateRequest;
+import com.jonnie.elearning.user.*;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +28,16 @@ public class UserMapper {
                 .role(ROLE.STUDENT)
                 .build();
     }
-
+    public List<UserProfileResponse> toUserProfileResponse(List<User> users){
+        return users.stream()
+                .map(user -> UserProfileResponse.builder()
+                        .id(user.getId())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .profileImageUrl(user.getProfilePicUrl())
+                        .build()
+                ).toList();
+    }
     public User toUpdate(User existingUser, UserUpdateRequest userUpdateRequest, String profileImageUrl) {
         if (userUpdateRequest.firstName() != null) {
             existingUser.setFirstName(userUpdateRequest.firstName());

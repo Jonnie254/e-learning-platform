@@ -53,6 +53,7 @@
                                     "/api/v1/courses/all-courses",
                                     "/api/v1/courses/{course-id}",
                                     "/api/v1/users/authenticate",
+                                    "/api/v1/users/users-profile-details",
                                     "/api/v1/courses/instructor/{courseId}",
                                     "/api/v1/courses/all-categories",
                                     "/api/v1/enrollments/get-course-feedback/{courseId}",

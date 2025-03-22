@@ -337,9 +337,13 @@ public class UserService {
                 .getFullName();
     }
 
-
     public Boolean hasRequestedToBeInstructor(String userId) {
         return roleRequestRepository.existsByUserIdAndStatus(userId, RoleRequestStatus.PENDING);
+    }
+
+    public List<UserProfileResponse> findUsers(List<String> usersIds){
+        List<User> users = userRepository.findAllById(usersIds);
+        return userMapper.toUserProfileResponse(users);
     }
 }
 

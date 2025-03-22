@@ -1,5 +1,6 @@
 package com.jonnie.elearning.feedback;
 
+import com.jonnie.elearning.openfeign.user.UserProfileResponse;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,14 @@ public class FeedbackMapper {
                 .build();
     }
 
-    public FeedBackResponse toFeedBackResponse(Feedback feedback) {
+    public FeedBackResponse toFeedBackResponse(Feedback feedback, UserProfileResponse userProfileResponse) {
         return FeedBackResponse.builder()
-                .comment(feedback.getComment())
-                .courseId(feedback.getCourseId())
                 .feedbackId(feedback.getFeedbackId())
+                .courseId(feedback.getCourseId())
+                .comment(feedback.getComment())
                 .rating(feedback.getRating())
-                .userId(feedback.getUserId())
+                .userProfileResponse(userProfileResponse)
+                .createdAt(feedback.getCreatedAt())
                 .build();
     }
 }

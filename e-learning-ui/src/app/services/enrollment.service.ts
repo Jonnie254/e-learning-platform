@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from './auth-service.service';
-import {Cart, EnrollmentResponse, FeedbackRequest, RatingResponse, SectionStatus} from '../interfaces/responses';
+import {
+  Cart,
+  EnrollmentResponse,
+  FeedbackRequest,
+  FeedbackResponse, PageResponse,
+  RatingResponse,
+  SectionStatus
+} from '../interfaces/responses';
 import {BehaviorSubject, of, take} from 'rxjs';
 import {catchError, switchMap, tap} from 'rxjs/operators';
 
@@ -133,6 +140,16 @@ export class EnrollmentService {
     const token = this.authService.getToken();
     return this.http.post(`${this.baseUrl}/create-feedback/${courseId}`, feedbackRequest, {
       headers: { Authorization: `Bearer ${token}` }
+    });
+  }
+
+  //method to get the course feedback
+  getCourseFeedback(courseId: string, page: { size: number; page: number }) {
+    return this.http.get<PageResponse<FeedbackResponse>>(`${this.baseUrl}/get-course-feedback/${courseId}`, {
+      params: {
+        page: page.page.toString(),
+        size: page.size.toString()
+      }
     });
   }
 
