@@ -1,48 +1,62 @@
 <app-navbar></app-navbar>
-  <!---Banner -->
-<div class="bg-gray-200">
-  <div class="container">
-    <div class="container mx-auto px-4 py-4 space-y-8 flex items-center gap-4 justify-center">
-      <div class="flex flex-col items-start justify-center space-y-4">
-        <h1 class="text-4xl text-start font-semibold">Where you get to learn <br> hands on skill </h1>
-        <p class="text-gray-500 text-start">Explore our wide range of courses</p>
-      </div>
-      <div class="object-cover object-center w-1/2 h-96">
-        <img src="Happy-country-1200X300--2.avif" alt="Banner" class="w-full h-full object-cover object-center rounded-lg">
+<div class="bg-gray-100 dark:bg-gray-900 py-16">
+  <div class="container mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12">
+
+    <!-- Left Content -->
+    <div class="flex flex-col space-y-6 text-center lg:text-left">
+      <h1 class="text-5xl font-bold text-gray-900 dark:text-white leading-tight">
+        Learn Hands-On Skills with Top Courses
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray-300">
+        Explore a wide range of high-quality courses to boost your skills.
+      </p>
+      <button class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg shadow-md  transition">
+        Explore Courses
+      </button>
+    </div>
+
+    <!-- Right Image -->
+    <div class="w-full lg:w-1/2">
+      <img src="Happy-country-1200X300--2.avif" alt="Banner"
+           class="w-full h-96 object-cover rounded-lg shadow-md">
+    </div>
+  </div>
+</div>
+
+<!-- Category Dropdown + Title -->
+<div class="container mx-auto flex flex-wrap items-center justify-between py-8 px-4">
+  <h2 class="text-3xl font-semibold text-white ">Explore Our Top Courses</h2>
+
+  <!-- Category Dropdown -->
+  <div class="relative">
+    <div (click)="toggleDropdown()"
+         class="border border-gray-600  px-4 py-2 rounded-lg cursor-pointer font-bold flex items-center gap-2 w-[220px] bg-white hover:bg-gray-100">
+      Categories <i class="pi pi-chevron-down"></i>
+    </div>
+    <div *ngIf="isDropdownOpen" class="absolute top-12 w-[220px] bg-white border border-gray-400  rounded-lg shadow-md p-2 transition-opacity duration-300">
+      <div *ngFor="let category of categoryResponse.content"
+           class="cursor-pointer hover:bg-gray-200 px-4 py-2 rounded transition">
+        {{ category.categoryName }}
       </div>
     </div>
   </div>
-  <div class="container flex items-center justify-between gap-4">
-    <div class="text-start text-2xl font-semibold p-4 font-serif">
-      Some courses that you can explore
-    </div>
-    <div class="relative">
-      <div (click)="toggleDropdown()"
-           class="border border-gray-600 px-2 py-2 rounded-lg ml-auto cursor-pointer font-bold
-            flex items-center justify-between w-[200px]">
-        Categories
-        <i class="pi pi-chevron-down"></i>
-      </div>
-      <!-- Dropdown Menu -->
-      <div *ngIf="isDropdownOpen" class="absolute top-[50px] w-[200px] bg-white border border-gray-500 rounded shadow-md p-2">
-        <div
-          *ngFor="let category of categoryResponse.content"
-          class="cursor-pointer hover:bg-gray-300 px-4 py-2">{{category.categoryName}}</div>
-      </div>
-    </div>
+</div>
+
+<!-- Course Cards -->
+<div class="container mx-auto px-6 lg:px-12">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 py-8">
+    <app-courses-card
+      *ngFor="let course of coursesResponse.content"
+      [course]="course"
+      (courseClick)="onCourseClick($event)"
+      class="hover:shadow-xl transition-shadow duration-300"
+    ></app-courses-card>
   </div>
-  <div class="flex flex-col items-center justify-center gap-4">
-    <div class="grid grid-cols-1 gap-6 px-4 py-8 max-w-screen-xl sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      <app-courses-card
-        [course]="course"
-        *ngFor="let course of coursesResponse.content"
-        (courseClick)="onCourseClick($event)"
-      ></app-courses-card>
-    </div>
-    <app-pagination *ngIf="coursesResponse.content && coursesResponse.content.length > 0"
-      [currentPage]="page"
-      [totalPages]="totalPages()"
-      (pageChange)="onPageChange($event)"
-    ></app-pagination>
-  </div>
+
+  <!-- Pagination -->
+  <app-pagination *ngIf="coursesResponse.content?.length"
+                  [currentPage]="page"
+                  [totalPages]="totalPages()"
+                  (pageChange)="onPageChange($event)">
+  </app-pagination>
 </div>

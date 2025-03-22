@@ -17,7 +17,6 @@ import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 export class CourseCommentSectionComponent {
   @Input() comments:FeedbackResponse[] = [];
 
-  // Moved from parent component
   getStars(rating: number): number[] {
     const fullStars = Math.floor(rating);
     const emptyStars = 5 - fullStars;

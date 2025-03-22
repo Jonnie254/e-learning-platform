@@ -1,53 +1,36 @@
+<!-- Navbar with Toggle Button -->
 <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-  <div class="px-6 py-3 lg:px-5 lg:pl-3">
-    <div class="flex items-center justify-between">
-      <!-- Left: Logo -->
-      <div class="flex items-center justify-center rtl:justify-end">
-        <button class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline">
-        </button>
-        <a class="flex gap-2 ms-2 md:me-24" routerLink="dashboard">
-          <img src="skillverse.png" alt="Skillverse" class="w-10 h-10">
-          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-gray-700 dark:text-gray-200 cursor-pointer">
-            SkillVerse
-          </span>
-        </a>
+  <div class="px-6 py-3 lg:px-5 lg:pl-3 flex justify-between items-center">
+    <button (click)="toggleSidebar()"
+            class="p-2 bg-gray-800 text-white rounded-md focus:outline-none sm:hidden">
+      <i class="pi pi-bars text-xl"></i>
+    </button>
+    <a class="flex gap-2 ms-2 md:me-24" routerLink="dashboard">
+      <img src="skillverse.png" alt="Skillverse" class="w-10 h-10">
+      <span class="text-xl font-semibold text-gray-700 dark:text-gray-200">SkillVerse</span>
+    </a>
+    <div class="relative flex items-center">
+      <div class="flex items-center cursor-pointer" (click)="toggleDropdown()">
+        <img [src]="user.profilePicUrl ? user.profilePicUrl : 'profilepic.svg'"
+             class="w-12 h-12 rounded-full sm:w-10 sm:h-10" alt="Profile">
+        <i class="pi pi-chevron-down w-5 h-5 text-gray-500 ml-2"></i>
       </div>
-      <div class="flex items-center relative">
-        <div class="flex items-center ms-3">
-          <div class="flex items-center" (click)="toggleDropdown()">
-            <button
-                    class="flex text-sm items-center bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 hover:ring-2 hover:ring-gray-300 dark:hover:ring-gray-500">
-              <span class="sr-only">User menu</span>
-              <img [src]="user.profilePicUrl ? user.profilePicUrl : 'profilepic.svg'" class="w-12 h-12 rounded-full sm:w-10 sm:h-10" alt="Profile picture">
-            </button>
-            <i class="pi pi-chevron-down w-5 h-5 text-gray-500 dark:text-gray-400 ml-2"></i>
-          </div>
-          <div *ngIf="isDropdownOpen" class="absolute right-0 top-10 z-50 my-4 w-48 text-base bg-white dark:bg-gray-700 divide-y divide-gray-100 rounded-lg shadow-lg">
-            <div class="px-4 py-2">
-              <p class="text-md text-gray-900 dark:text-gray-300">{{user.email}}</p>
-            </div>
-            <ul class="py-1">
-              <li>
-                <a class="block px-4 py-2 text-sm text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer" routerLink="profile">
-                  Profile
-                </a>
-              </li>
-              <li>
-                <a class="block px-4 py-2 text-sm text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer" (click)="logout()">
-                  Log out
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div *ngIf="isDropdownOpen"
+           class="absolute right-0 top-14 z-50 w-48 bg-white dark:bg-gray-700 shadow-lg rounded-lg">
+        <p class="px-4 py-2 text-md text-gray-900 dark:text-gray-300">{{ user.email }}</p>
+        <ul class="py-1">
+          <li><a class="block px-4 py-2 text-sm text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer" routerLink="profile">Profile</a></li>
+          <li><a class="block px-4 py-2 text-sm text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer" (click)="logout()">Log out</a></li>
+        </ul>
       </div>
     </div>
   </div>
 </nav>
+
 <aside id="logo-sidebar"
-       class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full
-       bg-blue-900 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
-       aria-label="Sidebar">
+       [ngClass]="{'-translate-x-full': isSidebarCollapsed, 'translate-x-0': !isSidebarCollapsed}"
+       class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-blue-900 border-r border-gray-200
+       dark:bg-gray-800 dark:border-gray-700 sm:translate-x-0">
   <div class="h-full px-3 pb-4 overflow-y-auto bg-blue-900 dark:bg-gray-800">
     <ul class="space-y-2 font-medium">
       <li *ngIf="(userRole$ | async) === 'ADMIN' || (userRole$ | async) === 'INSTRUCTOR'">
