@@ -73,7 +73,6 @@ export class CourseDetailsComponent {
   getCourses() {
     this.courseService.getFilteredCourses({size: this.size, page: this.page}, this.size)
       .subscribe((response) => {
-        console.log("The course data", response)
         this.coursesResponse.content = response.content?.filter(course => course.courseId !== this.courseId);
         this.coursesResponse.totalPages = response.totalPages;
       });
@@ -124,11 +123,9 @@ export class CourseDetailsComponent {
     this.enrollmentService.getCourseFeedback(this.courseId, {size: this.size, page: this.page})
       .subscribe({
         next: (response) => {
-          console.log("The course feedback", response);
           this.comments = response.content || [];
         },
         error: (error) => {
-          console.error("Error fetching course feedback:", error);
           this.comments = [];
         }
       });

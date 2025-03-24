@@ -3,10 +3,13 @@ package com.jonnie.elearning.enrollment;
 
 import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.enrollment.responses.CourseEnrollmentResponse;
+import com.jonnie.elearning.enrollment.responses.CourseRatingResponse;
 import com.jonnie.elearning.enrollment.responses.EnrollmentStatsResponse;
 import com.jonnie.elearning.feedback.Feedback;
 import com.jonnie.elearning.openfeign.course.CourseClient;
 import com.jonnie.elearning.openfeign.course.CourseEnrollResponse;
+import com.jonnie.elearning.openfeign.course.CourseResponse;
+import com.jonnie.elearning.openfeign.course.CourseResponseRated;
 import com.jonnie.elearning.repositories.EnrollmentRepository;
 import com.jonnie.elearning.repositories.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
@@ -118,4 +121,48 @@ public class EnrollmentService {
         );
     }
 
+    public PageResponse<CourseResponseRated> getCoursesByRating(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Feedback> coursesFeedback = feedbackRepository.findAllSortedByRating(pageable);
+        Map<String, Double> ratingsMap = coursesFeedback.stream()
+                .collect(Collectors.groupingBy(
+                        Feedback::getCourseId,
+                        Collectors.averagingDouble(Feedback::getRating)
+                ));
+
+        List<String> courseIds = new ArrayList<>(ratingsMap.keySet());
+        List<CourseResponseRated> courses = courseClient.getCourseRecommendations(courseIds).stream()
+                .map(course -> new CourseResponseRated(
+                        course.getCourseId(),
+                        course.getCourseName(),
+                        course.getPrice(),
+                        course.getInstructorId(),
+                        course.getInstructorName(),
+                        course.getCourseImageUrl(),
+                        ratingsMap.getOrDefault(course.getCourseId(), 0.0)
+                ))
+                .toList();
+        return new PageResponse<>(
+                courses,
+                coursesFeedback.getNumber(),
+                coursesFeedback.getSize(),
+                coursesFeedback.getTotalElements(),
+                coursesFeedback.getTotalPages(),
+                coursesFeedback.isLast(),
+                coursesFeedback.isFirst()
+        );
+    }
+
+
+    public List<CourseRatingResponse> getCoursesRating(List<String> courseIds) {
+        List<Feedback> feedbacks = feedbackRepository.findByCourseIdIn(courseIds);
+        Map<String, Double> ratingsMap = feedbacks.stream()
+                .collect(Collectors.groupingBy(
+                        Feedback::getCourseId,
+                        Collectors.averagingDouble(Feedback::getRating)
+                ));
+        return courseIds.stream()
+                .map(courseId -> new CourseRatingResponse(courseId, ratingsMap.getOrDefault(courseId, 0.0)))
+                .toList();
+    }
 }

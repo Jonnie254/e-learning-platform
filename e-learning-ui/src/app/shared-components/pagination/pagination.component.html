@@ -1,18 +1,14 @@
 <nav aria-label="Page Navigation" class="flex justify-center my-4">
   <ul class="flex items-center space-x-2">
-    <!-- First Page -->
     <li>
       <button
         title="First Page"
         (click)="goToFirstPage()"
          [class.disabled]="currentPage === 0"
-        class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50"
-      >
+        class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50">
         <i class="pi pi-angle-double-left"></i>
       </button>
     </li>
-
-    <!-- Previous Page -->
     <li>
       <button
         title="Previous Page"
@@ -23,34 +19,26 @@
         <i class="pi pi-angle-left"></i>
       </button>
     </li>
-
-    <!-- Page Indicator -->
     <li>
       <span class="px-4 py-2 text-gray-700 bg-gray-100 rounded-md">
         Page {{ currentPage + 1 }} of {{ totalPages }}
       </span>
     </li>
-
-    <!-- Next Page -->
     <li>
       <button
         title="Next Page"
         (click)="goToNextPage()"
         [class.disabled]="currentPage === totalPages - 1"
-        class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50"
-      >
+        class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50">
         <i class="pi pi-angle-right"></i>
       </button>
     </li>
-
-    <!-- Last Page -->
     <li>
       <button
         title="Last Page"
         (click)="goToLastPage()"
         [class.disabled]="currentPage === totalPages - 1"
-        class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50"
-      >
+        class="p-2 rounded-md border bg-white text-gray-700 hover:bg-gray-200 disabled:opacity-50">
         <i class="pi pi-angle-double-right"></i>
       </button>
     </li>

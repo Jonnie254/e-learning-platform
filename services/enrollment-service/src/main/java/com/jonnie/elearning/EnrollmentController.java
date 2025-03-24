@@ -8,9 +8,11 @@ import com.jonnie.elearning.common.PageResponse;
 import com.jonnie.elearning.enrollment.EnrollmentResponse;
 import com.jonnie.elearning.enrollment.EnrollmentService;
 import com.jonnie.elearning.enrollment.responses.CourseEnrollmentResponse;
+import com.jonnie.elearning.enrollment.responses.CourseRatingResponse;
 import com.jonnie.elearning.enrollment.responses.EnrollmentStatsResponse;
 import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.feedback.*;
+import com.jonnie.elearning.openfeign.course.CourseResponseRated;
 import com.jonnie.elearning.progress.ProgressResponse;
 import com.jonnie.elearning.progress.ProgressService;
 import com.jonnie.elearning.progress.SectionStatusResponse;
@@ -39,8 +41,6 @@ public class EnrollmentController {
     private final ProgressService progressService;
     private final EnrollmentService enrollmentService;
     private final FeedbackService feedbackService;
-
-
     private void validateUser(String userId, String userRole, ROLE requiredRole) {
         if (userId == null || userId.isEmpty() || userRole == null || userRole.isEmpty()) {
             throw new ResponseStatusException(BAD_REQUEST, "User ID and role are required");
@@ -177,8 +177,6 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollmentService.getEnrolledCoursesDetails(userId, page, size));
     }
 
-
-
     //check whether the course has been rated by the user
     @GetMapping("/check-course-rating/{courseId}")
     public ResponseEntity<RatingResponse> checkCourseRating(
@@ -250,6 +248,7 @@ public class EnrollmentController {
         validateUser(userId, userRole, ROLE.INSTRUCTOR);
         return ResponseEntity.ok(enrollmentService.getTotalInstructorEnrollments(userId));
     }
+
     //method to get the total number of enrollments for the admin
     @GetMapping("/total-admin-enrollments")
     public ResponseEntity <EnrollmentStatsResponse> getTotalAdminEnrollments(
@@ -314,6 +313,23 @@ public class EnrollmentController {
             @RequestParam(value = "size", defaultValue = "10") int size
     ) {
         return ResponseEntity.ok(feedbackService.getCourseFeedbacks(courseId, page, size));
+    }
+
+    //method to get the courses for recommendation based on the ratings for users not logged in
+    @GetMapping("/get-courses-by-rating")
+    public ResponseEntity<PageResponse<CourseResponseRated>> getCoursesByRating(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(enrollmentService.getCoursesByRating(page, size));
+    }
+
+    // get the course rating for the user (recommended courses)
+    @PostMapping("/get-courses-rating")
+    public ResponseEntity<List<CourseRatingResponse>> getCoursesRating(
+            @RequestBody List<String> courseIds
+    ) {
+        return ResponseEntity.ok(enrollmentService.getCoursesRating(courseIds));
     }
 
 }

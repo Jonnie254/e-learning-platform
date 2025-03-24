@@ -227,6 +227,33 @@ public class CourseMapper {
                         .build())
                 .toList();
     }
+
+    public List<CourseRecommendationResponse> toCourseRecommendationMapper(List<Course> course) {
+        return  course.stream()
+                .map(c -> CourseRecommendationResponse.builder()
+                        .courseId(c.getCourseId())
+                        .courseName(c.getCourseName())
+                        .price(c.getPrice())
+                        .instructorId(c.getInstructorId())
+                        .instructorName(c.getInstructorName())
+                        .courseImageUrl(c.getCourseUrlImage())
+                        .build())
+                .toList();
+    }
+    public List<CourseRecommendationResponse> toCourseRecommendationRatingMapper(List<Course> courses) {
+        return courses.stream()
+                .map(c -> CourseRecommendationResponse.builder()
+                        .courseId(c.getCourseId())
+                        .courseName(c.getCourseName())
+                        .price(c.getPrice())
+                        .instructorId(c.getInstructorId())
+                        .instructorName(c.getInstructorName())
+                        .courseImageUrl(c.getCourseUrlImage())
+                        .rating(0.0)
+                        .build())
+                .toList();
+    }
+
 }
 
 

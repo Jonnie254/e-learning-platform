@@ -288,8 +288,12 @@ public class CourseService {
         return course.getInstructorId();
     }
 
-    public List<CourseChatResponse> getCoursesInfo(List<String> courseIds) {
+    public List<CourseChatResponse> getCoursesChatInfo(List<String> courseIds) {
         List<Course> courses = courseRepository.findAllById(courseIds);
         return courseMapper.toCourseChatResponse(courses);
+    }
+    public List<CourseRecommendationResponse> getUsersCourseRecommendationInfo (List<String> courseIds) {
+        List<Course> courses = courseRepository.findAllById(courseIds);
+        return courseMapper.toCourseRecommendationMapper(courses);
     }
 }

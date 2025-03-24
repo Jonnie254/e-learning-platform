@@ -23,4 +23,7 @@ public interface CourseClient {
 
     @PostMapping("/courses-by-ids")
     List<CourseEnrollResponse> getCoursesByIds(List<String> courseIds);
+
+    @PostMapping("/courses-recommendations-for-users")
+    List<CourseRecommendationResponse> getCourseRecommendations(List<String> courseIds);
 }

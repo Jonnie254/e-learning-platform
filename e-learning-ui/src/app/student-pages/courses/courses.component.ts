@@ -3,7 +3,13 @@ import {NavbarComponent} from '../../shared-components/navbar/navbar.component';
 import {NgForOf, NgIf} from '@angular/common';
 import {CoursesCardComponent} from '../../courses-pages/courses-card/courses-card.component';
 import {PaginationComponent} from '../../shared-components/pagination/pagination.component';
-import {cartItem, CategoryResponse, CourseResponse, PageResponse} from '../../interfaces/responses';
+import {
+  cartItem,
+  CategoryResponse,
+  CourseResponse,
+  CourseResponseRated,
+  PageResponse
+} from '../../interfaces/responses';
 import {CoursesService} from '../../services/courses-service.service';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -27,7 +33,8 @@ export class CoursesComponent {
   size: number = 8;
   coursesResponse: PageResponse<CourseResponse> = {};
   categoryResponse: PageResponse<CategoryResponse> = {} as PageResponse<CategoryResponse>;
-  isDropdownOpen = false;
+  ratedCoursesResponse: PageResponse<CourseResponseRated> = {} as PageResponse<CourseResponseRated>;
+  isDropdownOpen: string | null = null;
   cartItems: CourseResponse[] = [];
   cartSubcription: Subscription = new Subscription();
 
@@ -43,10 +50,11 @@ export class CoursesComponent {
     });
     this.getCourses();
     this.getCategories();
+    this.getTopRatedCourses();
   }
 
-
   getCategories() {
+    if (this.categoryResponse.content?.length) return;
     this.courseService.getCategories({size: this.size, page: this.page})
       .subscribe({
         next: (response) => {
@@ -65,12 +73,21 @@ export class CoursesComponent {
       });
   }
 
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
+  getTopRatedCourses() {
+    this.courseService.getTopRatedCourses({size: this.size, page: this.page})
+      .subscribe({
+        next: (response) => {
+          this.ratedCoursesResponse = response;
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
   }
 
-  getStars() {
-    // Implement logic for getting stars (if needed)
+
+  toggleDropdown(menu: string) {
+    this.isDropdownOpen = this.isDropdownOpen === menu ? null : menu;
   }
 
   totalPages() {
@@ -80,6 +97,15 @@ export class CoursesComponent {
   onPageChange(newPage: number) {
     this.page = newPage;
     this.getCourses();
+  }
+
+  totalRatedCourse() {
+    return this.ratedCoursesResponse.totalPages as number;
+  }
+
+  onTopRatedPageChange(ratedPage: number) {
+    this.page = ratedPage;
+    this.getTopRatedCourses();
   }
 
   onCourseClick(courseId: string) {
@@ -98,4 +124,5 @@ export class CoursesComponent {
       };
     });
   }
+
 }

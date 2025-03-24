@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {
   CategoryResponse,
   CourseDetailsResponse,
-  CourseResponse,
+  CourseResponse, CourseResponseRated,
   CourseSection, InstructorCourseSectionResponse, InstructorCoursesResponse, InstructorFullCourseDetailsResponse,
   PageResponse, TagResponse
 } from '../interfaces/responses';
@@ -16,6 +16,7 @@ import {AuthService} from './auth-service.service';
 })
 export class CoursesService {
   private baseUrl: string = 'http://localhost:8222/api/v1/courses';
+  private enrollmentUrl: string = 'http://localhost:8222/api/v1/enrollments';
 
   constructor(
     private httpClient: HttpClient,
@@ -31,6 +32,15 @@ export class CoursesService {
         size: page.size.toString()
       }
     });
+  }
+  // method to get the top rated courses
+  getTopRatedCourses(page: { size: number; page: number }) {
+    return this.httpClient.get<PageResponse<CourseResponseRated>>(`${this.enrollmentUrl}/get-courses-by-rating`, {
+      params: {
+        page: page.page.toString(),
+        size: page.size.toString()
+      }
+    })
   }
   // method to get a course by its id
   getCourseById(courseId: string) {

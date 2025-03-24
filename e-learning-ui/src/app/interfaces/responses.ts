@@ -17,6 +17,7 @@ export interface CourseResponse {
   description?: string,
   whatYouWillLearn?: string[],
   isInCart?: boolean;
+  rating?: number;
 }
 
 export interface CourseDetailsResponse {
@@ -171,5 +172,14 @@ export interface UserProfileResponse{
   firstName:string;
   lastName: string;
   profileImageUrl: string;
+}
 
+export interface CourseResponseRated{
+  courseId: string;
+  courseName:string;
+  price: number;
+  instructorId: string;
+  instructorName: string;
+  courseImageUrl: string;
+  rating: number;
 }

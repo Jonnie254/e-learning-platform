@@ -5,7 +5,7 @@
 >
   <a>
     <img
-      src="{{course.courseUrlImage}}"
+      [src]="courseImage"
       class="rounded-t-lg w-full max-h-48 object-cover object-center border-b-4 border-gray-300"
       alt="Course Image"
     />
@@ -21,12 +21,15 @@
       {{course.price | currency:'USD' }}
     </p>
     <div class="flex items-center space-x-1 mb-3 text-yellow-500">
-      <span>★</span>
-      <span>★</span>
-      <span>★</span>
-      <span>★</span>
-      <span class="text-gray-400">★</span>
-    </div>
+    <ng-container *ngFor="let star of getStars(course.rating)">
+      <span *ngIf="star === 'full'"><i class="pi pi-star-fill text-yellow-400"></i></span>
+      <span *ngIf="star === 'half'"><i class="pi pi-star-half text-yellow-400"></i></span>
+      <span *ngIf="star === 'empty'"><i class="pi pi-star text-gray-400"></i></span>
+    </ng-container>
+    <span class="text-sm text-gray-300 ml-2">
+    ({{ course.rating ?? "0" }})
+  </span>
+   </div>
     <button
       (click)="onExplore()"
       class="bg-gray-600 w-full hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"

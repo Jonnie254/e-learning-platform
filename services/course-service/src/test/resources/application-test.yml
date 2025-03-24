@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+
+application:
+  config:
+    authentication-url: http://localhost:8222/api/v1/users
+    enrollment-url: http://localhost:8222/api/v1/enrollments
+
+  aws:
+    access-key: test-access-key
+    secret-key: test-secret-key
+    region: test-region
+    bucket-name: test-bucket
+
+  cloudinary:
+    cloud-name: test-cloud-name
+    api-key: test-api-key
+    api-secret: test-api-secret
+    folder: test-folder

@@ -323,11 +323,12 @@ public class CourseController {
         return ResponseEntity.ok(courseService.findCoursesByIds(courseIds));
     }
 
+
     //get the course chat room info
     @PostMapping("/course-chat-info")
     public ResponseEntity<List<CourseChatResponse>> getCourseChatInfo(
             @RequestBody List<String> courseIds) {
-        List<CourseChatResponse> courseResponses = courseService.getCoursesInfo(courseIds);
+        List<CourseChatResponse> courseResponses = courseService.getCoursesChatInfo(courseIds);
         return ResponseEntity.ok(courseResponses);
     }
 
@@ -369,10 +370,17 @@ public class CourseController {
         }
         return ResponseEntity.ok(courseService.getAdminTotalCourses());
     }
+    //get the recommendation for the user not logged in
+    @PostMapping("/courses-recommendations-for-users")
+    public ResponseEntity<List<CourseRecommendationResponse>> getCourseRecommendations(
+            @RequestBody List<String> courseIds
+    ){
+        return ResponseEntity.ok(courseService.getUsersCourseRecommendationInfo(courseIds));
+    }
 
     //get the recommendations for the user
     @GetMapping("/recommend-user-courses")
-    public ResponseEntity<PageResponse<CourseResponse>> getRecommendations(
+    public ResponseEntity<PageResponse<CourseRecommendationResponse>> getRecommendations(
             @RequestHeader(value = "X-User-Id", required = false) String userId,
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size

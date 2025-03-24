@@ -87,7 +87,7 @@ services:
       - microservices-net
     restart: unless-stopped
 
-  # kafka
+  # kafka image
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: ms_kafka
@@ -105,7 +105,15 @@ services:
     networks:
       - microservices-net
     restart: unless-stopped
-
+  # recommendation model
+  recommendation:
+    container_name: ms_recommendation
+    image: recommendation-model
+    ports:
+      - "5000:5000"
+    networks:
+      - microservices-net
+    restart: unless-stopped
 networks:
   microservices-net:
     driver: bridge
