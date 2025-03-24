@@ -116,8 +116,6 @@ export class AuthService {
   }
 
 
-
-
   // Redirect based on the role
   private redirectBasedOnRole(role: string) {
     let redirectUrl = '';

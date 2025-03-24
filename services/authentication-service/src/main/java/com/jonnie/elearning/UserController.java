@@ -87,6 +87,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
     //get user details via the id
     @GetMapping("/user/{user-id}")
     public ResponseEntity<UserResponse> getUserDetailsById(

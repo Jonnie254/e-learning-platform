@@ -46,7 +46,6 @@
         class="hover:shadow-xl transition-shadow duration-300"
       ></app-courses-card>
     </div>
-
     <app-pagination
       class="mt-2 flex justify-center"
       *ngIf="coursesResponse.content?.length"
@@ -89,6 +88,42 @@
       [currentPage]="page"
       [totalPages]="totalRatedCourse()"
       (pageChange)="onTopRatedPageChange($event)">
+    </app-pagination>
+  </div>
+  <div *ngIf="showRecommendedCourse" class="space-y-8">
+    <div class="flex flex-wrap items-center justify-between">
+      <h2 class="text-3xl font-semibold text-gray-900 tracking-wide">
+        Explore Courses by Different Instructors
+      </h2>
+      <div class="relative">
+        <div (click)="toggleDropdown('instructors')"
+             class="border border-gray-400 px-4 py-2 rounded-lg cursor-pointer font-bold flex items-center gap-2 w-[220px] bg-white hover:bg-gray-100">
+          Categories <i class="pi pi-chevron-down"></i>
+        </div>
+        <div *ngIf="isDropdownOpen === 'instructors'"
+             class="absolute top-12 w-[220px] bg-white border border-gray-300 rounded-lg shadow-md p-2 transition-all transform scale-95 origin-top">
+          <div *ngFor="let category of categoryResponse.content"
+               class="cursor-pointer hover:bg-gray-200 px-4 py-2 rounded transition font-medium text-gray-700">
+            {{ category.categoryName }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showRecommendedCourse"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <app-courses-card
+        *ngFor="let course of courseRecommendationResponse.content"
+        [course]="course"
+        (courseClick)="onCourseClick($event)"
+        class="hover:shadow-xl transition-shadow duration-300"
+      ></app-courses-card>
+    </div>
+    <app-pagination
+      class="mt-2 flex justify-center"
+      *ngIf="courseRecommendationResponse.content?.length"
+      [currentPage]="page"
+      [totalPages]="totalRecomendedPages()"
+      (pageChange)="newRecommendedCourses($event)">
     </app-pagination>
   </div>
 </div>

@@ -5,7 +5,7 @@ import {CoursesCardComponent} from '../../courses-pages/courses-card/courses-car
 import {PaginationComponent} from '../../shared-components/pagination/pagination.component';
 import {
   cartItem,
-  CategoryResponse,
+  CategoryResponse, CourseRecommendationResponse,
   CourseResponse,
   CourseResponseRated,
   PageResponse
@@ -14,6 +14,7 @@ import {CoursesService} from '../../services/courses-service.service';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {EnrollmentService} from '../../services/enrollment.service';
+import {AuthService} from '../../services/auth-service.service';
 
 @Component({
   selector: 'app-courses',
@@ -31,9 +32,11 @@ import {EnrollmentService} from '../../services/enrollment.service';
 export class CoursesComponent {
   page: number = 0;
   size: number = 8;
+  showRecommendedCourse: boolean = false;
   coursesResponse: PageResponse<CourseResponse> = {};
   categoryResponse: PageResponse<CategoryResponse> = {} as PageResponse<CategoryResponse>;
   ratedCoursesResponse: PageResponse<CourseResponseRated> = {} as PageResponse<CourseResponseRated>;
+  courseRecommendationResponse: PageResponse<CourseRecommendationResponse> = {} as PageResponse<CourseRecommendationResponse>;
   isDropdownOpen: string | null = null;
   cartItems: CourseResponse[] = [];
   cartSubcription: Subscription = new Subscription();
@@ -41,6 +44,7 @@ export class CoursesComponent {
   constructor(
     private courseService: CoursesService,
     private enrollmentService: EnrollmentService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.getCourses();
@@ -51,7 +55,15 @@ export class CoursesComponent {
     this.getCourses();
     this.getCategories();
     this.getTopRatedCourses();
+    this.checkLoginStatus();
   }
+
+  checkLoginStatus(){
+    if(this.authService.isAuthenticatedSubject) return;
+    this.showRecommendedCourse = true;
+    this.getRecommendedCourses();
+  }
+
 
   getCategories() {
     if (this.categoryResponse.content?.length) return;
@@ -85,6 +97,15 @@ export class CoursesComponent {
       })
   }
 
+   getRecommendedCourses(){
+    this.courseService.getRecommendedCourses({size: this.size, page: this.page})
+      ?.subscribe({
+        next: (response)=>{
+          this.courseRecommendationResponse = response;
+        }
+      })
+
+   }
 
   toggleDropdown(menu: string) {
     this.isDropdownOpen = this.isDropdownOpen === menu ? null : menu;
@@ -92,6 +113,10 @@ export class CoursesComponent {
 
   totalPages() {
     return this.coursesResponse.totalPages as number;
+  }
+
+  totalRecomendedPages() {
+    return this.courseRecommendationResponse.totalPages as number;
   }
 
   onPageChange(newPage: number) {
@@ -106,6 +131,12 @@ export class CoursesComponent {
   onTopRatedPageChange(ratedPage: number) {
     this.page = ratedPage;
     this.getTopRatedCourses();
+  }
+
+
+  newRecommendedCourses(newRecommendedPage: number) {
+    this.page = newRecommendedPage;
+    this.getRecommendedCourses();
   }
 
   onCourseClick(courseId: string) {
@@ -124,5 +155,7 @@ export class CoursesComponent {
       };
     });
   }
+
+
 
 }

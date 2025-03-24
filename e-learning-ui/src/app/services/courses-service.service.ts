@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {
   CategoryResponse,
-  CourseDetailsResponse,
+  CourseDetailsResponse, CourseRecommendationResponse,
   CourseResponse, CourseResponseRated,
   CourseSection, InstructorCourseSectionResponse, InstructorCoursesResponse, InstructorFullCourseDetailsResponse,
   PageResponse, TagResponse
@@ -33,6 +33,7 @@ export class CoursesService {
       }
     });
   }
+
   // method to get the top rated courses
   getTopRatedCourses(page: { size: number; page: number }) {
     return this.httpClient.get<PageResponse<CourseResponseRated>>(`${this.enrollmentUrl}/get-courses-by-rating`, {
@@ -42,6 +43,28 @@ export class CoursesService {
       }
     })
   }
+
+  //method to get the recommended courses
+  getRecommendedCourses(page: {size: number; page: number}){
+    if(this.authService.isAuthenticatedSubject) return;
+    const token = this.authService.getToken();
+    return this.httpClient.get<PageResponse<CourseRecommendationResponse>>(`${this.baseUrl}/recommend-user-courses`, {
+      params:{
+        page: page.page.toString(),
+        size: page.size.toString()
+      },
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
+
+
+
+
+
+
   // method to get a course by its id
   getCourseById(courseId: string) {
     return this.httpClient.get<CourseDetailsResponse>(`${this.baseUrl}/${courseId}`);
@@ -132,6 +155,7 @@ export class CoursesService {
       }
     });
   }
+
   //method to get full details for the course for the instructor
   getFullCourseDetails(courseId: string) {
     const token = this.authService.getToken();
@@ -150,6 +174,7 @@ export class CoursesService {
       }
     });
   }
+
   //method to get the course sections details for the instructor
   getAllSectionsDetailsForCourse(courseId: string, page: { size: number; page: number }) {
     const token = this.authService.getToken();
@@ -163,6 +188,7 @@ export class CoursesService {
       }
     });
   }
+
   //method to add a section
   addSection(courseId: string, formData: FormData) {
     const token = this.authService.getToken();
@@ -172,6 +198,7 @@ export class CoursesService {
       }
     });
   }
+
   //method to get the section details
   getSectionDetails(sectionId: string | null) {
     const token = this.authService.getToken();
@@ -182,6 +209,7 @@ export class CoursesService {
     });
 
   }
+
   //method to update the section
   updateSection(sectionId: string, formData: FormData) {
     const token = this.authService.getToken();

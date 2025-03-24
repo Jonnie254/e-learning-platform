@@ -183,3 +183,14 @@ export interface CourseResponseRated{
   courseImageUrl: string;
   rating: number;
 }
+
+
+export interface CourseRecommendationResponse{
+ courseId: string;
+  courseName: string;
+  price: string;
+  instructorId: string;
+  instructorName: string;
+  courseImageUrl: string;
+  rating: number;
+}

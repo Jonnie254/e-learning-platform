@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CourseResponse, CourseResponseRated} from '../../interfaces/responses';
+import {CourseRecommendationResponse, CourseResponse, CourseResponseRated} from '../../interfaces/responses';
 import {CurrencyPipe, CommonModule} from '@angular/common';
 
 @Component({
@@ -12,18 +12,18 @@ import {CurrencyPipe, CommonModule} from '@angular/common';
   styleUrl: './courses-card.component.scss'
 })
 export class CoursesCardComponent {
-  private _course!: CourseResponse | CourseResponseRated;
+  private _course!: CourseResponse | CourseResponseRated | CourseRecommendationResponse;
 
   @Output() courseClick = new EventEmitter<string>();
 
   @Input()
-  set course(value: CourseResponse | CourseResponseRated) {
+  set course(value: CourseResponse | CourseResponseRated | CourseRecommendationResponse ) {
     this._course = value;
   }
 
   @Input() isRatedCourse: boolean = false;
 
-  get course(): CourseResponse | CourseResponseRated {
+  get course(): CourseResponse | CourseResponseRated | CourseRecommendationResponse {
     return this._course;
   }
 
