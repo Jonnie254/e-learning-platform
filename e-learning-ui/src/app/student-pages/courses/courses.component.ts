@@ -59,7 +59,7 @@ export class CoursesComponent {
   }
 
   checkLoginStatus(){
-    if(this.authService.isAuthenticatedSubject) return;
+    if (!this.authService.isAuthenticatedSubject.value) return;
     this.showRecommendedCourse = true;
     this.getRecommendedCourses();
   }
@@ -97,15 +97,16 @@ export class CoursesComponent {
       })
   }
 
-   getRecommendedCourses(){
-    this.courseService.getRecommendedCourses({size: this.size, page: this.page})
-      ?.subscribe({
-        next: (response)=>{
-          this.courseRecommendationResponse = response;
-        }
-      })
-
-   }
+  getRecommendedCourses(){
+    this.courseService.getRecommendedCourses({size: this.size, page: this.page}).subscribe({
+      next: (response: PageResponse<CourseRecommendationResponse>) => {
+        this.courseRecommendationResponse = response;
+      },
+      error: (err: any) => {
+        console.log(err);
+    }
+    })
+  }
 
   toggleDropdown(menu: string) {
     this.isDropdownOpen = this.isDropdownOpen === menu ? null : menu;

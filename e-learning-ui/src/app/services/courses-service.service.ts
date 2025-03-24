@@ -8,7 +8,7 @@ import {
   PageResponse, TagResponse
 } from '../interfaces/responses';
 import {EnrollmentService} from './enrollment.service';
-import {map} from 'rxjs';
+import {EMPTY, map, of} from 'rxjs';
 import {AuthService} from './auth-service.service';
 
 @Injectable({
@@ -46,7 +46,7 @@ export class CoursesService {
 
   //method to get the recommended courses
   getRecommendedCourses(page: {size: number; page: number}){
-    if(this.authService.isAuthenticatedSubject) return;
+    if (!this.authService.isAuthenticatedSubject.value) return EMPTY;
     const token = this.authService.getToken();
     return this.httpClient.get<PageResponse<CourseRecommendationResponse>>(`${this.baseUrl}/recommend-user-courses`, {
       params:{
@@ -58,12 +58,6 @@ export class CoursesService {
       }
     })
   }
-
-
-
-
-
-
 
   // method to get a course by its id
   getCourseById(courseId: string) {
