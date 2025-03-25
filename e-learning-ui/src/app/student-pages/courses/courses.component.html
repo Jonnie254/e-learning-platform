@@ -93,14 +93,14 @@
   <div *ngIf="showRecommendedCourse" class="space-y-8">
     <div class="flex flex-wrap items-center justify-between">
       <h2 class="text-3xl font-semibold text-gray-900 tracking-wide">
-        Explore Courses by Different Instructors
+        Explore Recommended Courses
       </h2>
       <div class="relative">
-        <div (click)="toggleDropdown('instructors')"
+        <div (click)="toggleDropdown('recommended')"
              class="border border-gray-400 px-4 py-2 rounded-lg cursor-pointer font-bold flex items-center gap-2 w-[220px] bg-white hover:bg-gray-100">
           Categories <i class="pi pi-chevron-down"></i>
         </div>
-        <div *ngIf="isDropdownOpen === 'instructors'"
+        <div *ngIf="isDropdownOpen === 'recommended'"
              class="absolute top-12 w-[220px] bg-white border border-gray-300 rounded-lg shadow-md p-2 transition-all transform scale-95 origin-top">
           <div *ngFor="let category of categoryResponse.content"
                class="cursor-pointer hover:bg-gray-200 px-4 py-2 rounded transition font-medium text-gray-700">
