@@ -1,5 +1,6 @@
 package com.jonnie.elearning.course.responses;
 
+import com.jonnie.elearning.utils.SkillLevel;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -18,4 +19,5 @@ public class SingleCourseResponse {
     private BigDecimal price;
     private String description;
     private List<String> whatYouWillLearn;
+    private SkillLevel skillLevel;
 }

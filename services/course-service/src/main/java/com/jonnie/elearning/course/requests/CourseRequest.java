@@ -1,5 +1,6 @@
 package com.jonnie.elearning.course.requests;
 
+import com.jonnie.elearning.utils.SkillLevel;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -33,6 +34,8 @@ public record CourseRequest(
         @NotNull(message = "What you will learn is required")
         @NotEmpty(message = "What you will learn is required")
         @Size(min = 1, message = "At least one learning point is required")
-        List<String> whatYouWillLearn
+        List<String> whatYouWillLearn,
+        @NotNull(message = "Skill level is required")
+        SkillLevel courseSkillLevel
 ) {
 }

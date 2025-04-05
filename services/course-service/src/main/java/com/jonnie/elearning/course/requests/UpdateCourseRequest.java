@@ -1,5 +1,7 @@
 package com.jonnie.elearning.course.requests;
 
+import com.jonnie.elearning.utils.SkillLevel;
+
 import java.util.List;
 
 public record UpdateCourseRequest(
@@ -9,6 +11,7 @@ public record UpdateCourseRequest(
         String categoryId,
         String price,
         List<String> tagIds,
-        List<String> whatYouWillLearn
+        List<String> whatYouWillLearn,
+        SkillLevel courseSkillLevel
 ) {
 }

@@ -28,15 +28,7 @@ import {CourseCommentSectionComponent } from '../../shared-components/course-com
 export class CourseDetailsComponent {
   courseId!: string;
   comments: FeedbackResponse[] = [];
-  course: CourseDetailsResponse = {
-    courseId: '',
-    courseName: '',
-    courseImageUrl: '',
-    instructorName: '',
-    price: 0,
-    description: '',
-    whatYouWillLearn: [],
-  };
+  course: CourseDetailsResponse = {} as CourseDetailsResponse;
 
   coursesResponse: PageResponse<CourseResponse> = {content: [], totalPages: 0};
   page: number = 0;

@@ -4,7 +4,6 @@ export interface MessageRequest {
   chatRoomId: string;
 }
 
-
 export interface CoursesChatRoomResponse {
   chatRoomId:string;
   course : CourseChatResponse;

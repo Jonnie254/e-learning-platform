@@ -139,7 +139,8 @@ public class EnrollmentService {
                         course.getInstructorId(),
                         course.getInstructorName(),
                         course.getCourseImageUrl(),
-                        ratingsMap.getOrDefault(course.getCourseId(), 0.0)
+                        ratingsMap.getOrDefault(course.getCourseId(), 0.0),
+                        course.getSkillLevel()
                 ))
                 .toList();
         return new PageResponse<>(

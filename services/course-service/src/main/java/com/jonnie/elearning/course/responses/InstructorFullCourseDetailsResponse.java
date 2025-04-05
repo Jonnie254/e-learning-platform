@@ -3,6 +3,7 @@ package com.jonnie.elearning.course.responses;
 
 import com.jonnie.elearning.category.CategoryResponse;
 import com.jonnie.elearning.tag.TagResponse;
+import com.jonnie.elearning.utils.SkillLevel;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -22,4 +23,5 @@ public class InstructorFullCourseDetailsResponse {
     private List<TagResponse> tags;
     private List<String> whatYouWillLearn;
     private BigDecimal price;
+    private SkillLevel skillLevel;
 }

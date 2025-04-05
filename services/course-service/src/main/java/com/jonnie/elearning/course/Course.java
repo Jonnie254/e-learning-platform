@@ -2,6 +2,7 @@ package com.jonnie.elearning.course;
 
 import com.jonnie.elearning.category.Category;
 import com.jonnie.elearning.tag.Tag;
+import com.jonnie.elearning.utils.SkillLevel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -31,8 +32,10 @@ public class Course {
     private String instructorName;
     private BigDecimal price;
     private boolean isPublished;
+    @Enumerated(EnumType.STRING)
+    private SkillLevel skillLevel;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> whatYouWillLearn;
     @Column(columnDefinition = "TEXT")
     private String description;

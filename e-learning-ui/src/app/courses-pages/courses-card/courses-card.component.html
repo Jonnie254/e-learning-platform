@@ -1,14 +1,19 @@
 <div
   class="flex flex-col cursor-pointer justify-between w-full h-full
   bg-white shadow-lg rounded-lg transition-shadow duration-300
-  hover:shadow-xl"
+  hover:shadow-xl relative"
 >
-  <a>
+  <a class="relative">
     <img
       [src]="courseImage"
       class="rounded-t-lg w-full max-h-48 object-cover object-center border-b-4 border-gray-300"
       alt="Course Image"
     />
+    <span
+      class="absolute top-2 left-2 bg-gray-700 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-lg"
+    >
+      {{ course.skillLevel }}
+    </span>
   </a>
   <div class="p-5 flex flex-col bg-gray-900 rounded-b-lg">
     <h5 class="text-xl font-bold text-white tracking-tight">
@@ -21,15 +26,15 @@
       {{course.price | currency:'USD' }}
     </p>
     <div class="flex items-center space-x-1 mb-3 text-yellow-500">
-    <ng-container *ngFor="let star of getStars(course.rating)">
-      <span *ngIf="star === 'full'"><i class="pi pi-star-fill text-yellow-400"></i></span>
-      <span *ngIf="star === 'half'"><i class="pi pi-star-half text-yellow-400"></i></span>
-      <span *ngIf="star === 'empty'"><i class="pi pi-star text-gray-400"></i></span>
-    </ng-container>
-    <span class="text-sm text-gray-300 ml-2">
-    ({{ course.rating ?? "0" }})
-  </span>
-   </div>
+      <ng-container *ngFor="let star of getStars(course.rating)">
+        <span *ngIf="star === 'full'"><i class="pi pi-star-fill text-yellow-400"></i></span>
+        <span *ngIf="star === 'half'"><i class="pi pi-star-half text-yellow-400"></i></span>
+        <span *ngIf="star === 'empty'"><i class="pi pi-star text-gray-400"></i></span>
+      </ng-container>
+      <span class="text-sm text-gray-300 ml-2">
+        ({{ course.rating ?? "0" }})
+      </span>
+    </div>
     <button
       (click)="onExplore()"
       class="bg-gray-600 w-full hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"

@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,6 +35,7 @@ public class CourseMapper {
                 .instructorName(instructor.getFullName())
                 .isPublished(true)
                 .whatYouWillLearn(courseRequest.whatYouWillLearn())
+                .skillLevel(courseRequest.courseSkillLevel())
                 .build();
     }
 
@@ -45,6 +47,7 @@ public class CourseMapper {
                 .InstructorName(course.getInstructorName())
                 .price(course.getPrice())
                 .whatYouWillLearn(course.getWhatYouWillLearn())
+                .skillLevel(course.getSkillLevel())
                 .build();
     }
 
@@ -67,6 +70,7 @@ public class CourseMapper {
                 .price(course.getPrice())
                 .instructorName(course.getInstructorName())
                 .whatYouWillLearn(course.getWhatYouWillLearn())
+                .skillLevel(course.getSkillLevel())
                 .build();
     }
 
@@ -160,6 +164,7 @@ public class CourseMapper {
                         .toList())
                 .whatYouWillLearn(course.getWhatYouWillLearn())
                 .price(course.getPrice())
+                .skillLevel(course.getSkillLevel())
                 .build();
     }
 
@@ -178,7 +183,10 @@ public class CourseMapper {
             }
         }
         if (updateCourseRequest.whatYouWillLearn() != null) {
-            existingCourse.setWhatYouWillLearn(updateCourseRequest.whatYouWillLearn());
+            existingCourse.setWhatYouWillLearn(new ArrayList<>(updateCourseRequest.whatYouWillLearn()));
+        }
+        if (updateCourseRequest.courseSkillLevel() != null) {
+            existingCourse.setSkillLevel(updateCourseRequest.courseSkillLevel());
         }
     }
 
@@ -237,6 +245,7 @@ public class CourseMapper {
                         .instructorId(c.getInstructorId())
                         .instructorName(c.getInstructorName())
                         .courseImageUrl(c.getCourseUrlImage())
+                        .skillLevel(c.getSkillLevel())
                         .build())
                 .toList();
     }

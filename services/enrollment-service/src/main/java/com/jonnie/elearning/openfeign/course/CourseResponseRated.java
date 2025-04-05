@@ -1,5 +1,6 @@
 package com.jonnie.elearning.openfeign.course;
 
+import com.jonnie.elearning.utils.SkillLevel;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -17,4 +18,5 @@ public class CourseResponseRated {
     private String instructorName;
     private String courseImageUrl;
     private double rating;
+    private SkillLevel skillLevel;
 }

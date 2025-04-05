@@ -8,12 +8,19 @@ export interface PageResponse<T> {
   first?: boolean;
 }
 
+export enum SkillLevel {
+  BEGINNER = 'BEGINNER',
+  INTERMEDIATE = 'INTERMEDIATE',
+  ADVANCED = 'ADVANCED',
+}
+
 export interface CourseResponse {
   courseId: string;
   courseName: string;
   courseUrlImage: string;
   instructorName: string;
   price: number;
+  skillLevel?: SkillLevel;
   description?: string,
   whatYouWillLearn?: string[],
   isInCart?: boolean;
@@ -28,6 +35,7 @@ export interface CourseDetailsResponse {
   price: number,
   description: string,
   whatYouWillLearn: string[],
+  skillLevel?: SkillLevel;
 }
 
 export interface Cart{
@@ -110,6 +118,7 @@ export interface InstructorFullCourseDetailsResponse{
   price: number;
   courseDescription: string;
   whatYouWillLearn: string[];
+  skillLevel?: SkillLevel[];
   tags: TagResponse[];
   category: CategoryResponse;
 }
@@ -182,6 +191,7 @@ export interface CourseResponseRated{
   instructorName: string;
   courseImageUrl: string;
   rating: number;
+  skillLevel?: SkillLevel;
 }
 
 
@@ -192,5 +202,6 @@ export interface CourseRecommendationResponse{
   instructorId: string;
   instructorName: string;
   courseImageUrl: string;
+  skillLevel?: SkillLevel;
   rating: number;
 }

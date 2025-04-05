@@ -54,6 +54,11 @@ export const routes: Routes = [
     }
   },
   {
+    path:'know-about-you', loadComponent: () =>
+      import('./auth-pages/know-about-you/know-about-you.component')
+        .then(m => m.KnowAboutYouComponent)
+  },
+  {
     path:'payment-success', loadComponent: () =>
       import('./student-pages/payment-success/payment-success.component')
         .then(m => m.PaymentSuccessComponent)

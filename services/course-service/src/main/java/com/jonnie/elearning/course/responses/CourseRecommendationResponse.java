@@ -1,6 +1,7 @@
 package com.jonnie.elearning.course.responses;
 
 
+import com.jonnie.elearning.utils.SkillLevel;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -18,5 +19,6 @@ public class CourseRecommendationResponse {
     private String instructorName;
     private String courseImageUrl;
     private double rating;
+    private SkillLevel skillLevel;
 }
 

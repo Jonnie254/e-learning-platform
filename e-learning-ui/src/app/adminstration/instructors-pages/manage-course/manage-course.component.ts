@@ -6,7 +6,7 @@ import {NotificationsComponent} from "../../../shared-components/notifications/n
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CoursesService} from '../../../services/courses-service.service';
-import {CategoryResponse, PageResponse, TagResponse} from '../../../interfaces/responses';
+import {CategoryResponse, PageResponse, SkillLevel, TagResponse} from '../../../interfaces/responses';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ModalService} from '../../../services/modal.service';
 
@@ -42,6 +42,11 @@ export class ManageCourseComponent {
   availableTags: PageResponse<TagResponse> = {content: []};
   availableCategories : PageResponse<CategoryResponse> = {content: []};
   validationErrors: { [key: string]: string } = {};
+  skillLevels: SkillLevel[] = [
+    SkillLevel.BEGINNER,
+    SkillLevel.INTERMEDIATE,
+    SkillLevel.ADVANCED
+  ];
 
   steps = [
     { title: 'Course Info', status: 'completed' },
@@ -61,7 +66,8 @@ export class ManageCourseComponent {
     coursePrice: new FormControl('', [Validators.required]),
     whatYouWillLearn: new FormControl([], [Validators.required]),
     courseSelectedTags: new FormControl([], { nonNullable: true }),
-    courseSelectedCategory: new FormControl('', [Validators.required])
+    courseSelectedCategory: new FormControl('', [Validators.required]),
+    courseSkillLevel: new FormControl(SkillLevel.BEGINNER, [Validators.required])
   });
 
   courseData = {
@@ -71,7 +77,7 @@ export class ManageCourseComponent {
     whatYouWillLearn: [''],
     selectedTags: [] as TagResponse[],
     selectedCategory: '',
-    imageUrl: ''
+    imageUrl: '',
   };
 
   constructor(
@@ -119,7 +125,8 @@ export class ManageCourseComponent {
           coursePrice: this.courseData.price,
           whatYouWillLearn: this.courseData.whatYouWillLearn,
           courseSelectedTags: this.courseData.selectedTags.map(tag => tag.tagId),
-          courseSelectedCategory: this.courseData.selectedCategory
+          courseSelectedCategory: this.courseData.selectedCategory,
+          courseSkillLevel: response.skillLevel
         });
       }
     });
@@ -182,18 +189,23 @@ export class ManageCourseComponent {
     const file = event.target.files[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      this.notification = { show: true, message: 'File size must be under 5MB.', type: 'error' };
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      this.notification = { show: true, message: 'Only JPEG and PNG images are allowed.', type: 'error' };
+      this.selectedFile = null;
       return;
     }
 
-    if (!['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(file.type)) {
-      this.notification = { show: true, message: 'Only JPEG and PNG images are allowed.', type: 'error' };
+    if (file.size > 5 * 1024 * 1024) {
+      this.notification = { show: true, message: 'File size must be under 5MB.', type: 'error' };
+      this.selectedFile = null;
       return;
     }
+
     this.selectedFile = file;
     this.selectedFileName = file.name;
   }
+
 
   confirmAction() {
     this.isConfirmationDialogVisible = true;
@@ -224,12 +236,15 @@ export class ManageCourseComponent {
     formData.append('courseDescription', this.addCourseForm.value.courseDescription);
     formData.append('price', this.addCourseForm.value.coursePrice);
     formData.append('categoryId', this.addCourseForm.value.courseSelectedCategory);
-    const learningPoints = Array.isArray(this.addCourseForm.value.whatYouWillLearn)
-      ? this.addCourseForm.value.whatYouWillLearn
-      : (this.addCourseForm.value.whatYouWillLearn ? [this.addCourseForm.value.whatYouWillLearn] : []);
-    learningPoints.forEach((point: string) => {
-      formData.append('whatYouWillLearn', point);
-    });
+    const learningPoints = this.addCourseForm.value.whatYouWillLearn;
+    if (Array.isArray(learningPoints)) {
+      learningPoints.forEach(point => {
+        formData.append('whatYouWillLearn[]', point);
+      });
+    } else {
+      formData.append('whatYouWillLearn[]', learningPoints);
+    }
+
     const selectedTags = Array.isArray(this.addCourseForm.value.courseSelectedTags)
       ? this.addCourseForm.value.courseSelectedTags
       : [this.addCourseForm.value.courseSelectedTags];
@@ -241,8 +256,9 @@ export class ManageCourseComponent {
     if (this.selectedFile) {
       formData.append('courseImage', this.selectedFile);
     }
-
+    formData.append('courseSkillLevel', this.addCourseForm.value.courseSkillLevel);
     return formData;
+
   }
 
   handleCourseResponse(successMessage: string) {
@@ -270,13 +286,17 @@ export class ManageCourseComponent {
     }
     this.modalService.showLoadingSpinner();
     const formData = this.prepareFormData();
+    console.log("This the form data", formData);
     this.coursesService.addCourse(formData).subscribe({
       next: () => {
         this.handleCourseResponse('Course added successfully');
         setTimeout(() => this.navigateToCourses(), 3000);
         this.modalService.hideLoadingSpinner();
       },
-      error: (error) => this.handleCourseError(error)
+      error: (error) => {
+        this.handleCourseError(error);
+        this.modalService.hideLoadingSpinner();
+      }
     });
   }
 
@@ -304,9 +324,7 @@ export class ManageCourseComponent {
   }
 
   navigateToCourses() {
-    this.router.navigate(['/dashboard/instructor-courses']).then(r => {
-      return;
-    });
+    this.router.navigate(['/dashboard/instructor-courses']);
   }
 
   nextStep() {
