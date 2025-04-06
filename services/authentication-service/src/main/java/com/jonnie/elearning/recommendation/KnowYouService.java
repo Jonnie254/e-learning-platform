@@ -33,4 +33,8 @@ public class KnowYouService {
                 .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
         return knowYouMapper.mapToKnowYouResponse(knowYou);
     }
+
+    public boolean checkUserKnowYou(String userId) {
+        return knowYouRepository.findByUserId(userId).isPresent();
+    }
 }

@@ -205,3 +205,11 @@ export interface CourseRecommendationResponse{
   skillLevel?: SkillLevel;
   rating: number;
 }
+
+export interface KnowYouResponse{
+  knowAboutYouId: string;
+  learningGoal: string;
+  preferredSkillLevel: SkillLevel;
+  interestedCategory: CategoryResponse[];
+  interestedTags: TagResponse[];
+}

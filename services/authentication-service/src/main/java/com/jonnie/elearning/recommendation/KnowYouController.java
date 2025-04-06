@@ -26,6 +26,16 @@ public class KnowYouController {
                 "successfully created know you "));
     }
 
+    // method to check if a user has a know you
+    @GetMapping("/check-user-know-you")
+    public ResponseEntity<Boolean> checkUserKnowYou(
+            @RequestHeader("X-User-Id") String userId
+    ){
+        boolean hasKnowYou = knowYouService.checkUserKnowYou(userId);
+        return ResponseEntity.ok(hasKnowYou);
+    }
+
+    // method to get a know you
     @GetMapping("/get-user-know-you")
     public ResponseEntity<KnowYouResponse> getUserKnowYou(
             @RequestHeader ("X-User-Id") String userId

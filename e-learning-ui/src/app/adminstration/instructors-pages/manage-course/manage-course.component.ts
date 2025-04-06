@@ -273,7 +273,8 @@ export class ManageCourseComponent {
     if (error.error.errors) {
       this.validationErrors = error.error.errors;
     } else {
-      this.notification = { show: true, message: 'An unexpected error occurred', type: 'error' };
+      this.notification = { show: true, message: 'An unexpected error occurred',
+        type: 'error' };
     }
     setTimeout(() => this.closeNotification(), 3000);
   }
@@ -286,7 +287,6 @@ export class ManageCourseComponent {
     }
     this.modalService.showLoadingSpinner();
     const formData = this.prepareFormData();
-    console.log("This the form data", formData);
     this.coursesService.addCourse(formData).subscribe({
       next: () => {
         this.handleCourseResponse('Course added successfully');

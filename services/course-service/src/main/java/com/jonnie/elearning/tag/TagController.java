@@ -44,7 +44,7 @@ public class TagController {
             @RequestParam(name="page", defaultValue = "0", required = false) int page,
             @RequestParam(name="size", defaultValue = "10", required = false) int size
     ){
-        if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole) && !ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
+        if (!ROLE.ADMIN.name().equalsIgnoreCase(userRole) && !ROLE.STUDENT.name().equalsIgnoreCase(userRole) && !ROLE.INSTRUCTOR.name().equalsIgnoreCase(userRole)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.ok(tagService.findAll(page, size));

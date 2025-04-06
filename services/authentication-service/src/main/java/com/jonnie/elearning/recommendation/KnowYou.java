@@ -1,7 +1,7 @@
 package com.jonnie.elearning.recommendation;
 
 
-import com.jonnie.elearning.user.User;
+import com.jonnie.elearning.recommendation.responses.TagResponse;
 import com.jonnie.elearning.utils.SkillLevel;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,8 +23,8 @@ public class KnowYou {
     @Id
     private String knowYouId;
     private String userId;
-    private List<String> interestedTags;
-    private List<String> interestedCategory;
+    private List<TagResponse> interestedTags;
+    private String interestedCategory;
     private SkillLevel preferredSkillLevel;
     private String learningGoal;
 

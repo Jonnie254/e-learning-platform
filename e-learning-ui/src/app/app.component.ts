@@ -7,7 +7,7 @@ import {ConfirmationDialogComponent} from './shared-components/confirmation-dial
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RegisterComponent, LandingPageComponent, ConfirmationDialogComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
