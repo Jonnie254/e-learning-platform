@@ -21,7 +21,8 @@
   </div>
 
   <div class="overflow-x-auto rounded-lg">
-    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+    <table *ngIf="courses.content && courses.content.length > 0; else noCoursesSection"
+      class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
       <thead class="bg-gray-800 text-white text-sm uppercase tracking-wide">
       <tr>
         <th class="text-left py-3 px-4">Course Image</th>
@@ -72,6 +73,15 @@
     </table>
   </div>
 
+  <ng-template #noCoursesSection>
+    <div class="flex flex-col items-center justify-center text-gray-600 mt-8">
+      <i class="pi pi-exclamation-circle text-4xl"></i>
+      <p class="text-lg font-semibold mt-2">No Courses added for this yet.</p>
+      <button (click)="navigateToAddCourse()" class="mt-4 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600">
+        <i class="pi pi-plus"></i> Add First Section
+      </button>
+    </div>
+  </ng-template>
   <div class="mt-4 flex justify-center">
     <app-pagination *ngIf="courses.content && courses.content.length > 0"
       [currentPage]="page"

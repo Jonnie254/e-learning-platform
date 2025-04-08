@@ -1,6 +1,7 @@
 package com.jonnie.elearning.recommendation;
 
 import com.jonnie.elearning.recommendation.requests.KnowYouRequest;
+import com.jonnie.elearning.recommendation.requests.UpdateKnowYouRequest;
 import com.jonnie.elearning.recommendation.responses.KnowYouResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,4 +44,17 @@ public class KnowYouController {
         KnowYouResponse knowYouResponse = knowYouService.getUserKnowYou(userId);
         return ResponseEntity.ok(knowYouResponse);
     }
+
+
+    // method to update a know you
+    @PutMapping("/update-know-you/{knowYouId}")
+    public ResponseEntity<Map<String, String>> updateKnowYou(
+            @PathVariable String knowYouId,
+            @RequestBody @Valid UpdateKnowYouRequest updateKnowYouRequest
+    ){
+        knowYouService.updateKnowYou(knowYouId, updateKnowYouRequest);
+        return ResponseEntity.ok().body(Map.of("message",
+                "successfully updated know you "));
+    }
+
 }

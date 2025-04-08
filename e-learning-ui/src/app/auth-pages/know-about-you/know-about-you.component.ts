@@ -1,6 +1,13 @@
 import {Component} from '@angular/core';
 import {NavbarComponent} from '../../shared-components/navbar/navbar.component';
-import {CategoryResponse, KnowYouResponse, PageResponse, SkillLevel, TagResponse} from '../../interfaces/responses';
+import {
+  CategoryResponse,
+  KnowYouRequest,
+  KnowYouResponse,
+  PageResponse,
+  SkillLevel,
+  TagResponse
+} from '../../interfaces/responses';
 import {CoursesService} from '../../services/courses-service.service';
 import {AuthService} from '../../services/auth-service.service';
 import {NgForOf, NgIf} from '@angular/common';
@@ -26,6 +33,7 @@ import {KnowYouService} from '../../services/know-you.service';
 })
 export class KnowAboutYouComponent {
   userId: string = '';
+  knowAboutYouId: string = '';
   page: number = 0;
   size: number = 8;
   interestedTags: PageResponse<TagResponse> = {} as PageResponse<TagResponse>;
@@ -101,6 +109,7 @@ export class KnowAboutYouComponent {
     this.knowYouService.getUserKnowAboutYou().subscribe({
       next: (res) => {
         this.knowYouResponse = res;
+        this.knowAboutYouId = res.knowYouId;
         const tagNames: string[] = (res.interestedTags || []).map(tag => tag.tagName); // Map to get an array of tag names
         this.selectedTags = res.interestedTags || [];
         this.addKnowAboutYouForm.patchValue({
@@ -188,7 +197,7 @@ export class KnowAboutYouComponent {
   }
 
 
-  prepareFormData(): any {
+  prepareFormData(): KnowYouRequest {
     return {
       learningGoal: this.addKnowAboutYouForm.get('learningGoal')?.value,
       preferredSkillLevel: this.addKnowAboutYouForm.get('preferredSkillLevel')?.value,
@@ -211,10 +220,21 @@ export class KnowAboutYouComponent {
         this.handleError("Something went wrong")
       }
     });
-
   }
   updateKnowAboutYou() {
-
+    const formData = this.prepareFormData();
+    this.knowYouService.updateKnowAboutYou(formData, this.knowYouResponse.knowYouId).subscribe({
+      next: (res) => {
+        this.handleResponse("Update know you successfully")
+        this.closeModal();
+        this.getUsersKnowYouResponse();
+        this.setEditMode();
+      },
+      error: (err) => {
+        console.error(err);
+        this.handleError("Something went wrong")
+      }
+    });
   }
 
   handleResponse(successMessage: string) {

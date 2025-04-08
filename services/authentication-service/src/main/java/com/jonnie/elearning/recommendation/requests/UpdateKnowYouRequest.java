@@ -8,7 +8,8 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record KnowYouRequest(
+public record UpdateKnowYouRequest(
+        String knowYouId,
         @NotEmpty(message = "Interested tags cannot be empty")
         @Size(min = 1, max = 7, message = "Interested tags must have between 1 and 7 tags")
         List<TagResponse> interestedTags,
@@ -22,4 +23,5 @@ public record KnowYouRequest(
         @NotNull(message = "Learning goal cannot be null")
         String learningGoal
 ) {
+
 }

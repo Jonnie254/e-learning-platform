@@ -20,6 +20,7 @@ public class KnowYouMapper {
     public KnowYouResponse mapToKnowYouResponse(KnowYou knowYou) {
         return KnowYouResponse.builder()
                 .knowYouId(knowYou.getKnowYouId())
+                .userId(knowYou.getUserId())
                 .interestedTags(knowYou.getInterestedTags())
                 .interestedCategory(knowYou.getInterestedCategory())
                 .preferredSkillLevel(knowYou.getPreferredSkillLevel())

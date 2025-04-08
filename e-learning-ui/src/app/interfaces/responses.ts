@@ -207,9 +207,16 @@ export interface CourseRecommendationResponse{
 }
 
 export interface KnowYouResponse{
-  knowAboutYouId: string;
+  knowYouId: string;
+  userId: string;
   learningGoal: string;
   preferredSkillLevel: SkillLevel;
   interestedCategory: CategoryResponse[];
   interestedTags: TagResponse[];
+}
+ export interface KnowYouRequest {
+  interestedTags: TagResponse[];
+  interestedCategory: string;
+  preferredSkillLevel: SkillLevel;
+  learningGoal: string;
 }

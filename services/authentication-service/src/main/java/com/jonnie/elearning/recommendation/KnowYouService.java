@@ -1,8 +1,10 @@
 package com.jonnie.elearning.recommendation;
 
 
+import com.jonnie.elearning.exceptions.BusinessException;
 import com.jonnie.elearning.exceptions.UserNotFoundException;
 import com.jonnie.elearning.recommendation.requests.KnowYouRequest;
+import com.jonnie.elearning.recommendation.requests.UpdateKnowYouRequest;
 import com.jonnie.elearning.recommendation.responses.KnowYouResponse;
 import com.jonnie.elearning.repositories.KnowYouRepository;
 import com.jonnie.elearning.repositories.UserRepository;
@@ -10,6 +12,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +40,18 @@ public class KnowYouService {
 
     public boolean checkUserKnowYou(String userId) {
         return knowYouRepository.findByUserId(userId).isPresent();
+    }
+
+    public void updateKnowYou(String knowYouId, @Valid UpdateKnowYouRequest updateKnowYouRequest) {
+        Optional<KnowYou> existingKnowYou = knowYouRepository.findById(knowYouId);
+        if (existingKnowYou.isEmpty()) {
+            throw new BusinessException("Know You information not found for");
+        }
+        KnowYou knowYou = existingKnowYou.get();
+        knowYou.setInterestedTags(updateKnowYouRequest.interestedTags());
+        knowYou.setInterestedCategory(updateKnowYouRequest.interestedCategory());
+        knowYou.setPreferredSkillLevel(updateKnowYouRequest.preferredSkillLevel());
+        knowYou.setLearningGoal(updateKnowYouRequest.learningGoal());
+        knowYouRepository.save(knowYou);
     }
 }

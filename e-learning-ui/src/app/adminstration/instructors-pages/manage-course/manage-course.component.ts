@@ -9,6 +9,7 @@ import {CoursesService} from '../../../services/courses-service.service';
 import {CategoryResponse, PageResponse, SkillLevel, TagResponse} from '../../../interfaces/responses';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ModalService} from '../../../services/modal.service';
+import {LoadingSpinnerComponent} from '../../../shared-components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-manage-course',
@@ -20,7 +21,8 @@ import {ModalService} from '../../../services/modal.service';
     NgClass,
     NgForOf,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoadingSpinnerComponent
   ],
   templateUrl: './manage-course.component.html',
   styleUrl: './manage-course.component.scss'
@@ -236,14 +238,9 @@ export class ManageCourseComponent {
     formData.append('courseDescription', this.addCourseForm.value.courseDescription);
     formData.append('price', this.addCourseForm.value.coursePrice);
     formData.append('categoryId', this.addCourseForm.value.courseSelectedCategory);
+
     const learningPoints = this.addCourseForm.value.whatYouWillLearn;
-    if (Array.isArray(learningPoints)) {
-      learningPoints.forEach(point => {
-        formData.append('whatYouWillLearn[]', point);
-      });
-    } else {
-      formData.append('whatYouWillLearn[]', learningPoints);
-    }
+    formData.append('whatYouWillLearn', JSON.stringify(learningPoints));
 
     const selectedTags = Array.isArray(this.addCourseForm.value.courseSelectedTags)
       ? this.addCourseForm.value.courseSelectedTags
@@ -256,10 +253,12 @@ export class ManageCourseComponent {
     if (this.selectedFile) {
       formData.append('courseImage', this.selectedFile);
     }
-    formData.append('courseSkillLevel', this.addCourseForm.value.courseSkillLevel);
-    return formData;
 
+    formData.append('courseSkillLevel', this.addCourseForm.value.courseSkillLevel);
+
+    return formData;
   }
+
 
   handleCourseResponse(successMessage: string) {
     this.notification = { show: true, message: successMessage, type: 'success' };

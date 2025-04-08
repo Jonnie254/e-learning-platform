@@ -39,6 +39,7 @@ export class CoursesComponent {
   courseRecommendationResponse: PageResponse<CourseRecommendationResponse> = {} as PageResponse<CourseRecommendationResponse>;
   isDropdownOpen: string | null = null;
   cartItems: CourseResponse[] = [];
+  shouldShowRecommendedCourses = false;
   cartSubcription: Subscription = new Subscription();
 
   constructor(
@@ -97,16 +98,19 @@ export class CoursesComponent {
       })
   }
 
-  getRecommendedCourses(){
-    this.courseService.getRecommendedCourses({size: this.size, page: this.page}).subscribe({
+  getRecommendedCourses() {
+    this.courseService.getRecommendedCourses({ size: this.size, page: this.page }).subscribe({
       next: (response: PageResponse<CourseRecommendationResponse>) => {
         this.courseRecommendationResponse = response;
+        this.shouldShowRecommendedCourses = !!response?.content?.length;
       },
       error: (err: any) => {
         console.log(err);
-    }
-    })
+        this.shouldShowRecommendedCourses = false;
+      }
+    });
   }
+
 
   toggleDropdown(menu: string) {
     this.isDropdownOpen = this.isDropdownOpen === menu ? null : menu;
@@ -156,7 +160,4 @@ export class CoursesComponent {
       };
     });
   }
-
-
-
 }

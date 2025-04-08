@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth-service.service';
-import {KnowYouResponse} from '../interfaces/responses';
+import {KnowYouRequest, KnowYouResponse} from '../interfaces/responses';
 
 
 @Injectable({
@@ -33,13 +33,21 @@ export class KnowYouService {
     });
   }
 
-  addKnowAboutYou(formData: any) {
+  addKnowAboutYou(formData: KnowYouRequest) {
     const token = this.authService.getToken();
     return this.httpClient.post(`${this.baseUrl}/create-know-you`, formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
+  }
 
+  updateKnowAboutYou(formData: KnowYouRequest, knowYouId: string) {
+    const token = this.authService.getToken();
+    return this.httpClient.put(`${this.baseUrl}/update-know-you/${knowYouId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 }

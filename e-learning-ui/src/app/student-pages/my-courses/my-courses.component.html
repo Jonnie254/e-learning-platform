@@ -1,26 +1,24 @@
 <app-navbar></app-navbar>
-<!-- dark:bg-gray-800 -->
-<section class="font-sans w-full px-8 py-4 min-h-screen bg-white">
+<section class="font-sans w-full px-8 py-4 min-h-screen bg-gray-50">
   <div class="items-center max-w-screen-xl gap-8 px-4 py-8 mx-auto xl:gap-16 md:grid md:grid-cols-2 sm:py-8 lg:px-6">
-    <!-- Header -->
     <div class="md:col-span-2">
       <div>
         <h1 class="text-3xl font-semibold text-gray-800 md:text-4xl">My Courses</h1>
-        <p class="mt-2 text-gray-600 ">Here are the courses you have enrolled in. Start learning now!</p>
+        <p class="mt-2 text-gray-600">Here are the courses you have enrolled in. Start learning now!</p>
       </div>
-      <!-- Filter Tabs -->
-      <div class="flex items-center space-x-8 mt-4" >
-        <div class="p-2 bg-gray-100 rounded-md border-1 hover:bg-gray-200 cursor-pointer">
-          <p class="text-base font-semibold">In progress</p>
+      <div class="flex items-center space-x-8 mt-4">
+        <div class="p-2 bg-gray-200 rounded-md border-1 hover:bg-gray-300 cursor-pointer">
+          <p class="text-base font-semibold text-gray-800">In progress</p>
         </div>
-        <div class="p-2 bg-gray-100 rounded-md border-1 hover:bg-gray-200 cursor-pointer">
-          <p class="text-base font-semibold">Completed</p>
+        <div class="p-2 bg-gray-200 rounded-md border-1 hover:bg-gray-300 cursor-pointer">
+          <p class="text-base font-semibold text-gray-800">Completed</p>
         </div>
       </div>
-        <hr class="border-gray-300 w-full mt-4 mb-2"/>
+
+      <hr class="border-gray-300 w-full mt-4 mb-2"/>
       <div *ngIf="userEnrollments && userEnrollments.content && userEnrollments.content.length > 0; else noCourses" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
         <div *ngFor="let enrollment of userEnrollments.content"
-          class="bg-gray-100 col-span-2 lg:col-span-3 relative flex flex-col gap-4 p-6 shadow-lg rounded-xl border border-gray-300 min-h-[250px]">
+             class="bg-gray-100 col-span-2 lg:col-span-3 relative flex flex-col gap-4 p-6 shadow-lg rounded-xl border border-gray-300 min-h-[250px]">
           <div class="absolute top-4 right-4 w-16 h-16">
             <svg class="w-full h-full" viewBox="0 0 36 36">
               <circle class="text-gray-200 stroke-current" stroke-width="3" cx="18" cy="18" r="15" fill="none"></circle>
@@ -34,38 +32,34 @@
           </div>
           <div class="flex items-center gap-6">
             <div class="w-32 h-32 shrink-0 rounded-lg overflow-hidden">
-              <img class="w-full h-full object-cover"
-                   src="{{enrollment.course.courseUrlImage}}"
-                   alt="course" />
+              <img class="w-full h-full object-cover" src="{{enrollment.course.courseUrlImage}}" alt="course" />
             </div>
             <div class="flex-1">
-              <h3 class="text-xl font-semibold">{{enrollment.course.courseName}}</h3>
+              <h3 class="text-xl font-semibold text-gray-800">{{enrollment.course.courseName}}</h3>
               <p class="text-gray-600 text-lg">Instructor: <span class="font-semibold">{{enrollment.course.instructorName}}</span></p>
             </div>
           </div>
-          <button (click)="redirectToCourse(enrollment.course.courseId)" class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-100 text-blue-600 rounded-lg border border-blue-300
-                  hover:bg-blue-500 hover:text-white transition text-lg">
+          <button (click)="redirectToCourse(enrollment.course.courseId)"
+                  class="w-full flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-gray-500
+                  via-gray-600 to-gray-700 text-white rounded-lg border border-transparent hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-gray-300 focus:ring-opacity-50 transition-all duration-300 transform text-lg">
             <p class="font-semibold">Go to course</p>
             <i class="pi pi-eye"></i>
           </button>
         </div>
       </div>
     </div>
-    </div>
+  </div>
+
+  <!-- No Courses Available -->
   <div>
     <ng-template #noCourses>
-      <div class="flex flex-col items-center  min-h-screen">
+      <div class="flex flex-col items-center min-h-screen">
         <h2 class="text-2xl font-semibold text-gray-700">Your enrolled course is empty</h2>
         <p class="text-gray-600 mt-2">Browse courses to enroll.</p>
-        <button routerLink="/courses" class="mt-4 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold
-      hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-md">
+        <button routerLink="/courses" class="mt-4 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-700 transition-transform transform hover:scale-105 shadow-md">
           Browse Courses
         </button>
       </div>
     </ng-template>
   </div>
 </section>
-
-
-
-

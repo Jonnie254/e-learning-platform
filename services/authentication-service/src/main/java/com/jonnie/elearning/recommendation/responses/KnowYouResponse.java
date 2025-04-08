@@ -12,6 +12,7 @@ import java.util.List;
 @Builder
 public class KnowYouResponse {
     private String knowYouId;
+    private String userId;
     private List<TagResponse> interestedTags;
     private  String interestedCategory;
     private SkillLevel preferredSkillLevel;

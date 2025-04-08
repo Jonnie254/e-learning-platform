@@ -90,8 +90,8 @@
       (pageChange)="onTopRatedPageChange($event)">
     </app-pagination>
   </div>
-  <div *ngIf="showRecommendedCourse" class="space-y-8">
-    <div class="flex flex-wrap items-center justify-between">
+  <div *ngIf="showRecommendedCourse && shouldShowRecommendedCourses" class="space-y-8">
+  <div class="flex flex-wrap items-center justify-between">
       <h2 class="text-3xl font-semibold text-gray-900 tracking-wide">
         Explore Recommended Courses
       </h2>

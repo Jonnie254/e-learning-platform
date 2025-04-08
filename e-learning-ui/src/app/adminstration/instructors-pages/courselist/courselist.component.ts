@@ -54,4 +54,9 @@ export class CourselistComponent {
       { queryParams: { courseName: course.courseName } }
     );
   }
+
+
+  navigateToAddCourse() {
+    this.router.navigate(['/dashboard/instructor-courses/add']);
+  }
 }
